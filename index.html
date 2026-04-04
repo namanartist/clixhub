@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CLIX HUB - Campus Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0099FF',
+            'primary-hover': '#007ACC',
+            navy: {
+              50: '#F0F4FD',
+              100: '#E0E7FF',
+              700: '#1B2559',
+              800: '#111C44',
+              900: '#02040a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      /* MITS Brand Colors */
+      --primary: #0099FF;
+      --primary-hover: #007ACC;
+
+      /* Light Mode System (Horizon UI Style) */
+      --bg-main: #F4F7FE;
+      --bg-surface: #FFFFFF;
+
+      --text-main: #1B2559;
+      /* Navy Blue for high contrast text */
+      --text-secondary: #A3AED0;
+
+      --border-color: #E2E8F0;
+      --card-shadow: 0px 18px 40px rgba(112, 144, 176, 0.12);
+    }
+
+    html.dark {
+      /* Dark Mode System */
+      --bg-main: #02040a;
+      --bg-surface: #111C44;
+
+      --text-main: #FFFFFF;
+      --text-secondary: #A3AED0;
+
+      --border-color: rgba(255, 255, 255, 0.05);
+      --card-shadow: 0px 40px 80px rgba(0, 0, 0, 0.2);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'DM Sans', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    .font-serif-display {
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #A3AED0;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary);
+    }
+
+    .mits-shadow {
+      box-shadow: var(--card-shadow);
+    }
+
+    /* New Institutional OS Design Language */
+    .glass {
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .dark .glass {
+      background: rgba(13, 18, 29, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .glass-elevated {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(30px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+    }
+
+    .dark .glass-elevated {
+      background: rgba(22, 28, 45, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    /* Animated Mesh Background Keyframes */
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+
+      33% {
+        transform: translate(30px, -50px);
+      }
+
+      66% {
+        transform: translate(-20px, 20px);
+      }
+    }
+
+    @keyframes soft-pulse {
+
+      0%,
+      100% {
+        opacity: 0.3;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    .mesh-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      z-index: 0;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    .mesh-1 {
+      width: 600px;
+      height: 600px;
+      background: rgba(0, 153, 255, 0.15);
+      top: -100px;
+      right: -100px;
+      animation-delay: 0s;
+    }
+
+    .mesh-2 {
+      width: 500px;
+      height: 500px;
+      background: rgba(139, 92, 246, 0.1);
+      bottom: -100px;
+      left: -100px;
+      animation-delay: -5s;
+    }
+
+    .mesh-3 {
+      width: 400px;
+      height: 400px;
+      background: rgba(59, 130, 246, 0.08);
+      top: 30%;
+      left: 20%;
+      animation-delay: -10s;
+    }
+
+    .font-display {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .font-sans {
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    /* Utilities */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+    }
+
+    html.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #334155;
+    }
+
+    /* Printing Logic */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+
+      #certificate-print-area,
+      #certificate-print-area * {
+        visibility: visible;
+      }
+
+      #certificate-print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: white !important;
+      }
+
+      @page {
+        size: landscape;
+        margin: 0;
+      }
+    }
+    /* ── Pre-React Loader ── */
+    #pre-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #02040a;
+      gap: 2rem;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    #pre-loader.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+    #pre-loader .loader-logo {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      background: linear-gradient(135deg, #0099FF 0%, #7C3AED 50%, #06B6D4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: loader-pulse 2s ease-in-out infinite;
+    }
+    #pre-loader .loader-subtitle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      color: #A3AED0;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-top: -1rem;
+    }
+    #pre-loader .loader-ring {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 3px solid rgba(255,255,255,0.05);
+      border-top-color: #0099FF;
+      border-right-color: #7C3AED;
+      animation: loader-spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    }
+    #pre-loader .loader-bar {
+      width: 200px;
+      height: 3px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: -0.5rem;
+    }
+    #pre-loader .loader-bar-fill {
+      height: 100%;
+      width: 40%;
+      background: linear-gradient(90deg, #0099FF, #7C3AED, #06B6D4);
+      border-radius: 4px;
+      animation: loader-slide 1.5s ease-in-out infinite;
+    }
+    @keyframes loader-spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes loader-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(0.98); }
+    }
+    @keyframes loader-slide {
+      0% { transform: translateX(-100%); }
+      50% { transform: translateX(350%); }
+      100% { transform: translateX(-100%); }
+    }
+  </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "recharts": "https://esm.sh/recharts@^3.7.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.39.0",
+    "cors": "https://esm.sh/cors@^2.8.6",
+    "express": "https://esm.sh/express@^5.2.1",
+    "bcryptjs": "https://esm.sh/bcryptjs@^3.0.3",
+    "@prisma/client": "https://esm.sh/@prisma/client@^7.3.0",
+    "jsonwebtoken": "https://esm.sh/jsonwebtoken@^9.0.3",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@^2.48.1"
+  }
+}
+</script>
+  <link rel="stylesheet" href="/index.css">
+</head>
+
+<body>
+  <div id="root">
+    <!-- Pre-React Loader: removed automatically when React mounts -->
+    <div id="pre-loader">
+      <div class="loader-logo">CLIX HUB</div>
+      <div class="loader-subtitle">Campus Management System</div>
+      <div class="loader-ring"></div>
+      <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+    </div>
+  </div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
+</html>

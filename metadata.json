@@ -1,0 +1,7 @@
+{
+  "name": "CLIX HUB",
+  "description": "A comprehensive club management platform featuring multi-role access, recruitment tracking, event management with UPI payments, and automated certificate generation.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

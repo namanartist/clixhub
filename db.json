@@ -1,0 +1,894 @@
+{
+  "users": [
+    {
+      "id": "demo-student-001",
+      "name": "Aryan Sharma",
+      "email": "aryan@mitsgwl.ac.in",
+      "globalRole": "Student",
+      "enrollmentNumber": "0901CS211001",
+      "branch": "Computer Science & IT",
+      "department": "Computer Science & IT",
+      "phoneNumber": "9876543210",
+      "skills": [
+        "React",
+        "Node.js",
+        "MongoDB",
+        "Python"
+      ],
+      "linkedin": "https://linkedin.com/in/aryan-sharma",
+      "github": "https://github.com/aryan-sharma",
+      "signatureUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Signature_of_Theodore_Roosevelt.svg/2560px-Signature_of_Theodore_Roosevelt.svg.png",
+      "clubMemberships": [
+        {
+          "clubId": "club-csit",
+          "role": "President"
+        },
+        {
+          "clubId": "club-robo",
+          "role": "Member"
+        }
+      ]
+    },
+    {
+      "id": "demo-faculty-001",
+      "name": "Dr. Priya Verma",
+      "email": "priya.verma@mitsgwl.ac.in",
+      "globalRole": "Faculty",
+      "enrollmentNumber": "FAC-2024-01",
+      "branch": "Information Technology",
+      "department": "Information Technology",
+      "designation": "Associate Professor",
+      "phoneNumber": "9123456780",
+      "signatureUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Signature_of_John_Hancock.png",
+      "clubMemberships": []
+    },
+    {
+      "id": "demo-dean-001",
+      "name": "Dr. Manish Dixit",
+      "email": "dean.sw@mitsgwl.ac.in",
+      "globalRole": "Dean",
+      "enrollmentNumber": "DEAN-SW-01",
+      "branch": "Dean Student Welfare",
+      "department": "Dean Student Welfare",
+      "designation": "Dean of Student Welfare",
+      "phoneNumber": "9000000001",
+      "signatureUrl": "https://upload.wikimedia.org/wikipedia/commons/7/73/Signature_of_Theodore_Roosevelt.png",
+      "clubMemberships": []
+    },
+    {
+      "id": "demo-admin-001",
+      "name": "Admin (Demo)",
+      "email": "admin@mitsgwl.ac.in",
+      "globalRole": "Super Admin",
+      "clubMemberships": [],
+      "enrollmentNumber": "ADMIN-ROOT",
+      "department": "Institutional Operations",
+      "designation": "Platform Administrator",
+      "phoneNumber": "9001112223"
+    },
+    {
+      "id": "demo-student-example",
+      "name": "Demo Student",
+      "email": "demo-student@example.com",
+      "globalRole": "Student",
+      "enrollmentNumber": "DEMO-STU-001",
+      "branch": "Computer Science & IT",
+      "department": "Computer Science & IT",
+      "phoneNumber": "9999999999",
+      "skills": [
+        "Test Automation",
+        "UI Design",
+        "Campus Operations"
+      ],
+      "linkedin": "https://linkedin.com/in/demo-student",
+      "github": "https://github.com/demo-student",
+      "signatureUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2e/Signature_example.svg",
+      "clubMemberships": [
+        {
+          "clubId": "club-csit",
+          "role": "Member"
+        }
+      ]
+    },
+    {
+      "id": "demo-faculty-example",
+      "name": "Demo Faculty",
+      "email": "demo-faculty@example.com",
+      "globalRole": "Faculty",
+      "enrollmentNumber": "DEMO-FAC-001",
+      "branch": "Information Technology",
+      "department": "Information Technology",
+      "designation": "Assistant Professor",
+      "phoneNumber": "8888888888",
+      "linkedin": "https://linkedin.com/in/demo-faculty",
+      "signatureUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Signature_of_John_Hancock.png",
+      "clubMemberships": []
+    },
+    {
+      "id": "demo-admin-example",
+      "name": "Demo Admin",
+      "email": "demo-admin@example.com",
+      "globalRole": "Super Admin",
+      "enrollmentNumber": "DEMO-ADMIN-001",
+      "branch": "System",
+      "department": "Campus Systems",
+      "designation": "Platform Administrator",
+      "phoneNumber": "7777777777",
+      "clubMemberships": []
+    },
+    {
+      "id": "stu-002",
+      "name": "Sneha Jain",
+      "email": "sneha@mitsgwl.ac.in",
+      "password": "SN3HA-X9",
+      "globalRole": "Student",
+      "clubMemberships": [
+        {
+          "clubId": "club-csit",
+          "role": "Vice President"
+        }
+      ],
+      "enrollmentNumber": "0901CS211002",
+      "branch": "Computer Science & IT",
+      "phoneNumber": "9876501234",
+      "skills": [
+        "UI/UX",
+        "Figma",
+        "JavaScript"
+      ]
+    },
+    {
+      "id": "stu-003",
+      "name": "Rahul Mishra",
+      "email": "rahul@mitsgwl.ac.in",
+      "password": "RH-M1SH",
+      "globalRole": "Student",
+      "clubMemberships": [
+        {
+          "clubId": "club-robo",
+          "role": "President"
+        },
+        {
+          "clubId": "club-csit",
+          "role": "Member"
+        }
+      ],
+      "enrollmentNumber": "0901EC211003",
+      "branch": "Electronics & Communication",
+      "phoneNumber": "9812345678",
+      "skills": [
+        "Arduino",
+        "C++",
+        "Embedded Systems"
+      ]
+    },
+    {
+      "id": "stu-004",
+      "name": "Anjali Gupta",
+      "email": "anjali@mitsgwl.ac.in",
+      "password": "ANJ-G9PT",
+      "globalRole": "Student",
+      "clubMemberships": [
+        {
+          "clubId": "club-cultural",
+          "role": "Secretary"
+        }
+      ],
+      "enrollmentNumber": "0901CE211004",
+      "branch": "Civil Engineering",
+      "phoneNumber": "9988776655",
+      "skills": [
+        "Event Management",
+        "Dance",
+        "Music"
+      ]
+    },
+    {
+      "id": "stu-005",
+      "name": "Vikram Tiwari",
+      "email": "vikram@mitsgwl.ac.in",
+      "password": "VK-T1W4",
+      "globalRole": "Student",
+      "clubMemberships": [
+        {
+          "clubId": "club-sports",
+          "role": "President"
+        }
+      ],
+      "enrollmentNumber": "0901ME211005",
+      "branch": "Mechanical Engineering",
+      "phoneNumber": "9765432109",
+      "skills": [
+        "Football",
+        "Cricket",
+        "Athletic Training"
+      ]
+    },
+    {
+      "id": "stu-006",
+      "name": "Pooja Choudhary",
+      "email": "pooja@mitsgwl.ac.in",
+      "password": "PJ-CH0D",
+      "globalRole": "Student",
+      "clubMemberships": [
+        {
+          "clubId": "club-csit",
+          "role": "Tech Head"
+        }
+      ],
+      "enrollmentNumber": "0901CS211006",
+      "branch": "Computer Science & IT",
+      "skills": [
+        "Python",
+        "Machine Learning",
+        "Data Science"
+      ]
+    },
+    {
+      "id": "stu-007",
+      "name": "Amit Dubey",
+      "email": "amit@mitsgwl.ac.in",
+      "password": "AM-D9BY",
+      "globalRole": "Student",
+      "clubMemberships": [
+        {
+          "clubId": "club-robo",
+          "role": "Tech Head"
+        }
+      ],
+      "enrollmentNumber": "0901EE211007",
+      "branch": "Electrical Engineering",
+      "skills": [
+        "IoT",
+        "PCB Design",
+        "Raspberry Pi"
+      ]
+    },
+    {
+      "id": "stu-008",
+      "name": "Kavya Sharma",
+      "email": "kavya@mitsgwl.ac.in",
+      "password": "KV-SH8M",
+      "globalRole": "Student",
+      "clubMemberships": [
+        {
+          "clubId": "club-cultural",
+          "role": "President"
+        }
+      ],
+      "enrollmentNumber": "0901CS221008",
+      "branch": "Computer Science & IT",
+      "skills": [
+        "Theatre",
+        "Creative Writing",
+        "Photography"
+      ]
+    },
+    {
+      "id": "stu-009",
+      "name": "Rohit Saxena",
+      "email": "rohit@mitsgwl.ac.in",
+      "password": "RH-SX9N",
+      "globalRole": "Student",
+      "clubMemberships": [],
+      "enrollmentNumber": "0901CE221009",
+      "branch": "Civil Engineering",
+      "phoneNumber": "9654321087",
+      "skills": [
+        "AutoCAD",
+        "SketchUp"
+      ]
+    },
+    {
+      "id": "stu-010",
+      "name": "Priya Singh",
+      "email": "priya.s@mitsgwl.ac.in",
+      "password": "PR-SNGH",
+      "globalRole": "Student",
+      "clubMemberships": [
+        {
+          "clubId": "club-robo",
+          "role": "Management Head"
+        }
+      ],
+      "enrollmentNumber": "0901EC221010",
+      "branch": "Electronics & Communication",
+      "skills": [
+        "VLSI",
+        "Verilog",
+        "MATLAB"
+      ]
+    },
+    {
+      "id": "fac-001",
+      "name": "Prof. Suresh Kumar",
+      "email": "suresh.k@mitsgwl.ac.in",
+      "password": "FAC-SK01",
+      "globalRole": "Faculty",
+      "clubMemberships": [],
+      "enrollmentNumber": "FAC-2023-01",
+      "branch": "Computer Science & IT",
+      "phoneNumber": "9876504321"
+    },
+    {
+      "id": "fac-002",
+      "name": "Dr. Anita Patel",
+      "email": "anita.p@mitsgwl.ac.in",
+      "password": "FAC-AP02",
+      "globalRole": "Faculty",
+      "clubMemberships": [],
+      "enrollmentNumber": "FAC-2023-02",
+      "branch": "Electronics & Communication",
+      "phoneNumber": "9123409876"
+    },
+    {
+      "id": "fac-003",
+      "name": "Prof. Rajesh Bharti",
+      "email": "rajesh.b@mitsgwl.ac.in",
+      "password": "FAC-RB03",
+      "globalRole": "Faculty",
+      "clubMemberships": [],
+      "enrollmentNumber": "FAC-2022-03",
+      "branch": "Mechanical Engineering",
+      "phoneNumber": "8765432190"
+    },
+    {
+      "id": "user-1775274768515",
+      "name": "Naman Lahariya",
+      "email": "25mc1na80@mitsgwl.ac.in",
+      "passwordHash": "$2b$10$d8pmI6fcLq6MB5MlT0qn2ezu8NNXO8Q3sGGEmZKhjzdYQfqLm0MWW",
+      "globalRole": "Student",
+      "enrollmentNumber": "",
+      "clubMemberships": [],
+      "createdAt": "2026-04-04T03:52:48.515Z",
+      "updatedAt": "2026-04-04T03:52:48.515Z"
+    },
+    {
+      "id": "demo-student-example",
+      "name": "Demo Student",
+      "email": "demo-student@example.com",
+      "globalRole": "Student",
+      "enrollmentNumber": "DEMO-STU-001",
+      "branch": "Computer Science & IT",
+      "clubMemberships": [
+        {
+          "clubId": "club-csit",
+          "role": "Member"
+        },
+        {
+          "clubId": "club-1775276056622",
+          "role": "President"
+        }
+      ]
+    },
+    {
+      "id": "demo-faculty-example",
+      "name": "Demo Faculty",
+      "email": "demo-faculty@example.com",
+      "globalRole": "Faculty",
+      "enrollmentNumber": "DEMO-FAC-001",
+      "branch": "Information Technology",
+      "clubMemberships": []
+    },
+    {
+      "id": "demo-admin-example",
+      "name": "Demo Admin",
+      "email": "demo-admin@example.com",
+      "globalRole": "Super Admin",
+      "enrollmentNumber": "DEMO-ADMIN-001",
+      "branch": "System",
+      "clubMemberships": []
+    }
+  ],
+  "clubs": [
+    {
+      "id": "club-csit",
+      "name": "CSIT Club",
+      "category": "Technical",
+      "subdomain": "csit",
+      "facultyCoordinatorId": "demo-faculty-001",
+      "status": "Active",
+      "themeColor": "#2563eb",
+      "leadership": {
+        "President": "Aryan Sharma"
+      }
+    },
+    {
+      "id": "club-robotics",
+      "name": "Robotics Club",
+      "category": "Technical",
+      "subdomain": "robotics",
+      "facultyCoordinatorId": "demo-faculty-001",
+      "status": "Active",
+      "themeColor": "#dc2626",
+      "leadership": {
+        "President": "Vikram Singh"
+      }
+    },
+    {
+      "id": "club-music",
+      "name": "Music Club",
+      "category": "Cultural",
+      "subdomain": "music",
+      "facultyCoordinatorId": "demo-faculty-001",
+      "status": "Active",
+      "themeColor": "#9333ea",
+      "leadership": {
+        "President": "Ananya Rai"
+      }
+    },
+    {
+      "id": "club-robo",
+      "name": "Robotics Club",
+      "category": "Technical",
+      "themeColor": "#10B981",
+      "subdomain": "robotics",
+      "logoUrl": "",
+      "facultyCoordinatorId": "fac-002",
+      "facultyCoordinatorNames": [
+        "Dr. Anita Patel"
+      ],
+      "leadership": {
+        "President": "Rahul Mishra",
+        "Tech Head": "Amit Dubey",
+        "Management Head": "Priya Singh"
+      },
+      "tagline": "Build. Automate. Innovate.",
+      "description": "Focused on robotics, IoT and embedded systems, we build real-world automation solutions and participate in national-level competitions.",
+      "recruitmentActive": true,
+      "achievements": [
+        {
+          "id": "b1",
+          "title": "Robocon 2024 – Semifinalists",
+          "description": "Reached semifinals at national level",
+          "date": "2024-03-10"
+        }
+      ]
+    },
+    {
+      "id": "club-cultural",
+      "name": "Cultural Club",
+      "category": "Cultural",
+      "themeColor": "#F59E0B",
+      "subdomain": "cultural",
+      "logoUrl": "",
+      "facultyCoordinatorId": "demo-faculty-001",
+      "facultyCoordinatorNames": [
+        "Dr. Priya Verma"
+      ],
+      "leadership": {
+        "President": "Kavya Sharma",
+        "Secretary": "Anjali Gupta"
+      },
+      "tagline": "Art. Expression. Unity.",
+      "description": "Celebrating the cultural diversity of MITS through music, dance, drama and literary events.",
+      "recruitmentActive": false
+    },
+    {
+      "id": "club-sports",
+      "name": "Sports Committee",
+      "category": "Sports",
+      "themeColor": "#EF4444",
+      "subdomain": "sports",
+      "logoUrl": "",
+      "facultyCoordinatorId": "fac-003",
+      "facultyCoordinatorNames": [
+        "Prof. Rajesh Bharti"
+      ],
+      "leadership": {
+        "President": "Vikram Tiwari"
+      },
+      "tagline": "Sweat. Compete. Win.",
+      "description": "Organizing intra and inter-college sports events, tournaments and fitness programs for students.",
+      "recruitmentActive": true
+    },
+    {
+      "id": "club-1775276056622",
+      "name": "CCMS",
+      "category": "Technical",
+      "themeColor": "#2563eb",
+      "subdomain": "ccms.mitsgwl.ac.in",
+      "leadership": {},
+      "facultyCoordinatorId": "demo-faculty-example",
+      "tagline": "",
+      "recruitmentActive": false,
+      "facultyCoordinatorNames": [
+        "Demo Faculty"
+      ],
+      "certificateConfig": {
+        "templateId": "minimal",
+        "showClubLogo": true,
+        "showMITSLogo": true,
+        "signatureTextFaculty": "Faculty Coordinator",
+        "signatureTextPresident": "Club President"
+      },
+      "paymentGatewayConfig": {
+        "provider": "Razorpay",
+        "isActive": true,
+        "apiKey": "rzp_test_Rn1l5uEvT6xSQ0",
+        "secretKey": "aJ1zvtiMB58kQPkfjqlijxIr",
+        "merchantId": ""
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "event-001",
+      "clubId": "club-csit",
+      "title": "CodeQuest 2024",
+      "description": "National level coding competition.",
+      "type": "Free",
+      "status": "Approved",
+      "date": "2024-04-15T10:00:00Z",
+      "bannerUrl": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97"
+    },
+    {
+      "id": "event-002",
+      "clubId": "club-robotics",
+      "title": "RoboWars v5",
+      "description": "Battle of the bots.",
+      "type": "Paid",
+      "fee": 200,
+      "status": "Approved",
+      "date": "2024-05-20T09:00:00Z",
+      "bannerUrl": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e"
+    },
+    {
+      "id": "evt-001",
+      "clubId": "club-csit",
+      "title": "HackMITS 2024",
+      "description": "36-hour hackathon open to all MITS students. Build innovative solutions to real-world problems.",
+      "type": "Free",
+      "status": "Approved",
+      "date": "2024-04-20"
+    },
+    {
+      "id": "evt-002",
+      "clubId": "club-csit",
+      "title": "Web Dev Bootcamp",
+      "description": "Intensive 2-day bootcamp on full-stack web development using React and Node.js.",
+      "type": "Paid",
+      "fee": 200,
+      "status": "Approved",
+      "date": "2024-05-10"
+    },
+    {
+      "id": "evt-003",
+      "clubId": "club-robo",
+      "title": "RoboWars 2024",
+      "description": "Battle of robots! Build your bot and compete against other teams in the arena.",
+      "type": "Free",
+      "status": "Approved",
+      "date": "2024-03-25"
+    },
+    {
+      "id": "evt-004",
+      "clubId": "club-cultural",
+      "title": "Rangmanch – Annual Cultural Fest",
+      "description": "The biggest cultural festival of MITS featuring dance, music, drama and literary competitions.",
+      "type": "Free",
+      "status": "Approved",
+      "date": "2024-04-05"
+    },
+    {
+      "id": "evt-005",
+      "clubId": "club-sports",
+      "title": "Inter-College Cricket Tournament",
+      "description": "T20 cricket tournament between engineering colleges of Gwalior region.",
+      "type": "Free",
+      "status": "Approved",
+      "date": "2024-03-30"
+    },
+    {
+      "id": "evt-006",
+      "clubId": "club-csit",
+      "title": "AI/ML Workshop",
+      "description": "Hands-on workshop on Machine Learning using Python, scikit-learn and TensorFlow.",
+      "type": "Paid",
+      "fee": 150,
+      "status": "Approved",
+      "date": "2024-06-01"
+    }
+  ],
+  "registrations": [
+    {
+      "id": "reg-001",
+      "eventId": "event-001",
+      "studentId": "demo-student-001",
+      "studentName": "Aryan Sharma",
+      "studentRoll": "0901CS211001",
+      "status": "Approved",
+      "paymentType": "Free",
+      "attendanceMarked": true,
+      "certificateId": "cert-001"
+    },
+    {
+      "id": "reg-002",
+      "eventId": "event-001",
+      "studentId": "demo-student-002",
+      "studentName": "Sneha Gupta",
+      "studentRoll": "0901IT211045",
+      "status": "Approved",
+      "paymentType": "Free",
+      "attendanceMarked": true
+    },
+    {
+      "id": "reg-003",
+      "eventId": "evt-002",
+      "studentId": "demo-student-001",
+      "studentName": "Aryan Sharma",
+      "studentRoll": "0901CS211001",
+      "studentBranch": "Computer Science & IT",
+      "status": "Approved",
+      "paymentType": "UPI",
+      "ticketId": "TKT-EVT002-ARYAN",
+      "attendanceMarked": false
+    },
+    {
+      "id": "reg-004",
+      "eventId": "evt-003",
+      "studentId": "stu-003",
+      "studentName": "Rahul Mishra",
+      "studentRoll": "0901EC211003",
+      "studentBranch": "Electronics & Communication",
+      "status": "Approved",
+      "paymentType": "Free",
+      "ticketId": "TKT-EVT003-RAHUL",
+      "attendanceMarked": true
+    },
+    {
+      "id": "reg-005",
+      "eventId": "evt-004",
+      "studentId": "stu-004",
+      "studentName": "Anjali Gupta",
+      "studentRoll": "0901CE211004",
+      "studentBranch": "Civil Engineering",
+      "status": "Approved",
+      "paymentType": "Free",
+      "ticketId": "TKT-EVT004-ANJALI",
+      "attendanceMarked": false
+    },
+    {
+      "id": "reg-006",
+      "eventId": "evt-002",
+      "studentId": "stu-006",
+      "studentName": "Pooja Choudhary",
+      "studentRoll": "0901CS211006",
+      "studentBranch": "Computer Science & IT",
+      "status": "Pending",
+      "paymentType": "UPI",
+      "attendanceMarked": false
+    }
+  ],
+  "applicants": [
+    {
+      "id": "app-001",
+      "name": "Rahul Mishra",
+      "rollNumber": "0901CS221089",
+      "branch": "CSIT",
+      "domain": "Development",
+      "stage": "Interview",
+      "whyJoin": "Passionate about coding.",
+      "clubId": "club-csit",
+      "email": "rahul@example.com"
+    },
+    {
+      "id": "app-002",
+      "name": "Priya Singh",
+      "rollNumber": "0901EC221010",
+      "branch": "Electronics & Communication",
+      "domain": "Embedded Systems",
+      "stage": "Selected",
+      "whyJoin": "Passionate about robotics and automation. Want to work on real-world IoT projects.",
+      "recruitmentCycle": "2024-Spring"
+    },
+    {
+      "id": "app-003",
+      "name": "Manish Yadav",
+      "rollNumber": "0901CS221011",
+      "branch": "Computer Science & IT",
+      "domain": "Machine Learning",
+      "stage": "Offer",
+      "whyJoin": "Interested in AI/ML and want to build projects with the club.",
+      "recruitmentCycle": "2024-Spring"
+    },
+    {
+      "id": "app-004",
+      "name": "Swati Pathak",
+      "rollNumber": "0901CE221012",
+      "branch": "Civil Engineering",
+      "domain": "Content & Media",
+      "stage": "Applied",
+      "whyJoin": "Love writing and want to handle the club blog and social media.",
+      "recruitmentCycle": "2024-Spring"
+    },
+    {
+      "id": "app-005",
+      "name": "Deepak Verma",
+      "rollNumber": "0901ME221013",
+      "branch": "Mechanical Engineering",
+      "domain": "Management",
+      "stage": "Selected",
+      "whyJoin": "Want to combine mechanical and electronics skills in robotics projects.",
+      "recruitmentCycle": "2024-Spring"
+    }
+  ],
+  "logs": [
+    {
+      "id": "log-001",
+      "timestamp": "2026-04-04T04:03:17.774Z",
+      "user": "Dr. Priya Verma",
+      "action": "Approved event CodeQuest 2024",
+      "clubId": "club-csit"
+    },
+    {
+      "id": "verify-log-1773766116325",
+      "timestamp": "3/17/2026, 10:18:36 PM",
+      "user": "Public Visitor",
+      "action": "Verified Certificate: MITS-CSI-2024-00001",
+      "clubId": "club-csit"
+    },
+    {
+      "id": "verify-log-1773766116411",
+      "timestamp": "3/17/2026, 10:18:36 PM",
+      "user": "Public Visitor",
+      "action": "Verified Certificate: MITS-CSI-2024-00001",
+      "clubId": "club-csit"
+    },
+    {
+      "id": "verify-log-1773770403661",
+      "timestamp": "3/17/2026, 11:30:03 PM",
+      "user": "Public Visitor",
+      "action": "Verified Certificate: MITS-CSI-2024-00001",
+      "clubId": "club-csit"
+    },
+    {
+      "id": "verify-log-1773770403741",
+      "timestamp": "3/17/2026, 11:30:03 PM",
+      "user": "Public Visitor",
+      "action": "Verified Certificate: MITS-CSI-2024-00001",
+      "clubId": "club-csit"
+    },
+    {
+      "id": "log-002",
+      "timestamp": "2024-03-15 09:14:02",
+      "user": "Admin (Demo)",
+      "action": "Club \"CSIT Club\" created and configured.",
+      "clubId": "club-csit"
+    },
+    {
+      "id": "log-003",
+      "timestamp": "2024-03-15 09:15:30",
+      "user": "Admin (Demo)",
+      "action": "Club \"Robotics Club\" created and configured.",
+      "clubId": "club-robo"
+    },
+    {
+      "id": "log-004",
+      "timestamp": "2024-03-15 09:16:10",
+      "user": "Admin (Demo)",
+      "action": "Aryan Sharma appointed as President of CSIT Club.",
+      "clubId": "club-csit"
+    },
+    {
+      "id": "log-005",
+      "timestamp": "2024-03-16 10:00:00",
+      "user": "Aryan Sharma",
+      "action": "Registered for HackMITS 2024 — Ticket Issued.",
+      "clubId": "club-csit"
+    },
+    {
+      "id": "log-006",
+      "timestamp": "2024-03-16 10:05:11",
+      "user": "Aryan Sharma",
+      "action": "Registered for Web Dev Bootcamp — Pending Payment.",
+      "clubId": "club-csit"
+    },
+    {
+      "id": "log-007",
+      "timestamp": "2024-03-16 11:20:05",
+      "user": "Dr. Priya Verma",
+      "action": "Event \"Rangmanch – Annual Cultural Fest\" approved.",
+      "clubId": "club-cultural"
+    },
+    {
+      "id": "log-008",
+      "timestamp": "2024-03-16 12:00:00",
+      "user": "Admin (Demo)",
+      "action": "14 institutional identities seeded into the ledger."
+    },
+    {
+      "id": "log-1775272905798",
+      "timestamp": "4/4/2026, 8:51:45 AM",
+      "user": "System Admin",
+      "action": "Registered (Proxy) for CodeQuest 2024 - Ticket Issued",
+      "clubId": "club-csit"
+    },
+    {
+      "id": "log-1775280239021",
+      "timestamp": "4/4/2026, 10:53:59 AM",
+      "user": "Demo Student",
+      "action": "New Recruitment Cycle started for CCMS",
+      "clubId": "club-1775276056622"
+    },
+    {
+      "id": "log-1775280239650",
+      "timestamp": "4/4/2026, 10:53:59 AM",
+      "user": "Demo Student",
+      "action": "New Recruitment Cycle started for CCMS",
+      "clubId": "club-1775276056622"
+    },
+    {
+      "id": "log-1775280240297",
+      "timestamp": "4/4/2026, 10:54:00 AM",
+      "user": "Demo Student",
+      "action": "New Recruitment Cycle started for CCMS",
+      "clubId": "club-1775276056622"
+    },
+    {
+      "id": "verify-log-1775297696113",
+      "timestamp": "4/4/2026, 3:44:56 PM",
+      "user": "Public Visitor",
+      "action": "Verified Certificate: MITS-CSI-2024-00001",
+      "clubId": "club-csit"
+    },
+    {
+      "id": "verify-log-1775298558357",
+      "timestamp": "4/4/2026, 3:59:18 PM",
+      "user": "Public Visitor",
+      "action": "Verified Certificate: MITS-CSI-2024-00001",
+      "clubId": "club-csit"
+    }
+  ],
+  "activities": [],
+  "batches": [
+    {
+      "id": "batch-001",
+      "clubId": "club-csit",
+      "eventId": "event-001",
+      "status": "Approved",
+      "createdBy": "Aryan Sharma",
+      "createdAt": "2026-04-04T04:03:17.775Z",
+      "certificates": [
+        {
+          "serialNumber": "MITS-CSI-2024-00001",
+          "studentId": "demo-student-001",
+          "studentName": "Aryan Sharma",
+          "enrollmentNumber": "0901CS211001",
+          "eventName": "CodeQuest 2024",
+          "clubId": "club-csit",
+          "clubName": "CSIT Club",
+          "date": "2024-04-15",
+          "hash": "abc123hash",
+          "batchId": "batch-001"
+        }
+      ],
+      "approvalChain": [
+        {
+          "role": "Faculty",
+          "approverName": "Dr. Priya Verma",
+          "status": "Approved",
+          "approvedAt": "2026-04-04T04:03:17.775Z"
+        },
+        {
+          "role": "Dean",
+          "approverName": "Dr. Manish Dixit",
+          "status": "Approved",
+          "approvedAt": "2026-04-04T04:03:17.775Z"
+        }
+      ]
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg-1775282988804",
+      "senderId": "demo-student-example",
+      "senderName": "Demo Student",
+      "clubId": "club-1775276056622",
+      "content": "HII",
+      "timestamp": "2026-04-04T06:09:48.793Z",
+      "read": false,
+      "createdAt": "2026-04-04T06:09:48.804Z"
+    }
+  ]
+}
