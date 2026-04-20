@@ -13,6 +13,15 @@ interface Props {
 const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }) => {
   const [filter, setFilter] = useState<'active' | 'past'>('active');
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeTicketId, setActiveTicketId] = useState<string | null>(null);
+
+  const handlePrint = (ticketId: string) => {
+    setActiveTicketId(ticketId);
+    setTimeout(() => {
+        window.print();
+        setActiveTicketId(null);
+    }, 300);
+  };
 
   const now = new Date();
 
@@ -189,7 +198,7 @@ const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }
                                         </p>
                                     </div>
                                     <button 
-                                        onClick={() => alert(`Downloading Ticket ${reg.ticketId}`)}
+                                        onClick={() => handlePrint(reg.ticketId || reg.id)}
                                         className="w-full py-3 bg-primary text-white rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-primary/20 hover:bg-primary-hover transition-all flex items-center justify-center gap-2"
                                     >
                                         <Download size={14} /> Download Pass
@@ -211,6 +220,124 @@ const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }
             );
           })}
         </div>
+      )}
+
+      {/* ─── HIDDEN PRINT AREA ─── */}
+      {activeTicketId && (
+          <div className="fixed inset-0 z-[-1] opacity-0 pointer-events-none" id="ticket-print-root">
+              {registrations.filter(r => (r.ticketId || r.id) === activeTicketId).map(reg => {
+                  const event = events.find(e => e.id === reg.eventId);
+                  const club = clubs.find(c => c.id === event?.clubId);
+                  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${activeTicketId}`;
+                  
+                  return (
+                      <div key={reg.id} className="w-[100vw] h-[100vh] bg-white flex flex-col items-center justify-center p-20 font-sans text-black">
+                          <div className="w-full max-w-4xl border-4 border-black p-12 rounded-[3.5rem] relative overflow-hidden flex flex-col gap-12 bg-white">
+                              {/* Decorative elements for print */}
+                              <div className="absolute top-0 left-0 w-full h-10 bg-black flex items-center justify-center">
+                                 <p className="text-[10px] font-black uppercase text-white tracking-[1em]">Institutional Access Protocol</p>
+                              </div>
+                              
+                              <div className="flex justify-between items-start mt-8">
+                                  <div className="space-y-4">
+                                      <div className="flex items-center gap-5">
+                                          <div className="w-20 h-20 bg-black text-white flex items-center justify-center text-4xl font-black rounded-3xl">
+                                              {club?.name?.[0] || 'A'}
+                                          </div>
+                                          <div>
+                                              <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Command Center</p>
+                                              <h2 className="text-3xl font-black uppercase italic tracking-tighter">{club?.name || 'MITS CLUB'}</h2>
+                                          </div>
+                                      </div>
+                                      <h1 className="text-7xl font-[1000] tracking-tighter leading-[0.8] uppercase italic mt-10">
+                                          ENTRY <br/><span className="text-stroke-black text-transparent">PASS</span>
+                                      </h1>
+                                  </div>
+                                  <div className="text-right space-y-4">
+                                      <div className="p-4 border-4 border-black rounded-[2.5rem] inline-block bg-white shadow-2xl">
+                                          <img src={qrUrl} alt="QR" className="w-52 h-52 object-contain" />
+                                      </div>
+                                      <div className="space-y-1">
+                                         <p className="text-[10px] font-black uppercase tracking-[0.5em] opacity-30">Registry Serial</p>
+                                         <p className="text-sm font-mono font-black border-2 border-black inline-block px-4 py-1 rounded-xl">{activeTicketId}</p>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-16 pt-12 border-t-4 border-black border-dashed">
+                                  <div className="space-y-3">
+                                      <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Mission / Event</p>
+                                      <h3 className="text-5xl font-black tracking-tighter leading-tight">{event?.title || 'Untitled Operation'}</h3>
+                                      <p className="text-sm font-black uppercase tracking-widest bg-black text-white self-start px-4 py-1.5 rounded-lg mt-4 inline-block">{event?.type || 'STANDARD'} ACCESS • {reg.studentName}</p>
+                                  </div>
+                                  <div className="grid grid-cols-1 gap-8">
+                                      <div className="flex items-center gap-6">
+                                          <div className="w-14 h-14 bg-black/5 rounded-2xl flex items-center justify-center"><Calendar size={24}/></div>
+                                          <div>
+                                             <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-1">Deployment Date</p>
+                                             <p className="text-2xl font-black uppercase tracking-tight">{event?.date || 'SCHEDULED'}</p>
+                                          </div>
+                                      </div>
+                                      <div className="flex items-center gap-6">
+                                          <div className="w-14 h-14 bg-black/5 rounded-2xl flex items-center justify-center"><MapPin size={24}/></div>
+                                          <div>
+                                             <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-1">Node Venue</p>
+                                             <p className="text-2xl font-black uppercase tracking-tight">MITS CAMPUS MAIN</p>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <div className="mt-8 flex justify-between items-end border-t-4 border-black pt-10">
+                                  <div className="space-y-2">
+                                      <p className="text-[9px] font-black uppercase tracking-widest opacity-40">Student Credentials</p>
+                                      <div className="flex items-center gap-10">
+                                         <div>
+                                            <p className="text-xs font-bold opacity-40 uppercase">Identity</p>
+                                            <p className="text-xl font-black uppercase">{reg.studentName}</p>
+                                         </div>
+                                         <div>
+                                            <p className="text-xs font-bold opacity-40 uppercase">Enrollment</p>
+                                            <p className="text-xl font-black uppercase">{reg.studentRoll}</p>
+                                         </div>
+                                      </div>
+                                  </div>
+                                  <div className="text-right max-w-[280px]">
+                                      <p className="text-[8px] font-black uppercase tracking-widest opacity-30 leading-relaxed italic border-l-2 border-black pl-4">
+                                          This is a non-transferable institutional pass generated by CMMS. Presentation of student ID is required. Tampering with the QR code invalidates admission rights.
+                                      </p>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <style>{`
+                              @media print {
+                                  body * { visibility: hidden !important; }
+                                  #ticket-print-root, #ticket-print-root * { visibility: visible !important; }
+                                  #ticket-print-root {
+                                      position: absolute !important;
+                                      left: 0 !important;
+                                      top: 0 !important;
+                                      width: 100vw !important;
+                                      height: 100vh !important;
+                                      background: white !important;
+                                      margin: 0 !important;
+                                      padding: 0 !important;
+                                      z-index: 100000 !important;
+                                      display: flex !important;
+                                      align-items: center !important;
+                                      justify-content: center !important;
+                                  }
+                                  @page { size: landscape; margin: 0; }
+                              }
+                              .text-stroke-black {
+                                  -webkit-text-stroke: 1px black;
+                              }
+                          `}</style>
+                      </div>
+                  );
+              })}
+          </div>
       )}
     </div>
   );

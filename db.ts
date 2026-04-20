@@ -1,5 +1,4 @@
 import { Club, Applicant, Registration, Event, AuditLog, User, Role, ClubRole, Inquiry, SavedEvent, Message, Notification, SessionArchive, TeamMember, Mentor, DevConfig, PollOption, CertificateBatch, IssuedCertificate, Activity } from './types';
-import { SEED_USERS, CLUBS, EVENTS, INITIAL_REGISTRATIONS, INITIAL_APPLICANTS, INITIAL_AUDIT_LOGS } from './constants';
 import { storage } from './lib/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
@@ -27,9 +26,7 @@ class InstitutionalAPI {
     setToken(token: string) { localStorage.setItem('ccms_auth_token', token); }
     clearToken() { localStorage.removeItem('ccms_auth_token'); }
 
-    // --- Chat mocks ---
-    async getMessages(_clubId?: string, _userId?: string, _otherUserId?: string): Promise<Message[]> { return []; }
-    async sendMessage(_message: Message): Promise<void> { }
+    // --- Chat Polls ---
     async votePoll(_messageId: string, _optionId: string, _userId: string): Promise<void> { }
 
     private async request(path: string, options?: RequestInit) {
@@ -77,14 +74,6 @@ class InstitutionalAPI {
         return data;
     }
 
-    async supabaseLogin(email: string, name: string, id: string): Promise<{ token: string, user: User }> {
-        const data = await this.request('/auth/supabase-login', {
-            method: 'POST',
-            body: JSON.stringify({ email, name, id }),
-        });
-        this.setToken(data.token);
-        return data;
-    }
 
     async seedDatabase(data: any) {
         return await this.request('/db/seed', {

@@ -31,7 +31,8 @@ import {
   Tag,
   CreditCard
 } from 'lucide-react';// @ts-ignore
-import { aiService } from './ai';
+// @ts-ignore
+import { smartLogicService } from './logic';
 
 interface Props {
   club: Club;
@@ -65,7 +66,7 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave, isDarkMode }) =
   const handleGenerateAI = async () => {
     setIsGenerating(true);
     try {
-      const result = await aiService.generateClubContent(formData.name, formData.category);
+      const result = await smartLogicService.generateClubContent(formData.name, formData.category);
       setFormData(prev => ({
         ...prev,
         tagline: result.tagline,
@@ -78,7 +79,7 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave, isDarkMode }) =
         }))
       }));
     } catch (e) {
-      alert("AI Engine is currently at capacity. Please try again shortly.");
+      alert("Content Engine is currently at capacity. Please try again shortly.");
     } finally {
       setIsGenerating(false);
     }
@@ -145,7 +146,7 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave, isDarkMode }) =
             className="group bg-gradient-to-br from-primary to-purple-600 text-white p-6 rounded-[2.5rem] font-black text-xs uppercase tracking-widest shadow-2xl flex flex-col items-center gap-4 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50"
           >
             {isGenerating ? <Loader2 className="animate-spin" size={32} /> : <Sparkles className="group-hover:rotate-12 transition-transform" size={32} />}
-            AI Persona Generator
+            Dynamic Identity Generator
           </button>
           <button
             onClick={handleSave}

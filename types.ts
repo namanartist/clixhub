@@ -46,6 +46,7 @@ export interface User {
 export interface ClubMembership {
   clubId: string;
   role: ClubRole;
+  domain?: string;
 }
 
 export interface Achievement {

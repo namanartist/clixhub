@@ -1,36 +1,32 @@
-
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Club, Event, User, ClubRole, Role } from '../../types';
 import { 
   Calendar, 
   MapPin, 
-  Clock, 
-  ChevronRight, 
-  Share2, 
   X, 
   Linkedin, 
-  Github, 
   Mail, 
   LayoutDashboard, 
   Edit3, 
-  Users, 
   Sparkles, 
   Loader2, 
-  ExternalLink,
   ArrowDown,
-  CheckCircle2,
   Ticket,
   UserPlus,
   Terminal,
   Palette,
   HeartHandshake,
   Trophy,
-  Cpu,
   Zap,
   Globe2,
-  Copy
+  Cpu,
+  Fingerprint,
+  Users,
+  ExternalLink,
+  Github,
+  Hexagon
 } from 'lucide-react';
-import { aiService } from '../../ai';
+import { smartLogicService } from '../../logic';
 
 interface Props {
   club: Club;
@@ -49,116 +45,91 @@ interface Props {
 const ClubPublicWebsite: React.FC<Props> = ({ 
   club, events, members, currentUser, isDarkMode, onApply, onToggleRecruitment, onUpdateWebsiteContent, onUpdateClub, onSwitchToDashboard, onRegister
 }) => {
-  // --- State ---
-  const [activeTab, setActiveTab] = useState('home');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
-  
-  // Proxy Registration
   const [isProxyMode, setIsProxyMode] = useState(false);
   const [proxyData, setProxyData] = useState({ name: '', roll: '', branch: '' });
 
-  // Permissions
-  const isPresident = currentUser.clubMemberships.some(m => m.clubId === club.id && m.role === ClubRole.PRESIDENT);
-  const isFaculty = currentUser.globalRole === Role.FACULTY;
-  const isAdmin = currentUser.globalRole === Role.SUPER_ADMIN;
-  const showAdminControls = isPresident || isFaculty || isAdmin;
-  const isClubMember = useMemo(() => currentUser.clubMemberships.some(m => m.clubId === club.id) || isFaculty || isAdmin, [currentUser, club.id, isFaculty, isAdmin]);
+  const isGuest = currentUser.id === 'guest';
+  const showAdminControls = !isGuest && (
+      currentUser.clubMemberships.some(m => m.clubId === club.id && m.role === ClubRole.PRESIDENT) ||
+      currentUser.globalRole === Role.FACULTY || 
+      currentUser.globalRole === Role.SUPER_ADMIN
+  );
 
-  // --- Scroll Effect ---
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // --- Template Engine ---
-  const getTheme = () => {
+  const getThemeConfig = () => {
     switch (club.category) {
       case 'Technical':
         return {
-          id: 'cyber',
-          fontHeading: 'font-mono',
-          fontBody: 'font-mono',
-          bg: 'bg-[#050505]',
-          text: 'text-cyan-50',
-          accent: 'cyan',
-          accentColor: '#22d3ee',
-          gradient: 'from-cyan-500 via-blue-600 to-violet-600',
-          cardShape: 'rounded-none border-l-2',
-          buttonShape: 'rounded-none',
-          navStyle: 'border-b border-cyan-900/30 bg-[#050505]/90',
-          icon: <Terminal size={24} />
+            id: 'tech',
+            primary: 'hsl(var(--primary))',
+            gradient: 'from-[#0A0A0B] via-[#0F172A] to-[#0A0A0B]',
+            accent: 'text-cyan-400',
+            bgAccent: 'bg-cyan-500/10',
+            border: 'border-cyan-500/20',
+            icon: <Terminal size={24} />
         };
       case 'Cultural':
         return {
-          id: 'canvas',
-          fontHeading: 'font-serif',
-          fontBody: 'font-sans',
-          bg: 'bg-[#1c1917]',
-          text: 'text-rose-50',
-          accent: 'rose',
-          accentColor: '#fb7185',
-          gradient: 'from-rose-500 via-orange-500 to-amber-500',
-          cardShape: 'rounded-[2.5rem]',
-          buttonShape: 'rounded-full',
-          navStyle: 'border-b border-white/5 bg-white/5 backdrop-blur-md',
-          icon: <Palette size={24} />
+            id: 'cult',
+            primary: 'hsl(var(--primary))',
+            gradient: 'from-[#0F0A0A] via-[#1E0F0F] to-[#0F0A0A]',
+            accent: 'text-rose-400',
+            bgAccent: 'bg-rose-500/10',
+            border: 'border-rose-500/20',
+            icon: <Palette size={24} />
         };
-      case 'Social':
-      case 'Sports':
       default:
         return {
-          id: 'pulse',
-          fontHeading: 'font-sans',
-          fontBody: 'font-sans',
-          bg: 'bg-[#020617]',
-          text: 'text-slate-50',
-          accent: club.category === 'Sports' ? 'orange' : 'emerald',
-          accentColor: club.category === 'Sports' ? '#f97316' : '#10b981',
-          gradient: club.category === 'Sports' ? 'from-orange-600 to-red-600' : 'from-emerald-500 to-teal-600',
-          cardShape: 'rounded-3xl',
-          buttonShape: 'rounded-2xl',
-          navStyle: 'bg-black/50 backdrop-blur-xl border border-white/10 rounded-full mt-4 mx-4',
-          icon: club.category === 'Sports' ? <Trophy size={24} /> : <HeartHandshake size={24} />
+            id: 'gen',
+            primary: 'hsl(var(--primary))',
+            gradient: 'from-[#0A0B0F] via-[#0F111A] to-[#0A0B0F]',
+            accent: 'text-emerald-400',
+            bgAccent: 'bg-emerald-500/10',
+            border: 'border-emerald-500/20',
+            icon: <Trophy size={24} />
         };
     }
   };
 
-  const theme = getTheme();
+  const theme = getThemeConfig();
 
-  // --- Handlers ---
-  const generateContent = async () => {
-    setIsGenerating(true);
-    try {
-      const content = await aiService.generateClubContent(club.name, club.category);
-      if (onUpdateClub) {
-        onUpdateClub({
-            ...club,
-            tagline: content.tagline,
-            description: content.mission,
-            customSections: content.sections.map((s: any) => ({
-                id: `sec-${Date.now()}-${Math.random()}`,
-                title: s.title,
-                content: s.content,
-                iconName: s.iconName
-            }))
-        });
-      }
-      alert("AI has redesigned the content strategy.");
-    } catch (e) {
-      alert("AI Service busy.");
-    } finally {
-      setIsGenerating(false);
+  const [isRecruitModalOpen, setIsRecruitModalOpen] = useState(false);
+  const [recruitFormData, setRecruitFormData] = useState({
+    name: currentUser?.name || '',
+    rollNumber: currentUser?.enrollmentNumber || '',
+    domain: 'Tech',
+    whyJoin: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (currentUser && currentUser.id !== 'guest') {
+      setRecruitFormData(prev => ({
+        ...prev,
+        name: currentUser.name || prev.name,
+        rollNumber: currentUser.enrollmentNumber || prev.rollNumber
+      }));
     }
-  };
+  }, [currentUser]);
 
   const handleRegister = () => {
+    if (isGuest && !isProxyMode) {
+        onSwitchToDashboard && onSwitchToDashboard();
+        return;
+    }
     if (selectedEvent && onRegister) {
         if (isProxyMode) {
-            if (!proxyData.name || !proxyData.roll) return alert("Details required");
+            if (!proxyData.name || !proxyData.roll) { alert("Details required"); return; }
             onRegister(selectedEvent.id, proxyData);
             setProxyData({ name: '', roll: '', branch: '' });
             setIsProxyMode(false);
@@ -169,370 +140,416 @@ const ClubPublicWebsite: React.FC<Props> = ({
     }
   };
 
-  const copyLink = (id: string) => {
-      navigator.clipboard.writeText(`${window.location.origin}/events/${id}`);
-      alert("Link copied to clipboard");
+  const handleSubmitApplication = async () => {
+    if (!recruitFormData.name || !recruitFormData.rollNumber || !recruitFormData.whyJoin) {
+      alert("All fields are required for the recruitment protocol.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    if (onApply) {
+      const success = await (onApply as any)({ ...recruitFormData, clubId: club.id });
+      if (success) {
+        alert("Application submitted successfully. Your candidate profile is now being processed by the club leadership.");
+        setIsRecruitModalOpen(false);
+        setRecruitFormData({ ...recruitFormData, whyJoin: '' });
+      } else {
+        alert("Transmission failed. Please try again later.");
+      }
+    }
+    setIsSubmitting(false);
   };
 
-  // --- Render Helpers ---
-  const renderNav = () => (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${theme.navStyle} ${!scrolled && theme.id !== 'pulse' ? 'bg-transparent border-transparent' : ''}`}>
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 flex items-center justify-center text-white ${theme.buttonShape} ${theme.id === 'cyber' ? 'bg-cyan-900/20 border border-cyan-500/50' : `bg-gradient-to-br ${theme.gradient}`}`}>
-                    {club.logoUrl ? <img src={club.logoUrl} className={`w-full h-full object-cover ${theme.buttonShape}`} /> : club.name[0]}
+  return (
+    <div className={`min-h-screen bg-[#050505] text-[var(--text-main)] font-sans relative overflow-x-hidden`}>
+      
+      {/* ─ NAVIGATION ─ */}
+      <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-700 px-4 md:px-6 py-3 md:py-4 ${scrolled ? 'bg-black/60 backdrop-blur-3xl border-b border-white/5' : 'bg-transparent'}`}>
+         <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-3 md:gap-4 group cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+                <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-primary flex items-center justify-center text-white shadow-2xl shadow-primary/40`}>
+                   {club.logoUrl ? <img src={club.logoUrl} className="w-full h-full object-cover rounded-xl md:rounded-2xl" alt="Logo" /> : <Hexagon size={20} />}
                 </div>
-                <span className={`text-xl font-bold tracking-tighter ${theme.fontHeading} hidden md:block`}>{club.name}</span>
+                <div>
+                   <h1 className="text-lg md:text-xl font-black tracking-tighter uppercase italic leading-none">{club.name}</h1>
+                   <span className="text-[7px] md:text-[8px] font-black uppercase tracking-[0.4em] opacity-40">MITS Core Protocol</span>
+                </div>
             </div>
 
-            <div className="hidden md:flex items-center gap-8">
-                {['Mission', 'Events', 'Team', 'Join'].map(item => (
-                    <button 
-                        key={item} 
-                        onClick={() => document.getElementById(item.toLowerCase())?.scrollIntoView({ behavior: 'smooth' })}
-                        className={`text-sm font-medium opacity-60 hover:opacity-100 hover:text-${theme.accent}-400 transition-colors uppercase tracking-widest ${theme.fontBody}`}
-                    >
+            {/* Desktop Links */}
+            <div className="hidden lg:flex items-center gap-10">
+                {['Genesis', 'Operations', 'Council', 'Join'].map(item => (
+                    <button key={item} 
+                            onClick={() => document.getElementById(item.toLowerCase())?.scrollIntoView({ behavior: 'smooth' })}
+                            className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 hover:opacity-100 hover:text-primary transition-all">
                         {item}
                     </button>
                 ))}
             </div>
 
-            <div className="flex items-center gap-3">
-                {showAdminControls && (
-                    <button onClick={onSwitchToDashboard} className={`p-3 bg-white/5 hover:bg-white/10 ${theme.buttonShape} backdrop-blur-md transition-all`}>
-                        <LayoutDashboard size={18} />
-                    </button>
-                )}
-                <button className={`px-6 py-3 bg-white text-black font-black text-xs uppercase tracking-widest hover:scale-105 transition-transform ${theme.buttonShape}`}>
-                    Get in Touch
-                </button>
+            <div className="flex items-center gap-3 md:gap-4">
+               {showAdminControls && (
+                   <button onClick={onSwitchToDashboard} className="p-2.5 md:p-3 bg-white/5 hover:bg-white/10 rounded-xl md:rounded-2xl border border-white/10 transition-all active:scale-95">
+                       <LayoutDashboard size={18} className="md:size-[20px]" />
+                   </button>
+               )}
+               <button className="hidden sm:block h-10 md:h-12 px-5 md:px-6 bg-white text-black rounded-xl md:rounded-2xl font-black text-[9px] md:text-[10px] uppercase tracking-widest hover:bg-primary hover:text-white transition-all active:scale-95">
+                   Pulse Link
+               </button>
+
+               {/* Mobile Menu Button */}
+               <button 
+                  className="lg:hidden p-2.5 bg-white/5 rounded-xl border border-white/10 transition-all active:scale-90"
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+               >
+                  {isMobileMenuOpen ? <X size={20} /> : <div className="w-5 h-5 flex flex-col justify-center gap-1.5"><div className="w-full h-0.5 bg-current rounded-full"/><div className="w-2/3 h-0.5 bg-current rounded-full"/></div>}
+               </button>
             </div>
-        </div>
-    </nav>
-  );
+         </div>
 
-  return (
-    <div className={`min-h-screen ${theme.bg} ${theme.text} ${theme.fontBody} selection:bg-${theme.accent}-500/30 relative overflow-x-hidden`}>
-      {renderNav()}
+         {/* Mobile Menu Overlay */}
+         {isMobileMenuOpen && (
+            <div className="lg:hidden fixed inset-0 top-[68px] bg-black/95 backdrop-blur-3xl z-[90] animate-in fade-in slide-in-from-top-10 duration-500 p-8">
+                <div className="space-y-4">
+                  <p className="text-[8px] font-black uppercase tracking-[0.5em] text-primary mb-8 opacity-40">Command Sequences</p>
+                  {['Genesis', 'Operations', 'Council', 'Join'].map((item, idx) => (
+                      <button 
+                          key={item}
+                          onClick={() => { document.getElementById(item.toLowerCase())?.scrollIntoView({ behavior: 'smooth' }); setIsMobileMenuOpen(false); }}
+                          className="w-full flex items-center justify-between p-6 rounded-[2rem] border border-white/5 bg-white/5 hover:bg-primary/10 transition-all animate-slide-up"
+                          style={{ animationDelay: `${idx * 100}ms` }}
+                      >
+                          <span className="text-sm font-black uppercase tracking-[0.2em]">{item}</span>
+                          <ArrowDown size={18} className="-rotate-90 opacity-30" />
+                      </button>
+                  ))}
+                  
+                  <div className="pt-12 mt-12 border-t border-white/5 space-y-4">
+                      <button onClick={onSwitchToDashboard} className="w-full flex items-center justify-center gap-4 py-6 bg-primary text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.3em] shadow-xl">
+                          Uplink to Mainframe <LayoutDashboard size={20} />
+                      </button>
+                  </div>
+                </div>
+            </div>
+         )}
+      </nav>
 
-      {/* --- HERO SECTION --- */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 pt-20 overflow-hidden">
-         {/* Dynamic Backgrounds */}
-         {theme.id === 'cyber' && (
-             <div className="absolute inset-0 z-0">
-                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#22d3ee10_1px,transparent_1px),linear-gradient(to_bottom,#22d3ee10_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
-                 <div className="absolute bottom-0 left-0 right-0 h-[50vh] bg-gradient-to-t from-[#050505] to-transparent" />
-             </div>
-         )}
-         {theme.id === 'canvas' && (
-             <div className="absolute inset-0 z-0">
-                 <div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] bg-rose-900/20 rounded-full blur-[120px] animate-pulse" />
-                 <div className="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-orange-900/20 rounded-full blur-[120px]" />
-                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/noise-lines.png')] opacity-20 mix-blend-overlay" />
-             </div>
-         )}
-         {theme.id === 'pulse' && (
-             <div className="absolute inset-0 z-0">
-                 <img src={club.bannerUrl || "https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=2000"} className="w-full h-full object-cover opacity-30 mix-blend-overlay" />
-                 <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/80 to-slate-950" />
-             </div>
-         )}
 
-         <div className="relative z-10 max-w-6xl w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div className="space-y-8">
-                    <div className={`inline-flex items-center gap-2 px-4 py-2 border ${theme.id === 'cyber' ? 'border-cyan-500/30 text-cyan-400 bg-cyan-950/30' : 'border-white/10 bg-white/5 rounded-full'} backdrop-blur-md`}>
-                        <span className="relative flex h-2 w-2">
-                          <span className={`animate-ping absolute inline-flex h-full w-full rounded-full bg-${theme.accent}-400 opacity-75`}></span>
-                          <span className={`relative inline-flex rounded-full h-2 w-2 bg-${theme.accent}-500`}></span>
-                        </span>
-                        <span className={`text-[10px] font-black uppercase tracking-[0.3em] ${theme.fontBody}`}>MITS {club.category} Wing</span>
+      {/* ─ HERO SECTION ─ */}
+      <section id="genesis" className="relative min-h-screen flex items-center justify-center p-8 lg:p-24 overflow-hidden bg-grid">
+         <div className={`absolute inset-0 bg-gradient-to-b ${theme.gradient} opacity-90`} />
+         <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-primary/20 rounded-full blur-[150px] animate-pulse" />
+         <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-purple-500/10 rounded-full blur-[150px]" />
+         
+         <div className="relative z-10 max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div className="space-y-12 reveal">
+                <div className={`inline-flex items-center gap-3 px-5 py-2 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl`}>
+                    <div className="flex h-2 w-2 relative">
+                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                       <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                     </div>
-                    
-                    <h1 className={`text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] ${theme.fontHeading} ${theme.id === 'canvas' ? 'italic' : ''}`}>
-                        {club.name}
-                    </h1>
-                    
-                    <p className="text-lg md:text-2xl opacity-70 max-w-xl leading-relaxed">
-                        {club.tagline || "Redefining student leadership and excellence through innovation."}
-                    </p>
-
-                    <div className="flex flex-wrap gap-4 pt-4">
-                        <button 
-                            onClick={() => document.getElementById('events')?.scrollIntoView({behavior: 'smooth'})}
-                            className={`px-8 py-4 ${theme.buttonShape} bg-white text-black font-black text-xs uppercase tracking-[0.2em] hover:scale-105 transition-transform flex items-center gap-3`}
-                        >
-                            Explore Events <ArrowDown size={16} />
-                        </button>
-                        {showAdminControls && (
-                            <button 
-                                onClick={() => setIsEditMode(!isEditMode)}
-                                className={`px-8 py-4 ${theme.buttonShape} border border-white/20 hover:bg-white/10 font-black text-xs uppercase tracking-[0.2em] transition-all flex items-center gap-3`}
-                            >
-                                <Edit3 size={16} /> {isEditMode ? 'Close Studio' : 'Edit Site'}
-                            </button>
-                        )}
-                    </div>
+                    <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--text-secondary)]">Uplink Established</span>
                 </div>
 
-                {/* Hero Visual Element based on Theme */}
-                <div className="hidden lg:block relative">
-                    {theme.id === 'cyber' && (
-                        <div className="relative w-full aspect-square border border-cyan-500/20 bg-cyan-950/10 backdrop-blur-sm p-2 flex items-center justify-center">
-                            <div className="absolute inset-0 border-2 border-dashed border-cyan-500/20 animate-[spin_10s_linear_infinite]" />
-                            <Cpu size={200} className="text-cyan-500 opacity-50" />
-                            <div className="absolute bottom-4 right-4 text-xs font-mono text-cyan-500">SYS.ONLINE</div>
-                        </div>
-                    )}
-                    {theme.id === 'canvas' && (
-                        <div className="relative w-full aspect-[4/5]">
-                            <div className="absolute inset-0 rounded-[3rem] overflow-hidden rotate-3 hover:rotate-0 transition-all duration-700">
-                                <img src={club.bannerUrl || "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800"} className="w-full h-full object-cover" />
-                            </div>
-                            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/20 animate-bounce-slow">
-                                <Sparkles size={40} className="text-rose-300" />
-                            </div>
-                        </div>
-                    )}
-                    {theme.id === 'pulse' && (
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-4 mt-12">
-                                <div className="h-64 rounded-3xl bg-white/5 border border-white/10 overflow-hidden"><img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=400" className="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity"/></div>
-                            </div>
-                            <div className="space-y-4">
-                                <div className="h-40 rounded-3xl bg-white/5 border border-white/10 overflow-hidden"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=400" className="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity"/></div>
-                                <div className="h-64 rounded-3xl bg-white/5 border border-white/10 overflow-hidden"><img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=400" className="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity"/></div>
-                            </div>
-                        </div>
-                    )}
+                <div className="space-y-6">
+                   <h2 className="text-7xl lg:text-9xl font-[1000] tracking-[-0.06em] leading-[0.85] uppercase italic">
+                      {club.name} <br/>
+                      <span className="text-gradient animate-gradient">Protocol</span>
+                   </h2>
+                   <p className="text-xl lg:text-2xl font-medium opacity-60 leading-relaxed max-w-xl">
+                      {club.tagline || "Redefining student initiatives through architectural precision and creative synergy."}
+                   </p>
+                </div>
+
+                <div className="flex flex-wrap gap-6 pt-4">
+                   <button onClick={() => document.getElementById('operations')?.scrollIntoView({behavior: 'smooth'})}
+                           className="h-16 px-10 bg-primary text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.4em] shadow-3xl shadow-primary/30 flex items-center gap-4 hover:scale-[1.05] transition-all">
+                      Explore Missions <ArrowDown size={20} />
+                   </button>
+                   {showAdminControls && (
+                       <button onClick={() => setIsEditMode(!isEditMode)}
+                               className="h-16 px-10 bg-white/5 border border-white/10 rounded-2xl font-black text-[10px] uppercase tracking-[0.4em] flex items-center gap-4 hover:bg-white/10 transition-all">
+                          <Edit3 size={20} /> Studio Mode
+                       </button>
+                   )}
+                </div>
+            </div>
+
+            <div className="hidden lg:block relative reveal" style={{ animationDelay: '0.4s' }}>
+                <div className="bento-card p-4 aspect-square overflow-hidden group">
+                   <img src={club.bannerUrl || "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200"} 
+                        className="w-full h-full object-cover rounded-[2.5rem] opacity-60 group-hover:scale-110 group-hover:opacity-100 transition-all duration-1000" />
+                   <div className="absolute top-10 right-10 p-6 bg-black/60 backdrop-blur-2xl rounded-3xl border border-white/10 animate-float">
+                      <Zap size={40} className="text-primary" fill="currentColor" />
+                   </div>
                 </div>
             </div>
          </div>
       </section>
 
-      {/* --- MISSION / CUSTOM SECTIONS --- */}
-      <section id="mission" className="py-24 relative">
-         <div className="max-w-7xl mx-auto px-6">
-            <div className="mb-16">
-               <h2 className={`text-4xl md:text-5xl font-black mb-6 ${theme.fontHeading}`}>Mission Protocol</h2>
-               <p className={`text-xl opacity-70 max-w-3xl leading-relaxed ${theme.id === 'cyber' ? 'font-mono' : ''}`}>
-                  {club.description || "To foster a community of excellence, driving innovation and leadership among the students of MITS Gwalior."}
-               </p>
-               {isEditMode && (
-                   <button onClick={generateContent} className="mt-6 flex items-center gap-2 text-sm font-bold text-purple-400 hover:text-purple-300">
-                       {isGenerating ? <Loader2 className="animate-spin"/> : <Sparkles/>} Generate AI Persona
-                   </button>
-               )}
+      {/* ─ MISSION PANEL ─ */}
+      <section id="genesis" className="py-24 border-y border-white/5 relative bg-white/2">
+         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            <div className="lg:col-span-4 space-y-6">
+               <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-primary">Core Objective</h3>
+               <p className="text-3xl font-black tracking-tight leading-tight">{club.description || "Synthesizing theoretical knowledge into tangible community impact through integrated leadership."}</p>
+            </div>
+            <div className="lg:col-span-8">
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {(club.customSections || []).slice(0, 2).map((sec, i) => (
+                      <div key={i} className="bento-card p-10 flex flex-col gap-6 group hover:border-primary/50 transition-all">
+                         <div className="w-14 h-14 bg-primary/10 text-primary rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                            {theme.icon}
+                         </div>
+                         <h4 className="text-2xl font-black tracking-tight">{sec.title}</h4>
+                         <p className="text-sm font-medium opacity-50 leading-relaxed">{sec.content}</p>
+                      </div>
+                  ))}
+               </div>
+            </div>
+         </div>
+      </section>
+
+      {/* ─ OPERATIONS PIPELINE ─ */}
+      <section id="operations" className="py-32 relative">
+         <div className="max-w-7xl mx-auto px-6 space-y-20">
+            <div className="flex flex-col md:flex-row justify-between items-end gap-10">
+               <div>
+                  <h3 className="text-6xl lg:text-8xl font-black tracking-[-0.05em] uppercase italic">Active <br /> <span className="text-gradient">Operations</span></h3>
+                  <p className="text-[10px] font-black uppercase tracking-[0.5em] opacity-30 mt-4 ml-2">Node Availability: Synchronized</p>
+               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-               {(club.customSections || []).map((sec, i) => (
-                   <div key={i} className={`group p-8 ${theme.cardShape} bg-white/5 border border-white/10 hover:bg-white/10 transition-all`}>
-                       <div className={`w-12 h-12 flex items-center justify-center mb-6 rounded-xl bg-${theme.accent}-500/20 text-${theme.accent}-400`}>
-                           <Zap size={24} />
-                       </div>
-                       <h3 className={`text-2xl font-bold mb-3 ${theme.fontHeading}`}>{sec.title}</h3>
-                       <p className="text-sm opacity-60 leading-relaxed">{sec.content}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+               {events.length > 0 ? events.slice(0, 6).map((event, i) => (
+                   <div key={event.id} className="bento-card flex flex-col overflow-hidden group reveal" style={{ animationDelay: `${i * 0.1}s` }}>
+                      <div className="h-48 relative overflow-hidden">
+                         <img src={event.bannerUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800"} 
+                              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-1110" />
+                         <div className="absolute inset-0 bg-gradient-to-t from-[#111c44] to-transparent opacity-60" />
+                         <div className="absolute top-4 right-4 px-3 py-1 bg-black/60 backdrop-blur rounded-lg text-[8px] font-black uppercase tracking-widest text-white border border-white/10">
+                            {event.type}
+                         </div>
+                      </div>
+                      <div className="p-10 flex-1 flex flex-col gap-4">
+                         <div className="flex items-center gap-3 text-primary">
+                            <Calendar size={16} />
+                            <span className="text-[10px] font-black uppercase tracking-widest">{event.date}</span>
+                         </div>
+                         <h4 className="text-2xl font-black tracking-tighter group-hover:text-primary transition-colors">{event.title}</h4>
+                         <p className="text-xs font-medium opacity-50 line-clamp-2 leading-relaxed">{event.description}</p>
+                         <button onClick={() => setSelectedEvent(event)}
+                                 className="mt-6 h-14 bg-white/5 border border-white/10 rounded-xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-primary hover:text-white transition-all">
+                             Deep Link
+                         </button>
+                      </div>
+                   </div>
+               )) : (
+                   <div className="col-span-full py-20 bg-white/2 border-2 border-dashed border-white/5 rounded-[3rem] text-center opacity-30">
+                      <p className="text-[10px] font-black uppercase tracking-[1em]">No operations queued</p>
+                   </div>
+               )}
+            </div>
+         </div>
+      </section>
+
+      {/* ─ COUNCIL ─ */}
+      <section id="council" className="py-32 bg-white/2 border-y border-white/5">
+         <div className="max-w-7xl mx-auto px-6 space-y-20">
+            <div className="text-center space-y-4">
+               <h3 className="text-6xl font-black tracking-tighter uppercase italic">The Council</h3>
+               <p className="text-[10px] font-black uppercase tracking-[0.5em] opacity-40">Architects of Governance</p>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10">
+               {members.filter(m => m.clubMemberships.some(cm => cm.clubId === club.id && cm.role !== 'Member')).map((leader, i) => (
+                   <div key={leader.id} className="group text-center space-y-6 reveal" style={{ animationDelay: `${i * 0.1}s` }}>
+                      <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-white/5 border border-white/10">
+                         <img src={leader.photoUrl || `https://i.pravatar.cc/300?u=${leader.id}`} 
+                              className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 hover:scale-105" />
+                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-8 gap-4">
+                            <a href="#" className="p-3 bg-white text-black rounded-xl hover:scale-110 transition-all"><Linkedin size={18}/></a>
+                            <a href="#" className="p-3 bg-white text-black rounded-xl hover:scale-110 transition-all"><Mail size={18}/></a>
+                         </div>
+                      </div>
+                      <div>
+                         <h5 className="text-lg font-black tracking-tight">{leader.name}</h5>
+                         <p className="text-[8px] font-black uppercase tracking-[0.3em] text-primary">{leader.clubMemberships.find(m => m.clubId === club.id)?.role}</p>
+                      </div>
                    </div>
                ))}
             </div>
          </div>
       </section>
 
-      {/* --- EVENTS PIPELINE --- */}
-      <section id="events" className={`py-24 ${theme.id === 'cyber' ? 'bg-cyan-950/10 border-y border-cyan-900/30' : 'bg-white/5'}`}>
-         <div className="max-w-7xl mx-auto px-6">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-                <div>
-                    <span className={`text-xs font-black uppercase tracking-[0.3em] text-${theme.accent}-500 mb-2 block`}>Operations</span>
-                    <h2 className={`text-5xl font-black tracking-tighter ${theme.fontHeading}`}>Event Pipeline</h2>
-                </div>
+      {/* ─ RECRUITMENT CALL ─ */}
+      <section id="join" className="py-40 relative overflow-hidden">
+         <div className="absolute inset-0 bg-primary opacity-5" />
+         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center space-y-12">
+            <h3 className="text-8xl lg:text-[12rem] font-[1000] tracking-[-0.08em] uppercase italic opacity-10 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none">RECRUIT</h3>
+            <div className="space-y-6">
+                <h4 className="text-5xl lg:text-7xl font-black tracking-tighter italic">Join the <span className="text-gradient">Legacy</span></h4>
+                <p className="text-xl opacity-60 max-w-2xl mx-auto font-medium leading-relaxed">We are seeking visionary architects, engineering prodigies, and strategic leaders for the 2026 tenure.</p>
             </div>
-
-            <div className="flex overflow-x-auto gap-8 pb-12 snap-x custom-scrollbar">
-                {events.filter(e => new Date(e.date) > new Date()).map(event => (
-                    <div 
-                        key={event.id} 
-                        className={`min-w-[350px] md:min-w-[400px] snap-center group relative ${theme.cardShape} bg-slate-900 border border-white/10 overflow-hidden flex flex-col`}
-                    >
-                        <div className="h-48 overflow-hidden relative">
-                            <img src={event.bannerUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800"} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
-                            <div className={`absolute top-4 right-4 px-3 py-1 bg-black/50 backdrop-blur text-[10px] font-black uppercase tracking-widest text-white border border-white/20 ${theme.buttonShape}`}>
-                                {event.type}
-                            </div>
-                        </div>
-                        
-                        <div className="p-8 flex-1 flex flex-col">
-                            <div className="flex items-center gap-3 text-xs font-bold text-${theme.accent}-400 mb-2">
-                                <Calendar size={14} /> {event.date}
-                            </div>
-                            <h3 className={`text-2xl font-black mb-3 leading-tight ${theme.fontHeading} group-hover:text-${theme.accent}-400 transition-colors`}>{event.title}</h3>
-                            <p className="text-sm text-slate-400 line-clamp-2 mb-6">{event.description}</p>
-                            
-                            <div className="mt-auto grid grid-cols-2 gap-3">
-                                <button 
-                                    onClick={() => setSelectedEvent(event)}
-                                    className={`py-3 bg-white text-black font-black text-[10px] uppercase tracking-widest hover:bg-${theme.accent}-400 hover:text-white transition-colors ${theme.buttonShape}`}
-                                >
-                                    Details
-                                </button>
-                                <button 
-                                    onClick={() => copyLink(event.id)}
-                                    className={`py-3 border border-white/10 hover:bg-white/10 font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 transition-colors ${theme.buttonShape}`}
-                                >
-                                    <Share2 size={14} /> Share
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-                {events.filter(e => new Date(e.date) > new Date()).length === 0 && (
-                    <div className="w-full py-20 text-center border-2 border-dashed border-white/10 rounded-3xl opacity-40">
-                        <p className="text-xl font-bold">No Upcoming Operations</p>
-                    </div>
-                )}
-            </div>
+            <button 
+              onClick={() => setIsRecruitModalOpen(true)}
+              className="h-20 px-16 bg-white text-black rounded-[2rem] font-black text-[12px] uppercase tracking-[0.5em] shadow-4xl hover:scale-105 active:scale-95 transition-all"
+            >
+                Initiate Application
+            </button>
          </div>
       </section>
 
-      {/* --- LEADERSHIP GRID --- */}
-      <section id="team" className="py-24">
-         <div className="max-w-7xl mx-auto px-6">
-            <h2 className={`text-4xl md:text-5xl font-black mb-16 text-center ${theme.fontHeading}`}>The Council</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                {members.filter(m => m.clubMemberships.some(cm => cm.clubId === club.id && cm.role !== 'Member')).map(leader => (
-                    <div key={leader.id} className="group text-center">
-                        <div className={`aspect-[4/5] ${theme.cardShape} overflow-hidden relative mb-6 bg-white/5`}>
-                            <img src={leader.photoUrl || `https://i.pravatar.cc/300?u=${leader.id}`} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-6 gap-4">
-                                <a href="#" className="p-2 bg-white text-black rounded-full hover:scale-110 transition-transform"><Linkedin size={16}/></a>
-                                <a href="#" className="p-2 bg-white text-black rounded-full hover:scale-110 transition-transform"><Mail size={16}/></a>
-                            </div>
-                        </div>
-                        <h4 className="text-lg font-black">{leader.name}</h4>
-                        <p className={`text-xs font-bold uppercase tracking-widest text-${theme.accent}-500 mt-1`}>
-                            {leader.clubMemberships.find(m => m.clubId === club.id)?.role}
-                        </p>
-                    </div>
-                ))}
-            </div>
-         </div>
-      </section>
-
-      {/* --- FOOTER / RECRUITMENT --- */}
-      <footer id="join" className="py-24 border-t border-white/10 bg-black/20">
-         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16">
-             <div className="space-y-8">
-                 <div className="flex items-center gap-4">
-                     <div className={`w-14 h-14 ${theme.buttonShape} bg-gradient-to-br ${theme.gradient} flex items-center justify-center text-white text-2xl font-black`}>
-                         {club.name[0]}
-                     </div>
-                     <span className={`text-3xl font-black tracking-tight ${theme.fontHeading}`}>{club.name}</span>
-                 </div>
-                 <p className="text-lg opacity-60 max-w-md">
-                     Empowering the next generation of innovators at Madhav Institute of Technology & Science.
-                 </p>
-                 <div className="flex gap-4">
-                     {['Instagram', 'Twitter', 'LinkedIn'].map(social => (
-                         <a key={social} href="#" className={`px-4 py-2 border border-white/10 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all`}>{social}</a>
-                     ))}
-                 </div>
-             </div>
-
-             <div className={`p-10 ${theme.cardShape} bg-gradient-to-br ${theme.gradient} relative overflow-hidden text-white`}>
-                 <div className="relative z-10 space-y-6">
-                     <h3 className="text-3xl font-black tracking-tight">Join the Legacy</h3>
-                     <p className="font-medium opacity-90">Recruitment for the 2026 tenure is now active. We are looking for technical architects, creative storytellers, and management prodigies.</p>
-                     <button className={`px-8 py-4 bg-white text-black font-black text-xs uppercase tracking-widest ${theme.buttonShape} shadow-2xl hover:scale-105 transition-transform`}>
-                         Apply Now
-                     </button>
-                 </div>
-                 <div className="absolute top-0 right-0 p-12 opacity-10">
-                     <Zap size={180} />
-                 </div>
-             </div>
-         </div>
-         <div className="text-center pt-16 mt-16 border-t border-white/5 text-[10px] font-black uppercase tracking-[0.3em] opacity-30">
-             © 2026 MITS Gwalior • {club.category} Wing
-         </div>
-      </footer>
-
-      {/* --- EVENT MODAL --- */}
+      {/* ─ EVENT MODAL ─ */}
       {selectedEvent && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl" onClick={() => setSelectedEvent(null)}>
-            <div className={`relative w-full max-w-lg max-h-[90vh] overflow-y-auto custom-scrollbar ${theme.cardShape} p-0 shadow-2xl animate-in zoom-in-95 duration-300 bg-[#0f0f0f] border border-white/10`} onClick={e => e.stopPropagation()}>
-            
-                <div className="relative h-48">
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6 bg-black/90 backdrop-blur-2xl" onClick={() => setSelectedEvent(null)}>
+            <div className="relative w-full max-w-2xl bento-card p-0 overflow-hidden shadow-4xl animate-in zoom-in-95 duration-300" onClick={e => e.stopPropagation()}>
+                <div className="relative h-64">
                     <img src={selectedEvent.bannerUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800"} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] to-transparent" />
-                    <button onClick={() => setSelectedEvent(null)} className="absolute top-4 right-4 p-2 bg-black/50 rounded-full text-white hover:bg-rose-500 transition-colors"><X size={20}/></button>
+                    <button onClick={() => setSelectedEvent(null)} className="absolute top-6 right-6 p-3 bg-black/50 rounded-2xl text-white hover:bg-rose-500 transition-colors"><X size={24}/></button>
                 </div>
 
-                <div className="p-8 space-y-8">
-                    <div>
-                        <div className="flex items-center gap-3 mb-3">
-                            <span className={`px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-widest border border-${theme.accent}-500/30 text-${theme.accent}-400 bg-${theme.accent}-500/10`}>{selectedEvent.type}</span>
-                            {selectedEvent.type === 'Paid' && <span className="text-sm font-bold text-white">₹{selectedEvent.fee}</span>}
+                <div className="p-12 space-y-10">
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-4">
+                            <span className="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-primary/20 text-primary border border-primary/20">{selectedEvent.type} Protocol</span>
                         </div>
-                        <h2 className={`text-3xl font-black leading-tight text-white ${theme.fontHeading}`}>{selectedEvent.title}</h2>
+                        <h2 className="text-5xl font-black leading-tight tracking-tighter italic">{selectedEvent.title}</h2>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="p-4 bg-white/5 rounded-2xl flex items-center gap-3 border border-white/5">
-                            <Calendar className={`text-${theme.accent}-500`} size={20} />
+                    <div className="grid grid-cols-2 gap-8">
+                        <div className="p-6 bg-white/5 rounded-3xl border border-white/5 flex items-center gap-5">
+                            <Calendar className="text-primary" size={24} />
                             <div>
-                                <p className="text-[10px] uppercase opacity-50 font-bold">Date</p>
-                                <p className="text-sm font-bold">{selectedEvent.date}</p>
+                                <p className="text-[9px] uppercase tracking-widest font-black opacity-30">Timestamp</p>
+                                <p className="text-md font-black">{selectedEvent.date}</p>
                             </div>
                         </div>
-                        <div className="p-4 bg-white/5 rounded-2xl flex items-center gap-3 border border-white/5">
-                            <MapPin className={`text-${theme.accent}-500`} size={20} />
+                        <div className="p-6 bg-white/5 rounded-3xl border border-white/5 flex items-center gap-5">
+                            <MapPin className="text-primary" size={24} />
                             <div>
-                                <p className="text-[10px] uppercase opacity-50 font-bold">Venue</p>
-                                <p className="text-sm font-bold">MITS Campus</p>
+                                <p className="text-[9px] uppercase tracking-widest font-black opacity-30">Node Location</p>
+                                <p className="text-md font-black italic">MITS_CORE</p>
                             </div>
                         </div>
                     </div>
 
-                    <div className="space-y-2">
-                        <h4 className="text-xs font-black uppercase tracking-widest opacity-50">Briefing</h4>
-                        <p className="text-sm text-slate-300 leading-relaxed font-medium">{selectedEvent.description}</p>
+                    <div className="space-y-3">
+                        <h5 className="text-[10px] font-black uppercase tracking-widest opacity-30">Briefing</h5>
+                        <p className="text-md font-medium opacity-60 leading-relaxed italic">"{selectedEvent.description}"</p>
                     </div>
 
-                    {(isClubMember || isProxyMode) && (
-                        <div className={`p-5 rounded-2xl border border-dashed border-white/20 bg-white/5 space-y-4`}>
-                            <div className="flex justify-between items-center">
-                                <span className="text-[10px] font-black uppercase tracking-widest flex items-center gap-2 text-emerald-400">
-                                    <UserPlus size={14} /> Proxy Registration
-                                </span>
-                                <div className="relative inline-block w-10 mr-2 align-middle select-none">
-                                    <input type="checkbox" checked={isProxyMode} onChange={() => setIsProxyMode(!isProxyMode)} className="absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer checked:right-0 right-5 transition-all duration-200" />
-                                    <label className="block overflow-hidden h-5 rounded-full bg-gray-700 cursor-pointer"></label>
-                                </div>
-                            </div>
-                            {isProxyMode && (
-                                <div className="grid grid-cols-1 gap-3 animate-in fade-in slide-in-from-top-2">
-                                    <input placeholder="Student Name" value={proxyData.name} onChange={e => setProxyData({...proxyData, name: e.target.value})} className="bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm font-bold outline-none focus:border-white/30" />
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <input placeholder="Roll Number" value={proxyData.roll} onChange={e => setProxyData({...proxyData, roll: e.target.value})} className="bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm font-bold outline-none focus:border-white/30" />
-                                        <input placeholder="Branch" value={proxyData.branch} onChange={e => setProxyData({...proxyData, branch: e.target.value})} className="bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm font-bold outline-none focus:border-white/30" />
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    )}
-
-                    <button 
-                        onClick={handleRegister}
-                        className={`w-full py-5 bg-white text-black rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:scale-[1.02] transition-transform shadow-xl flex items-center justify-center gap-2`}
-                    >
-                        {isProxyMode ? 'Register Proxy' : 'Confirm Registration'} <Ticket size={16} />
-                    </button>
+                    <div className="pt-6">
+                        <button onClick={handleRegister}
+                                className="w-full h-18 bg-white text-black rounded-2xl font-black text-[12px] uppercase tracking-[0.4em] hover:scale-[1.02] transition-all flex items-center justify-center gap-4 shadow-3xl">
+                            Commit Registration <Ticket size={24} />
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
       )}
+
+      {/* ─ RECRUITMENT FORM MODAL ─ */}
+      {isRecruitModalOpen && (
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6 bg-black/95 backdrop-blur-3xl overflow-y-auto" onClick={() => setIsRecruitModalOpen(false)}>
+          <div className="relative w-full max-w-3xl my-auto bento-card p-12 lg:p-16 space-y-12 animate-in zoom-in-95 duration-500 shadow-[0_0_100px_rgba(var(--primary-rgb),0.2)]" onClick={e => e.stopPropagation()}>
+            <button 
+              onClick={() => setIsRecruitModalOpen(false)}
+              className="absolute top-10 right-10 p-4 bg-white/5 hover:bg-rose-500/20 hover:text-rose-500 rounded-2xl transition-all border border-white/10"
+            >
+              <X size={24} />
+            </button>
+
+            <div className="space-y-4">
+              <div className="flex h-1.5 w-24 bg-primary/20 rounded-full overflow-hidden">
+                <div className="h-full w-2/3 bg-primary animate-pulse" />
+              </div>
+              <h2 className="text-5xl lg:text-7xl font-black italic tracking-tighter uppercase">
+                Recruitment <span className="text-gradient">Request</span>
+              </h2>
+              <p className="text-lg opacity-40 font-medium tracking-wide uppercase">Core Access Application • Session {new Date().getFullYear()}</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <div className="space-y-3">
+                <label className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 ml-1">Identity Tag</label>
+                <input 
+                  type="text" 
+                  value={recruitFormData.name}
+                  onChange={(e) => setRecruitFormData({...recruitFormData, name: e.target.value})}
+                  placeholder="Legal Name"
+                  className="w-full h-16 bg-white/5 border border-white/10 rounded-2xl px-6 font-black text-sm focus:border-primary focus:bg-white/10 outline-none transition-all"
+                />
+              </div>
+              <div className="space-y-3">
+                <label className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 ml-1">Registry Number</label>
+                <input 
+                  type="text" 
+                  value={recruitFormData.rollNumber}
+                  onChange={(e) => setRecruitFormData({...recruitFormData, rollNumber: e.target.value})}
+                  placeholder="Enrolment (e.g. 0901CS...)"
+                  className="w-full h-16 bg-white/5 border border-white/10 rounded-2xl px-6 font-black text-sm focus:border-primary focus:bg-white/10 outline-none transition-all uppercase"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <label className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 ml-1">Preferred Functional Domain</label>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {['Tech', 'Management', 'Content', 'Social Media'].map(domain => (
+                  <button 
+                    key={domain}
+                    onClick={() => setRecruitFormData({...recruitFormData, domain})}
+                    className={`h-14 rounded-xl border font-black text-[10px] uppercase tracking-widest transition-all ${
+                      recruitFormData.domain === domain 
+                      ? 'bg-primary border-primary text-white shadow-lg' 
+                      : 'bg-white/5 border-white/10 text-white/40 hover:bg-white/10 hover:border-white/20'
+                    }`}
+                  >
+                    {domain}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <label className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 ml-1">Mission Rationale</label>
+              <textarea 
+                rows={4}
+                value={recruitFormData.whyJoin}
+                onChange={(e) => setRecruitFormData({...recruitFormData, whyJoin: e.target.value})}
+                placeholder="Why do you wish to join the legacy of this protocol?"
+                className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 font-medium text-sm focus:border-primary focus:bg-white/10 outline-none transition-all resize-none leading-relaxed italic"
+              />
+            </div>
+
+            <div className="pt-6">
+              <button 
+                onClick={handleSubmitApplication}
+                disabled={isSubmitting}
+                className="w-full h-20 bg-white text-black rounded-[2rem] font-black text-xs uppercase tracking-[0.6em] shadow-4xl hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 flex items-center justify-center gap-4"
+              >
+                {isSubmitting ? (
+                  <>Processing... <Loader2 className="animate-spin" size={24} /></>
+                ) : (
+                  <>Commit Application <UserPlus size={24} /></>
+                )}
+              </button>
+              <p className="text-center mt-8 text-[9px] font-black uppercase tracking-[0.4em] opacity-20">
+                Authorized submission via MITS Institutional protocol
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─ FOOTER ─ */}
+      <footer className="py-20 border-t border-white/5 text-center px-6">
+         <p className="text-[10px] font-black uppercase tracking-[0.5em] opacity-30">
+            Institutional Asset • Powered by CLIX HUB v2.8
+         </p>
+      </footer>
     </div>
   );
 };

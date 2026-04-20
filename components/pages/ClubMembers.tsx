@@ -1,22 +1,9 @@
 import React, { useState } from 'react';
 import { User, ClubRole, Role, Applicant } from '../../types';
 import { 
-  Search, 
-  UserPlus, 
-  MoreHorizontal,
-  Mail,
-  ShieldCheck,
-  Filter,
-  X,
-  Linkedin,
-  Github,
-  Award,
-  Zap,
-  Briefcase,
-  Layers,
-  Sparkles,
-  Fingerprint,
-  Users
+  Search, UserPlus, MoreHorizontal, Mail, ShieldCheck, Filter, X, 
+  Linkedin, Github, Award, Zap, Briefcase, Layers, Sparkles, Fingerprint, Users, 
+  CheckCircle2, Plus, Edit3, Trash2, ArrowRight, UserCheck, Settings
 } from 'lucide-react';
 
 interface Props {
@@ -27,21 +14,17 @@ interface Props {
   allUsers: User[];
   onUpdateUser: (user: User) => void;
   applicants: Applicant[];
-  onAddMember?: () => void;
 }
 
 const ClubMembers: React.FC<Props> = ({ 
-  clubId, 
-  clubName, 
-  isDarkMode, 
-  clubRole, 
-  allUsers, 
-  onUpdateUser,
-  applicants,
-  onAddMember
+  clubId, clubName, isDarkMode, clubRole, allUsers, onUpdateUser, applicants
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [personnelSearch, setPersonnelSearch] = useState('');
   const [selectedMember, setSelectedMember] = useState<User | null>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingMember, setEditingMember] = useState<User | null>(null);
 
   const clubMembers = allUsers.filter(u => u.clubMemberships.some(m => m.clubId === clubId));
   const filteredMembers = clubMembers.filter(m => 
@@ -49,11 +32,61 @@ const ClubMembers: React.FC<Props> = ({
     (m.enrollmentNumber || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const isAdmin = clubRole === ClubRole.PRESIDENT || clubRole === ClubRole.VICE_PRESIDENT;
+
+  const handleAddMember = (user: User) => {
+    const updatedUser = {
+      ...user,
+      clubMemberships: [...user.clubMemberships, { clubId, role: ClubRole.MEMBER }]
+    };
+    onUpdateUser(updatedUser);
+    setIsAddModalOpen(false);
+    setPersonnelSearch('');
+  };
+
+  const handleUpdateRole = (member: User, newRole: ClubRole, newDomain?: string) => {
+    const updatedUser = {
+      ...member,
+      clubMemberships: member.clubMemberships.map(m => 
+        m.clubId === clubId ? { ...m, role: newRole, domain: newDomain || m.domain } : m
+      )
+    };
+    onUpdateUser(updatedUser);
+    setIsEditModalOpen(false);
+    setEditingMember(null);
+  };
+
+  const handleUpdateDomain = (member: User, newDomain: string) => {
+    const updatedUser = {
+      ...member,
+      clubMemberships: member.clubMemberships.map(m => 
+        m.clubId === clubId ? { ...m, domain: newDomain } : m
+      )
+    };
+    onUpdateUser(updatedUser);
+  };
+
+  const handleRemoveMember = (member: User) => {
+    if (confirm(`Sever connection with operative ${member.name}?`)) {
+      const updatedUser = {
+        ...member,
+        clubMemberships: member.clubMemberships.filter(m => m.clubId !== clubId)
+      };
+      onUpdateUser(updatedUser);
+    }
+  };
+
+  const personnelPool = allUsers.filter(u => 
+    !u.clubMemberships.some(m => m.clubId === clubId) &&
+    (u.name.toLowerCase().includes(personnelSearch.toLowerCase()) || 
+     (u.enrollmentNumber || '').toLowerCase().includes(personnelSearch.toLowerCase()))
+  ).slice(0, 5);
+
   return (
     <div className="p-6 md:p-12 max-w-[1700px] mx-auto space-y-10 md:space-y-14 relative z-10">
       
       {/* Search & Control Layer */}
-      <div className="flex flex-col md:flex-row justify-between items-end md:items-center gap-8">
+      <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-8">
         <div className="space-y-2">
             <div className="flex items-center gap-3">
                <div className="w-8 h-8 rounded-xl bg-blue-600/10 flex items-center justify-center text-blue-500">
@@ -69,8 +102,8 @@ const ClubMembers: React.FC<Props> = ({
             </p>
         </div>
         
-        <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
-            <div className={`flex items-center px-6 py-4 rounded-3xl w-full sm:w-80 transition-all glass-elevated border`}>
+        <div className="flex flex-col sm:flex-row items-center gap-4 w-full xl:w-auto">
+            <div className={`flex items-center px-6 py-4 rounded-3xl w-full sm:w-80 transition-all glass-elevated border shadow-2xl`}>
                 <Search size={18} className="text-slate-500" />
                 <input 
                     type="text" 
@@ -80,30 +113,32 @@ const ClubMembers: React.FC<Props> = ({
                     className="ml-4 bg-transparent outline-none text-sm font-bold w-full placeholder-slate-600 text-white"
                 />
             </div>
-            <div className="flex gap-3 w-full sm:w-auto">
-                <button className={`p-4 rounded-2xl glass-elevated border transition-all hover:scale-105 ${isDarkMode ? 'text-white' : 'text-[#1B2559]'}`}>
-                    <Filter size={20} />
-                </button>
-                <button 
-                    onClick={onAddMember}
-                    className="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 shadow-[0_20px_50px_rgba(59,130,246,0.3)] transition-all"
-                >
-                    <UserPlus size={18} /> Add Operative
-                </button>
-            </div>
+            {isAdmin && (
+              <button 
+                  onClick={() => setIsAddModalOpen(true)}
+                  className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 shadow-[0_20px_50px_rgba(59,130,246,0.3)] transition-all"
+              >
+                  <UserPlus size={18} /> Induct Operative
+              </button>
+            )}
         </div>
       </div>
 
       {/* Grid: Personnel Dossiers */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
         {filteredMembers.map(member => {
-            const role = member.clubMemberships.find(m => m.clubId === clubId)?.role || ClubRole.MEMBER;
+            const membership = member.clubMemberships.find(m => m.clubId === clubId);
+            const role = membership?.role || ClubRole.MEMBER;
             return (
-                <div key={member.id} className="p-8 rounded-[3.5rem] flex flex-col items-center text-center relative group transition-all duration-700 hover:scale-[1.02] glass-elevated border shadow-xl">
+                <div key={member.id} className="p-8 rounded-[3.5rem] flex flex-col items-center text-center relative group transition-all duration-700 hover:scale-[1.02] glass-elevated border shadow-3xl hover:shadow-blue-500/10">
                     
-                    <button className="absolute top-6 right-8 text-slate-600 hover:text-blue-500 transition-colors">
-                        <MoreHorizontal size={20} />
-                    </button>
+                    {isAdmin && (
+                      <div className="absolute top-6 right-8 flex gap-2">
+                        <button onClick={() => { setEditingMember(member); setIsEditModalOpen(true); }} className="p-2 rounded-xl bg-white/5 text-slate-400 hover:text-blue-500 hover:bg-white/10 transition-all">
+                           <Edit3 size={16} />
+                        </button>
+                      </div>
+                    )}
 
                     <div className="w-24 h-24 rounded-[2.5rem] mb-6 overflow-hidden relative shadow-2xl p-1.5 glass bg-gradient-to-br from-blue-500 to-indigo-600">
                         <div className="w-full h-full rounded-[2rem] overflow-hidden bg-[#0B1437]">
@@ -119,25 +154,23 @@ const ClubMembers: React.FC<Props> = ({
                         <h3 className={`text-xl font-black font-display tracking-tight leading-tight ${isDarkMode ? 'text-white' : 'text-[#1B2559]'}`}>
                             {member.name}
                         </h3>
-                        <p className="text-[9px] font-black text-blue-500 uppercase tracking-[0.25em]">
-                            {role}
-                        </p>
+                        <div className="flex flex-col items-center gap-1">
+                          <p className="text-[9px] font-black text-blue-500 uppercase tracking-[0.25em]">
+                              {role}
+                          </p>
+                          <p className="text-[7px] font-black text-slate-500 uppercase tracking-widest">{member.enrollmentNumber}</p>
+                        </div>
                     </div>
 
-                    <div className="flex items-center gap-6 w-full justify-center px-4 mb-8">
+                    <div className="flex items-center gap-6 w-full justify-center px-4 mb-8 border-t border-white/5 pt-6">
                         <div className="text-center">
-                            <p className="text-lg font-black font-display text-white">12</p>
+                            <p className="text-lg font-black font-display text-white italic">12</p>
                             <p className="text-[8px] text-slate-500 font-black uppercase tracking-widest">Ops</p>
                         </div>
                         <div className="w-px h-6 bg-slate-700/50" />
                         <div className="text-center">
-                            <p className="text-lg font-black font-display text-white">98%</p>
-                            <p className="text-[8px] text-slate-500 font-black uppercase tracking-widest">Perf.</p>
-                        </div>
-                        <div className="w-px h-6 bg-slate-700/50" />
-                        <div className="text-center">
-                            <p className="text-lg font-black font-display text-white">3y</p>
-                            <p className="text-[8px] text-slate-500 font-black uppercase tracking-widest">Tenure</p>
+                            <p className="text-lg font-black font-display text-white italic">98%</p>
+                            <p className="text-[8px] text-slate-500 font-black uppercase tracking-widest">Perf</p>
                         </div>
                     </div>
 
@@ -145,12 +178,126 @@ const ClubMembers: React.FC<Props> = ({
                         onClick={() => setSelectedMember(member)}
                         className="w-full py-4 rounded-[1.5rem] text-[9px] font-black uppercase tracking-[0.2em] transition-all bg-white/5 text-slate-400 hover:bg-blue-600 hover:text-white hover:shadow-xl hover:shadow-blue-500/20"
                     >
-                        Inspect Dossier
+                        Access Dossier
                     </button>
                 </div>
             );
         })}
       </div>
+
+      {/* Add Personnel Modal */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 backdrop-blur-3xl bg-black/80 animate-in fade-in duration-500">
+           <div className="relative max-w-xl w-full rounded-[4rem] border border-white/10 glass-elevated p-12 space-y-8 animate-in zoom-in-95 duration-500">
+              <button onClick={() => setIsAddModalOpen(false)} className="absolute top-10 right-10 p-4 rounded-3xl bg-white/5 text-white hover:bg-rose-500 transition-all"><X size={18}/></button>
+              
+              <div className="space-y-2">
+                 <h3 className="text-4xl font-black tracking-tighter italic uppercase text-white">Personnel Induction</h3>
+                 <p className="text-xs font-medium text-slate-500">Search global student database to induct new operatives into {clubName}.</p>
+              </div>
+
+              <div className="space-y-6">
+                 <div className="flex items-center gap-4 px-6 py-4 rounded-3xl bg-white/5 border border-white/5 focus-within:border-blue-500/50 transition-all">
+                    <Search size={18} className="text-blue-500" />
+                    <input 
+                      autoFocus
+                      placeholder="Search Roll No / Name..." 
+                      value={personnelSearch}
+                      onChange={e => setPersonnelSearch(e.target.value)}
+                      className="bg-transparent border-none outline-none text-white font-bold w-full"
+                    />
+                 </div>
+
+                 <div className="space-y-3">
+                    {personnelSearch.length > 2 ? (
+                      personnelPool.length > 0 ? personnelPool.map(u => (
+                        <div key={u.id} className="p-5 rounded-3xl bg-white/5 border border-white/5 flex items-center justify-between group hover:bg-white/10 transition-all">
+                           <div className="flex items-center gap-4">
+                              <div className="w-10 h-10 rounded-xl bg-blue-600/20 flex items-center justify-center text-blue-500 font-black">{u.name[0]}</div>
+                              <div>
+                                 <p className="text-sm font-black text-white">{u.name}</p>
+                                 <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">{u.enrollmentNumber} | {u.branch}</p>
+                              </div>
+                           </div>
+                           <button 
+                            onClick={() => handleAddMember(u)}
+                            className="p-3 rounded-2xl bg-blue-600 text-white opacity-0 group-hover:opacity-100 transition-all hover:scale-110"
+                           >
+                              <Plus size={16} />
+                           </button>
+                        </div>
+                      )) : <p className="text-center py-8 text-xs font-bold text-slate-700 italic">No matching personnel found in central registry.</p>
+                    ) : <p className="text-center py-8 text-[10px] font-black uppercase tracking-[0.2em] text-slate-700">Type at least 3 characters...</p>}
+                 </div>
+              </div>
+           </div>
+        </div>
+      )}
+
+      {/* Edit Role Modal */}
+      {isEditModalOpen && editingMember && (
+         <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 backdrop-blur-3xl bg-black/80">
+            <div className="relative max-w-lg w-full rounded-[4rem] border border-white/10 glass-elevated p-12 space-y-8">
+                <button onClick={() => { setIsEditModalOpen(false); setEditingMember(null); }} className="absolute top-10 right-10 p-4 rounded-3xl bg-white/5 text-white hover:bg-rose-500 transition-all"><X size={18}/></button>
+                <div className="text-center space-y-4">
+                   <div className="w-20 h-20 rounded-3xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-500 mx-auto shadow-2xl">
+                      <Settings size={32} className="animate-spin-slow" />
+                   </div>
+                   <div className="space-y-1">
+                      <h3 className="text-3xl font-black italic tracking-tighter text-white">REASSIGN OPERATIVE</h3>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">{editingMember.name}</p>
+                   </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-6">
+                   <div className="space-y-3">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-[#56657F] px-2">Assigned Rank</p>
+                      <div className="grid grid-cols-2 gap-2">
+                        {[ClubRole.MEMBER, ClubRole.DOMAIN_HEAD, ClubRole.SECRETARY, ClubRole.VICE_PRESIDENT, ClubRole.PRESIDENT].map(r => (
+                            <button 
+                              key={r}
+                              onClick={() => handleUpdateRole(editingMember, r)}
+                              className={`p-4 rounded-2xl text-[9px] font-black uppercase tracking-widest transition-all text-left flex items-center justify-between group ${
+                                editingMember.clubMemberships.find(m => m.clubId === clubId)?.role === r 
+                                ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/20' 
+                                : 'bg-white/5 text-slate-400 hover:bg-white/10'
+                              }`}
+                            >
+                              {r}
+                            </button>
+                        ))}
+                      </div>
+                   </div>
+
+                   <div className="space-y-3">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-[#56657F] px-2">Deployment Domain</p>
+                      <div className="grid grid-cols-2 gap-2">
+                        {['Technical', 'Management', 'Design', 'Cultural', 'Social Media', 'Content'].map(d => (
+                            <button 
+                              key={d}
+                              onClick={() => handleUpdateDomain(editingMember, d)}
+                              className={`p-4 rounded-2xl text-[9px] font-black uppercase tracking-widest transition-all text-left flex items-center justify-between group ${
+                                editingMember.clubMemberships.find(m => m.clubId === clubId)?.domain === d 
+                                ? 'bg-emerald-600 text-white shadow-xl shadow-emerald-500/20' 
+                                : 'bg-white/5 text-slate-400 hover:bg-white/10'
+                              }`}
+                            >
+                              {d}
+                            </button>
+                        ))}
+                      </div>
+                   </div>
+                </div>
+
+                <button 
+                  onClick={() => handleRemoveMember(editingMember)}
+                  className="w-full p-5 rounded-2xl bg-rose-500/10 text-rose-500 text-[10px] font-black uppercase tracking-widest hover:bg-rose-500 hover:text-white transition-all border border-rose-500/20"
+                >
+                   Terminate Connection
+                </button>
+            </div>
+         </div>
+      )}
 
       {/* Personnel Profile Overlay */}
       {selectedMember && (
@@ -182,7 +329,7 @@ const ClubMembers: React.FC<Props> = ({
                 <div className="absolute bottom-6 right-12 flex items-center gap-3">
                    <div className="flex flex-col items-end">
                       <span className="text-[9px] font-black text-blue-400 uppercase tracking-[0.3em]">Clearance Level</span>
-                      <span className="text-xl font-black text-white font-display uppercase italic">Administrator S-Tier</span>
+                      <span className="text-xl font-black text-white font-display uppercase italic">{selectedMember.clubMemberships.find(m => m.clubId === clubId)?.role || 'INDETERMINATE'}</span>
                    </div>
                    <Fingerprint size={32} className="text-blue-500" />
                 </div>
@@ -191,14 +338,12 @@ const ClubMembers: React.FC<Props> = ({
             <div className="px-12 pt-28 pb-14 space-y-12">
                 <div className="flex justify-between items-start">
                     <div className="space-y-2">
-                        <h3 className="text-5xl font-black text-white tracking-tighter leading-none font-display uppercase">{selectedMember.name}</h3>
+                        <h3 className="text-5xl font-black text-white tracking-tighter leading-none font-display uppercase italic">{selectedMember.name}</h3>
                         <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] flex items-center gap-3">
                            {selectedMember.enrollmentNumber || 'UNIDENTIFIED'} <span className="w-1 h-1 rounded-full bg-slate-700" /> {selectedMember.branch || 'GENERAL DIVISION'}
                         </p>
                     </div>
                     <div className="flex gap-3">
-                        {selectedMember.linkedin && <a href={selectedMember.linkedin} target="_blank" className="p-4 rounded-2xl bg-white/5 text-slate-400 hover:text-white transition-all hover:scale-110"><Linkedin size={20} /></a>}
-                        {selectedMember.github && <a href={selectedMember.github} target="_blank" className="p-4 rounded-2xl bg-white/5 text-slate-400 hover:text-white transition-all hover:scale-110"><Github size={20} /></a>}
                         <a href={`mailto:${selectedMember.email}`} className="p-4 rounded-2xl bg-blue-600 text-white shadow-xl shadow-blue-500/30 hover:scale-110 transition-all"><Mail size={20} /></a>
                     </div>
                 </div>
@@ -245,12 +390,6 @@ const ClubMembers: React.FC<Props> = ({
                             <p className="text-xs font-black text-white uppercase tracking-widest">Institutional Logistics</p>
                             <p className="text-[9px] font-black text-blue-500 uppercase tracking-[0.3em]">Status: Verified Active</p>
                         </div>
-                    </div>
-                    <div className="text-right">
-                        <p className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] mb-1">Access Signature</p>
-                        <p className="text-[10px] font-mono font-black text-white tracking-widest px-4 py-2 bg-black/40 rounded-xl border border-white/5 uppercase">
-                            INST-{selectedMember.id.split('-').pop()?.toUpperCase()}
-                        </p>
                     </div>
                 </div>
             </div>

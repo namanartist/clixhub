@@ -33,25 +33,25 @@ const PlatformFeatures: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       border: "border-amber-500/20"
     },
     {
-      title: "Recruitment AI",
-      desc: "LLM-powered applicant screening. Automatically scores intent statements and categorizes candidates into Technical, Management, or Creative domains.",
+      title: "Smart Recruiter",
+      desc: "Automated applicant screening. Automatically scores intent statements and categorizes candidates into Technical, Management, or Creative domains.",
       icon: Cpu,
       color: "text-purple-500",
       bg: "bg-purple-500/10",
       border: "border-purple-500/20"
     },
     {
-      title: "Event Cloud",
-      desc: "End-to-end event lifecycle management. From proposal drafting to QR-based ticketing and automated certificate minting on completion.",
-      icon: Zap,
+      title: "Vault Storage",
+      desc: "AES-256 encrypted institutional data vault for secure student and faculty record management.",
+      icon: ShieldCheck,
       color: "text-blue-500",
       bg: "bg-blue-500/10",
       border: "border-blue-500/20"
     },
     {
-      title: "Identity Vault",
-      desc: "Centralized student registry with encrypted profile data. Single Sign-On (SSO) for seamless access across all 40+ club subsystems.",
-      icon: Users,
+      title: "Real-time Uplink",
+      desc: "Low-latency state synchronization across all nodes using optimized WebSocket protocols.",
+      icon: Zap,
       color: "text-cyan-500",
       bg: "bg-cyan-500/10",
       border: "border-cyan-500/20"
@@ -68,9 +68,9 @@ const PlatformFeatures: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
   return (
     <PublicLayout 
-      title="System Architecture" 
-      subtitle="A modular operating system designed for the scale of MITS Gwalior."
-      icon={<Server size={32} className="text-[#0055FF]" />}
+      title="Modular Infrastructure" 
+      subtitle="A distributed institutional operating system designed for 100% uptime and high-velocity campus governance."
+      icon={<Layers size={32} className="text-[#0055FF]" />}
       onBack={onBack}
     >
       <div className="space-y-20">
@@ -97,7 +97,7 @@ const PlatformFeatures: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         <div className="p-12 rounded-[3rem] bg-[#111C44]/50 border border-white/10 text-center space-y-8">
            <h2 className="text-3xl font-black text-white tracking-tight">Built on Modern Primitives</h2>
            <div className="flex flex-wrap justify-center gap-4">
-              {['React 18', 'TypeScript', 'Supabase', 'PostgreSQL', 'Tailwind CSS', 'Google Gemini AI', 'Recharts'].map((tech) => (
+              {['React 18', 'TypeScript', 'Supabase', 'PostgreSQL', 'Tailwind CSS', 'Intelligent Core', 'Recharts'].map((tech) => (
                 <span key={tech} className="px-6 py-3 rounded-full bg-[#02040a] border border-white/10 text-slate-300 font-bold text-xs uppercase tracking-widest flex items-center gap-2">
                    <Code size={14} className="text-[#0055FF]"/> {tech}
                 </span>

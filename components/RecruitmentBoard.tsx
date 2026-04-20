@@ -53,7 +53,7 @@ const RecruitmentBoard: React.FC<RecruitmentBoardProps> = ({
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
         <div>
           <h2 className="text-3xl font-black text-white tracking-tight">Recruitment Pipeline</h2>
-          <p className="text-[#A3AED0] text-sm font-medium mt-1">Institutional Membership Flow • AI Assisted Screening</p>
+          <p className="text-[#A3AED0] text-sm font-medium mt-1">Institutional Membership Flow • Automated Screening</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -105,7 +105,7 @@ const RecruitmentBoard: React.FC<RecruitmentBoardProps> = ({
                     <button 
                       onClick={() => onAIAnalyze?.(applicant.id)}
                       className="p-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all shadow-sm"
-                      title="Analyze with AI"
+                      title="Analyze Candidate"
                     >
                       <Sparkles size={14} />
                     </button>

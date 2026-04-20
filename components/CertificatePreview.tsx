@@ -23,6 +23,7 @@ interface CertificateProps {
   facultyName?: string;
   presidentSignature?: string;
   presidentName?: string;
+  isPrintReady?: boolean;
 }
 
 const CertificatePreview: React.FC<CertificateProps> = ({ 
@@ -40,6 +41,7 @@ const CertificatePreview: React.FC<CertificateProps> = ({
   facultyName = "Faculty Coordinator",
   presidentSignature,
   presidentName = "Club President",
+  isPrintReady = false,
 }) => {
   const issueDate = date ? new Date(date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
   const serialNumber = id === 'DRAFT-VERSION' || id === 'STUDIO-DRAFT' ? 'MITS-XXX-2026-00000' : id;
@@ -81,7 +83,7 @@ const CertificatePreview: React.FC<CertificateProps> = ({
         
         {/* Header */}
         <div className="mt-12 mb-8 flex flex-col items-center">
-            <img src="https://upload.wikimedia.org/wikipedia/en/b/bd/Madhav_Institute_of_Technology_and_Science_logo.png" className="w-24 mb-4" />
+            <img src="/mitslogo.jpg" className="w-24 mb-4" />
             <h1 className="text-2xl font-bold uppercase tracking-widest text-[#1B2559]">Madhav Institute of Technology & Science</h1>
             <p className="text-xs font-sans font-bold text-[#C5A059] tracking-[0.3em] mt-1">GWALIOR (M.P.), INDIA</p>
         </div>
@@ -126,7 +128,7 @@ const CertificatePreview: React.FC<CertificateProps> = ({
             {/* Sidebar info */}
             <div className="w-1/3 h-full p-12 flex flex-col justify-between">
                 <div>
-                    <img src="https://upload.wikimedia.org/wikipedia/en/b/bd/Madhav_Institute_of_Technology_and_Science_logo.png" className="w-20 mb-6" />
+                    <img src="/mitslogo.jpg" className="w-20 mb-6" />
                     <h3 className="text-2xl font-black text-[#1B2559] leading-none">MITS<br/>GWALIOR</h3>
                     <p className="text-[10px] font-bold uppercase tracking-widest mt-2 text-slate-500">Estd. 1957</p>
                 </div>
@@ -188,7 +190,7 @@ const CertificatePreview: React.FC<CertificateProps> = ({
         <div className="relative z-10 w-full max-w-5xl border border-white/10 bg-white/5 backdrop-blur-sm p-12 rounded-3xl shadow-2xl">
             <div className="flex justify-between items-start mb-12">
                 <div className="flex items-center gap-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/b/bd/Madhav_Institute_of_Technology_and_Science_logo.png" className="w-16 grayscale brightness-200" />
+                    <img src="/mitslogo.jpg" className="w-16 grayscale brightness-200" />
                     <div>
                         <h2 className="font-bold tracking-widest text-lg">MITS GWALIOR</h2>
                         <p className="text-[10px] text-cyan-400">INSTITUTIONAL PROTOCOL</p>
@@ -226,7 +228,7 @@ const CertificatePreview: React.FC<CertificateProps> = ({
         
         <div className="flex-1 border border-[#D4AF37] p-8 flex flex-col items-center justify-center text-center">
             <div className="mb-8">
-               <img src="https://upload.wikimedia.org/wikipedia/en/b/bd/Madhav_Institute_of_Technology_and_Science_logo.png" className="w-20 mx-auto mb-4" />
+               <img src="/mitslogo.jpg" className="w-20 mx-auto mb-4" />
                <p className="text-xs font-sans font-bold tracking-[0.3em] text-[#D4AF37]">MITS GWALIOR</p>
             </div>
 
@@ -252,7 +254,7 @@ const CertificatePreview: React.FC<CertificateProps> = ({
     <div className="relative w-full h-full bg-white p-20 flex flex-col justify-between font-sans text-black">
         <div className="flex justify-between items-start">
             <h1 className="text-6xl font-black tracking-tighter leading-none">Certificate<br/><span className="text-slate-300">Of Completion</span></h1>
-            <img src="https://upload.wikimedia.org/wikipedia/en/b/bd/Madhav_Institute_of_Technology_and_Science_logo.png" className="w-24 grayscale opacity-20" />
+            <img src="/mitslogo.jpg" className="w-24 grayscale opacity-20" />
         </div>
 
         <div className="space-y-2">
@@ -300,7 +302,7 @@ const CertificatePreview: React.FC<CertificateProps> = ({
 
   return (
     <div 
-        id="certificate-print-area"
+        id={isPrintReady ? "certificate-print-area" : undefined}
         className="w-full h-full relative overflow-hidden bg-white shadow-2xl"
         style={{ aspectRatio: '1.414/1' }} // A4 Landscape Ratio
     >

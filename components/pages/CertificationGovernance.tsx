@@ -596,7 +596,7 @@ const CertificationGovernance: React.FC<Props> = ({
                       </button>
                       
                       {activePrintId === cert.serialNumber && (
-                        <div id="certificate-print-area" className="fixed inset-0 z-[-1] opacity-0 pointer-events-none">
+                        <div className="fixed inset-0 z-[-1] opacity-0 pointer-events-none">
                              <CertificatePreview 
                                 studentName={cert.studentName}
                                 enrollmentNumber={cert.enrollmentNumber}
@@ -605,6 +605,7 @@ const CertificationGovernance: React.FC<Props> = ({
                                 id={cert.serialNumber}
                                 date={cert.date}
                                 template={designConfig.templateId}
+                                isPrintReady={true}
                             />
                         </div>
                       )}

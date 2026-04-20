@@ -68,7 +68,7 @@ export class PushNotificationService {
      * Show a message notification
      */
     async notifyMessage(senderName: string, messagePreview: string, clickHandler?: () => void): Promise<void> {
-        const options: NotificationOptions = {
+        const options: any = {
             body: messagePreview.substring(0, 100),
             tag: `chat-${senderName}`,
             requireInteraction: true,

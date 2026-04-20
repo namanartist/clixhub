@@ -52,9 +52,9 @@ import CertificateVerification from './components/pages/CertificateVerification'
 const App: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user: authUser, isAuthenticated, logout } = useAuth();
+  const { user: authUser, isAuthenticated, loading: authLoading, logout } = useAuth();
 
-  const [currentUser, setCurrentUser] = useState<User | null>(authUser || null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   // Note: For activeContext & activeTab we parse the current URL
@@ -63,7 +63,6 @@ const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('dashboard');
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   // New State for Public Overlays (Handled completely via Router now, except standard modals)
   const [publicPage, setPublicPage] = useState<string | null>(null);
@@ -90,29 +89,36 @@ const App: React.FC = () => {
     const init = async () => {
       try {
         await db.initialize();
-        const [clubs, events, logs] = await Promise.all([
-          db.getClubs(),
-          db.getEvents(),
-          db.getLogs()
+
+        // Load all required data in parallel
+        const [clubs, events, logs, users] = await Promise.all([
+          db.getClubs().catch(() => []),
+          db.getEvents().catch(() => []),
+          db.getLogs().catch(() => []),
+          db.getUsers().catch(() => [])
         ]);
-        setData(prev => ({ ...prev, clubs, events, logs }));
+
+        setData(prev => ({ ...prev, clubs, events, logs, users }));
+
+        // If user is authenticated, load remaining data
         if (isAuthenticated) {
           await refreshData();
         }
       } catch (err) {
         console.error("Initialization Failed:", err);
-      } finally {
-        // Small delay for smooth transition
-        setTimeout(() => setIsLoading(false), 600);
+        // Continue anyway with empty data
+        setData(prev => ({ ...prev }));
       }
     };
-    init();
-  }, []);
 
-  // Sync Auth State from Context
+    init();
+  }, [isAuthenticated]);
+
+  // Sync Auth State from Context — also refresh all data when user logs in
   useEffect(() => {
+    setCurrentUser(authUser);
     if (authUser) {
-      setCurrentUser(authUser);
+      refreshData();
     }
   }, [authUser]);
 
@@ -143,12 +149,9 @@ const App: React.FC = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
+    // App is permanently dark — always apply the dark class
+    document.documentElement.classList.add('dark');
+  }, []);
 
   const refreshData = async () => {
     try {
@@ -257,33 +260,19 @@ const App: React.FC = () => {
     try {
       const { user } = await db.demoLogin(email);
       setCurrentUser(user);
+      // Await refreshData so clubs/events are populated before the dashboard renders
+      await refreshData();
       navigate('/dashboard');
-      refreshData();
     } catch (err) {
       console.error("Demo Login Error:", err);
       alert("Demo login failed. Please ensure the backend is running and seeded.");
     }
   };
 
-  const handleSupabaseLogin = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) throw error;
-    // Auth state listener (onAuthStateChange) will handle navigation & sync
-  };
-
-  const handleSupabaseSignup = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    if (error) throw error;
-    // If email confirmation is disabled in Supabase, onAuthStateChange will fire SIGNED_IN automatically.
-    // Otherwise, user will get a confirmation email.
-    if (!data.session) {
-      // Email confirmation required
-      throw new Error('Account created! Please check your email to confirm your account before logging in.');
-    }
-  };
 
   const handleLogout = () => {
-    db.clearToken();
+    logout(); // Clear AuthContext state (also clears token via authService.logout())
+    db.clearToken(); // Clear db.ts token key as well
     setCurrentUser(null);
     setActiveContext('Global');
     setActiveTab('dashboard');
@@ -329,22 +318,26 @@ const App: React.FC = () => {
       attendanceMarked: false
     };
 
-    await db.saveRegistration(registration);
-    await db.addLog({
-      id: `log-${Date.now()}`,
-      timestamp: new Date().toLocaleString(),
-      user: currentUser.name,
-      action: `Registered ${proxy ? '(Proxy) ' : ''}for ${event.title}${isFree ? ' - Ticket Issued' : ' - Pending Payment'}`,
-      clubId: event.clubId
+    // Optimistic Update
+    const updatedRegistrations = [...data.registrations, registration];
+    setData(prev => ({ ...prev, registrations: updatedRegistrations }));
+
+    // API Call in background
+    db.saveRegistration(registration).then(() => {
+      db.addLog({
+        id: `log-${Date.now()}`,
+        timestamp: new Date().toLocaleString(),
+        user: currentUser.name,
+        action: `Registered ${proxy ? '(Proxy) ' : ''}for ${event.title}${isFree ? ' - Ticket Issued' : ' - Pending Payment'}`,
+        clubId: event.clubId
+      });
     });
 
-    await refreshData();
-
     if (!proxy) {
-      setTimeout(() => {
-        alert(isFree ? "Registration Successful! Ticket generated." : "Registration Pending. Please complete payment verification.");
-      }, 100);
+      console.log(isFree ? "Registration Successful! Ticket generated." : "Registration Pending. Please complete payment verification.");
     }
+
+    return registration;
   };
 
   const handleApprovePayment = async (id: string) => {
@@ -361,31 +354,49 @@ const App: React.FC = () => {
       ticketId: ticketId
     };
 
-    await db.saveRegistration(updatedReg);
-    await db.addLog({
-      id: `log-${Date.now()}`,
-      timestamp: new Date().toLocaleString(),
-      user: currentUser?.name || 'System',
-      action: `Payment Verified & Ticket Issued for ${reg.studentName}`,
-      clubId: event?.clubId
-    });
+    // Optimistic Update
+    setData(prev => ({
+      ...prev,
+      registrations: prev.registrations.map(r => r.id === id ? updatedReg : r)
+    }));
 
-    refreshData();
+    // API Call in background
+    db.saveRegistration(updatedReg).then(() => {
+      db.addLog({
+        id: `log-${Date.now()}`,
+        timestamp: new Date().toLocaleString(),
+        user: currentUser?.name || 'System',
+        action: `Payment Verified & Ticket Issued for ${reg.studentName}`,
+        clubId: event?.clubId
+      });
+    });
   };
 
   const handleUpdateRegistration = async (reg: Registration) => { await db.saveRegistration(reg); refreshData(); };
   const handleApplicantMove = async (id: string, stage: Applicant['stage']) => {
     const applicant = data.applicants.find(a => a.id === id);
     if (applicant) {
-      await db.saveApplicant({ ...applicant, stage });
-      refreshData();
+      const updatedApplicant = { ...applicant, stage };
+      // Optimistic Update
+      setData(prev => ({
+        ...prev,
+        applicants: prev.applicants.map(a => a.id === id ? updatedApplicant : a)
+      }));
+      // API Call
+      await db.saveApplicant(updatedApplicant);
     }
   };
   const handleApplicantDomainUpdate = async (id: string, domain: string) => {
     const applicant = data.applicants.find(a => a.id === id);
     if (applicant) {
-      await db.saveApplicant({ ...applicant, domain });
-      refreshData();
+      const updatedApplicant = { ...applicant, domain };
+      // Optimistic Update
+      setData(prev => ({
+        ...prev,
+        applicants: prev.applicants.map(a => a.id === id ? updatedApplicant : a)
+      }));
+      // API Call
+      await db.saveApplicant(updatedApplicant);
     }
   };
   const handleNewRecruitmentCycle = async (clubId: string) => {
@@ -488,7 +499,34 @@ const App: React.FC = () => {
   const handleIssueCertificateBatch = async (batch: any) => { /* ... */ };
   const handleUpdateClubQuotation = async (id: string, q: Quotation[]) => { /* ... */ };
   const handleUpdateClubQr = async (id: string, url: string) => { /* ... */ };
-  const handleNewApplication = async (data: any) => { /* ... */ };
+  const handleNewApplication = async (applicationData: { name: string, rollNumber: string, domain: string, whyJoin: string, clubId: string }) => {
+    try {
+      const applicant: Applicant = {
+        id: `app-${Date.now()}`,
+        ...applicationData,
+        stage: 'Applied',
+        email: currentUser?.email || '',
+        branch: currentUser?.branch || 'N/A',
+        recruitmentCycle: new Date().getFullYear().toString()
+      };
+
+      await db.saveApplicant(applicant);
+      
+      await db.addLog({
+        id: `log-${Date.now()}`,
+        timestamp: new Date().toLocaleString(),
+        user: applicationData.name,
+        action: `Submitted recruitment application for ${data.clubs.find(c => c.id === applicationData.clubId)?.name}`,
+        clubId: applicationData.clubId
+      });
+
+      await refreshData();
+      return true;
+    } catch (err) {
+      console.error("Application Submission Failed:", err);
+      return false;
+    }
+  };
 
 
   const closePublicPage = () => {
@@ -552,9 +590,11 @@ const App: React.FC = () => {
     if (!currentClub) return <div>Club Not Found</div>;
 
     const userClubRole = currentUser.clubMemberships.find(m => m.clubId === activeContext)?.role || null;
-    const isGlobalAdmin = currentUser.globalRole === Role.SUPER_ADMIN || currentUser.globalRole === Role.FACULTY;
+    const isGlobalAdmin = currentUser.globalRole === Role.SUPER_ADMIN || currentUser.globalRole === Role.FACULTY || currentUser.globalRole === Role.DEAN;
     const isClubAdmin = userClubRole && userClubRole !== ClubRole.MEMBER;
-    const isAuthorized = activeTab === 'website' || activeTab === 'chat' || isGlobalAdmin || isClubAdmin;
+    // Members (any role) can access these tabs; admins get everything
+    const memberAllowedTabs = ['website', 'chat', 'club-dashboard', 'attendance'];
+    const isAuthorized = isGlobalAdmin || isClubAdmin || memberAllowedTabs.includes(activeTab);
 
     if (!isAuthorized) {
       return (
@@ -585,7 +625,7 @@ const App: React.FC = () => {
       case 'club-dashboard': return <ClubHome club={currentClub} registrations={clubRegs} />;
       case 'chat': return <ChatSystem user={currentUser} clubs={data.clubs} allUsers={data.users} activeContext={activeContext} isDarkMode={isDarkMode} />;
       case 'members': return <ClubMembers clubId={activeContext} clubName={currentClub?.name || ''} isDarkMode={isDarkMode} clubRole={userClubRole} allUsers={data.users} onUpdateUser={handleUpdateUser} applicants={data.applicants} onAddMember={() => setActiveTab('recruitment')} />;
-      case 'attendance': return <AttendanceControl registrations={clubRegs} onMark={handleMarkAttendance} onFinalize={() => setActiveTab('club-events')} isDarkMode={isDarkMode} />;
+      case 'attendance': return <AttendanceControl registrations={clubRegs} events={clubEvents} onMark={handleMarkAttendance} onFinalize={() => setActiveTab('club-events')} isDarkMode={isDarkMode} />;
       case 'club-events': return <EventOperations events={clubEvents} registrations={clubRegs} onCreateEvent={handleSaveEvent} onDeleteEvent={handleDeleteEvent} onRegister={handleRegisterEvent} onUpdateRegistration={handleUpdateRegistration} isDarkMode={isDarkMode} isDirectApprovalEnabled={userClubRole === ClubRole.PRESIDENT || currentUser.globalRole === Role.FACULTY} clubId={activeContext} />;
       case 'club-finance': return <ClubFinance club={currentClub} registrations={clubRegs} events={clubEvents} onApprovePayment={handleApprovePayment} onUpdateQuotes={(quotes) => handleUpdateClubQuotation(activeContext, quotes)} onUpdateQr={(url) => handleUpdateClubQr(activeContext, url)} isDarkMode={isDarkMode} isFaculty={currentUser.globalRole === Role.FACULTY} />;
       case 'recruitment': return <RecruitmentBoard applicants={data.applicants} onMove={handleApplicantMove} onUpdateDomain={handleApplicantDomainUpdate} clubRole={userClubRole} clubThemeColor={currentClub?.themeColor || '#2563eb'} onNewCycle={() => handleNewRecruitmentCycle(activeContext)} />;
@@ -597,142 +637,162 @@ const App: React.FC = () => {
     }
   };
 
-  // ─── FULL-SCREEN LOADER ─────────────────────────────────────────────────────
-  if (isLoading) {
-    return (
-      <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#02040a] gap-8">
-        {/* Ambient glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute top-1/3 right-1/3 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
-        
-        {/* Logo */}
-        <div className="relative z-10 flex flex-col items-center gap-6">
-          <h1 className="text-5xl font-black tracking-tighter" style={{
-            background: 'linear-gradient(135deg, #0099FF 0%, #7C3AED 50%, #06B6D4 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          }}>CLIX HUB</h1>
-          <p className="text-[#A3AED0] text-xs tracking-[0.3em] uppercase font-medium">Campus Management System</p>
-        </div>
 
-        {/* Spinner */}
-        <div className="relative z-10">
-          <div className="w-12 h-12 rounded-full border-[3px] border-white/5 border-t-[#0099FF] border-r-[#7C3AED] animate-spin" />
-        </div>
-
-        {/* Progress bar */}
-        <div className="relative z-10 w-48 h-[3px] bg-white/5 rounded-full overflow-hidden">
-          <div className="h-full w-2/5 rounded-full animate-[loader-slide_1.5s_ease-in-out_infinite]" style={{
-            background: 'linear-gradient(90deg, #0099FF, #7C3AED, #06B6D4)',
-          }} />
-        </div>
-
-        <p className="relative z-10 text-[#A3AED0]/50 text-xs">Initializing platform...</p>
-      </div>
-    );
-  }
 
   // Main Return wrapped in Routes
   return (
-    <div className={`min-h-screen transition-colors duration-500 relative ${isDarkMode ? 'bg-[#02040a] text-white' : 'bg-[#F4F7FE] text-[#111C44]'}`}>
+    <div className={`min-h-screen font-sans selection:bg-[var(--primary)] selection:text-white bg-[var(--bg-main)] text-[var(--text-main)] transition-colors duration-500`}>
 
-      {/* Global Animated Mesh Background */}
+      {/* Global Animated Mesh Background - Simplified for stability */}
       {isDarkMode && (
-        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden will-change-transform" style={{ backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
-          <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-blue-600/20 rounded-full blur-[120px] mix-blend-screen opacity-40" style={{ animationDuration: '8s', animation: 'soft-pulse 8s ease-in-out infinite', backfaceVisibility: 'hidden' }} />
-          <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-indigo-600/20 rounded-full blur-[150px] mix-blend-screen opacity-40" style={{ animationDuration: '10s', animation: 'soft-pulse 10s ease-in-out 2s infinite', backfaceVisibility: 'hidden' }} />
-          <div className="absolute top-[20%] right-[30%] w-[40%] h-[40%] bg-cyan-600/20 rounded-full blur-[120px] mix-blend-screen opacity-30" style={{ animationDuration: '12s', animation: 'soft-pulse 12s ease-in-out 4s infinite', backfaceVisibility: 'hidden' }} />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#02040a]/50 to-[#02040a]" />
+        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-30">
+          <div className="absolute top-[-10%] left-[-5%] w-1/2 h-1/2 bg-blue-600/10 rounded-full blur-[100px]" />
+          <div className="absolute bottom-[-10%] right-[-5%] w-1/2 h-1/2 bg-indigo-600/10 rounded-full blur-[100px]" />
         </div>
       )}
 
-      <div className="relative z-10 h-full flex flex-col">
+      <div className="relative z-10 w-full h-full">
         <Routes>
-          <Route path="/" element={
-            currentUser ? <Navigate to="/dashboard" replace /> :
-              <LandingPage
-                events={data.events}
-                clubs={data.clubs}
-                onLogin={() => navigate('/auth')}
-                onRegister={() => navigate('/auth')}
-                isDarkMode={isDarkMode}
-                onToggleTheme={() => setIsDarkMode(!isDarkMode)}
-                onOpenDeveloper={() => navigate('/developers')}
-                onOpenProfile={() => navigate('/developer-profile')}
-                onNavigate={(p) => navigate(`/${p}`)}
-              />
-          } />
-          <Route path="/auth" element={
-            currentUser ? <Navigate to="/dashboard" replace /> :
-              <JWTAuthPage
-                isDarkMode={isDarkMode}
-                onToggleTheme={() => setIsDarkMode(!isDarkMode)}
-              />
-          } />
-
-          {/* Public and Static Overlays Route Mapping */}
-          <Route path="/platform" element={<PlatformFeatures onBack={closePublicPage} />} />
-          <Route path="/live-feed" element={<LiveFeedPublic events={data.events} logs={data.logs} onBack={closePublicPage} />} />
-          <Route path="/events" element={<EventRegistry events={data.events} clubs={data.clubs} onBack={closePublicPage} />} />
-          <Route path="/clubs" element={<ClubDirectoryPublic clubs={data.clubs} onBack={closePublicPage} />} />
-          <Route path="/leadership" element={<StudentLeadership clubs={data.clubs} users={data.users} onBack={closePublicPage} />} />
-          <Route path="/faculty" element={<FacultyPortalInfo onBack={closePublicPage} onLogin={() => navigate('/auth')} />} />
-          <Route path="/privacy" element={<LegalDocs type="privacy" onBack={closePublicPage} />} />
-          <Route path="/tos" element={<LegalDocs type="tos" onBack={closePublicPage} />} />
-          <Route path="/report" element={<ReportIssue onBack={closePublicPage} />} />
-          <Route path="/developers" element={renderDevView('console')} />
-          <Route path="/developer-profile" element={renderDevView('public')} />
-          <Route path="/verify-cert" element={<CertificateVerification />} />
-
-          {/* Dashboard Shell UI Layer */}
-          <Route path="/dashboard/*" element={
-            <>
-              <Navbar
-                user={currentUser} clubs={data.clubs} activeContext="Global" onLogout={handleLogout}
-                isDarkMode={isDarkMode} onToggleTheme={() => setIsDarkMode(!isDarkMode)}
-                onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                onGoHome={() => handleContextChange('Global')} onOpenProfile={() => handleTabChange('profile')}
-              />
-              <div className="flex h-[calc(100vh-4rem)] md:h-[calc(100vh-6rem)] overflow-hidden">
-                <Sidebar
-                  user={currentUser} clubs={data.clubs} activeContext="Global" onContextChange={handleContextChange}
-                  userRole={currentUser?.globalRole || Role.STUDENT} clubRole={null} activeTab={activeTab} setActiveTab={handleTabChange}
-                  isDarkMode={isDarkMode} isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} onSwitchRole={handleSwitchRole}
+            {/* Public Routes */}
+            <Route path="/" element={
+              currentUser ? <Navigate to="/dashboard" replace /> :
+                <LandingPage
+                  events={data.events}
+                  clubs={data.clubs}
+                  onLogin={() => navigate('/auth')}
+                  onRegister={() => navigate('/auth')}
+                  isDarkMode={isDarkMode}
+                  onToggleTheme={() => setIsDarkMode(!isDarkMode)}
+                  onOpenDeveloper={() => navigate('/developers')}
+                  onOpenProfile={() => navigate('/developer-profile')}
+                  onNavigate={(p) => navigate(`/${p}`)}
                 />
-                <main className="flex-1 overflow-y-auto relative custom-scrollbar flex flex-col pb-24 md:pb-0">
-                  <div className="flex-1">{renderDashboardContent()}</div>
-                  <Footer onOpenDeveloper={() => navigate('/developers')} onOpenProfile={() => navigate('/developer-profile')} onNavigate={(p) => navigate(`/${p}`)} isDarkMode={isDarkMode} variant="minimal" />
-                </main>
-              </div>
-              <MobileNav activeTab={activeTab} setActiveTab={handleTabChange} onToggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)} isDarkMode={isDarkMode} />
-            </>
-          } />
+            } />
 
-          <Route path="/club/:id/*" element={
-            <>
-              <Navbar
-                user={currentUser} clubs={data.clubs} activeContext={activeContext} onLogout={handleLogout}
-                isDarkMode={isDarkMode} onToggleTheme={() => setIsDarkMode(!isDarkMode)}
-                onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                onGoHome={() => handleContextChange('Global')} onOpenProfile={() => { handleContextChange('Global'); handleTabChange('profile'); }}
-              />
-              <div className="flex h-[calc(100vh-4rem)] md:h-[calc(100vh-6rem)] overflow-hidden">
-                <Sidebar
-                  user={currentUser} clubs={data.clubs} activeContext={activeContext} onContextChange={handleContextChange}
-                  userRole={currentUser?.globalRole || Role.STUDENT} clubRole={currentUser?.clubMemberships.find(m => m.clubId === activeContext)?.role || null}
-                  activeTab={activeTab} setActiveTab={handleTabChange} isDarkMode={isDarkMode} isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} onSwitchRole={handleSwitchRole}
+            <Route path="/auth" element={
+              currentUser ? <Navigate to="/dashboard" replace /> :
+                <JWTAuthPage
+                  isDarkMode={isDarkMode}
+                  onToggleTheme={() => setIsDarkMode(!isDarkMode)}
                 />
-                <main className="flex-1 overflow-y-auto relative custom-scrollbar flex flex-col pb-24 md:pb-0">
-                  <div className="flex-1">{renderDashboardContent()}</div>
-                  <Footer onOpenDeveloper={() => navigate('/developers')} onOpenProfile={() => navigate('/developer-profile')} onNavigate={(p) => navigate(`/${p}`)} isDarkMode={isDarkMode} variant="minimal" />
-                </main>
-              </div>
-              <MobileNav activeTab={activeTab} setActiveTab={handleTabChange} onToggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)} isDarkMode={isDarkMode} />
-            </>
-          } />
+            } />
 
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+            {/* Public and Static Overlays Route Mapping */}
+            <Route path="/platform" element={<PlatformFeatures onBack={closePublicPage} />} />
+            <Route path="/live-feed" element={<LiveFeedPublic events={data.events} logs={data.logs} onBack={closePublicPage} />} />
+            <Route path="/events" element={<EventRegistry events={data.events} clubs={data.clubs} onBack={closePublicPage} />} />
+            <Route path="/clubs" element={<ClubDirectoryPublic clubs={data.clubs} onBack={closePublicPage} />} />
+            <Route path="/leadership" element={<StudentLeadership clubs={data.clubs} users={data.users} onBack={closePublicPage} />} />
+            <Route path="/faculty" element={<FacultyPortalInfo onBack={closePublicPage} onLogin={() => navigate('/auth')} />} />
+            <Route path="/privacy" element={<LegalDocs type="privacy" onBack={closePublicPage} />} />
+            <Route path="/tos" element={<LegalDocs type="tos" onBack={closePublicPage} />} />
+            <Route path="/report" element={<ReportIssue onBack={closePublicPage} />} />
+            <Route path="/developers" element={renderDevView('console')} />
+            <Route path="/developer-profile" element={renderDevView('public')} />
+            <Route path="/verify-cert" element={<CertificateVerification />} />
+
+            {/* Dashboard Shell UI Layer */}
+            <Route path="/dashboard/*" element={
+              currentUser ? (
+                <div className="flex flex-col h-screen bg-[var(--bg-main)] text-[var(--text-main)] overflow-hidden">
+                  <Navbar
+                    user={currentUser} clubs={data.clubs} activeContext="Global" onLogout={handleLogout}
+                    isDarkMode={isDarkMode} onToggleTheme={() => setIsDarkMode(!isDarkMode)}
+                    onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    onGoHome={() => handleContextChange('Global')} onOpenProfile={() => handleTabChange('profile')}
+                    onOpenDeveloper={() => navigate('/developer-profile')}
+                  />
+
+                  <div className="flex flex-1 overflow-hidden">
+                    <Sidebar
+                      user={currentUser} clubs={data.clubs} activeContext="Global" onContextChange={handleContextChange}
+                      userRole={currentUser?.globalRole || Role.STUDENT} clubRole={null} activeTab={activeTab} setActiveTab={handleTabChange}
+                      isDarkMode={isDarkMode} isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} onSwitchRole={handleSwitchRole}
+                    />
+
+                    <main className="flex-1 flex flex-col overflow-hidden">
+                      <div className="flex-1 overflow-y-auto custom-scrollbar pb-24 md:pb-0">
+                        {renderDashboardContent()}
+                      </div>
+                    </main>
+                  </div>
+
+                  <MobileNav activeTab={activeTab} setActiveTab={handleTabChange} onToggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)} isDarkMode={isDarkMode} />
+                </div>
+              ) : <Navigate to="/auth" replace />
+            } />
+
+            <Route path="/public/club/:id" element={
+              <div className="min-h-screen bg-[#02040a]">
+                {(() => {
+                  const id = location.pathname.split('/')[3];
+                  const currentClub = data.clubs.find(c => c.id === id);
+                  if (!currentClub) return <div className="p-20 text-center text-white">Security Breach: Club Identity Not Found</div>;
+                  const clubEvents = data.events.filter(e => e.clubId === id);
+                  return (
+                    <ClubPublicWebsite
+                      club={currentClub}
+                      events={clubEvents}
+                      members={data.users}
+                      currentUser={currentUser || { name: 'Guest', globalRole: Role.STUDENT, id: 'guest', email: '', enrollmentNumber: '', clubMemberships: [], skills: [] } as any}
+                      isDarkMode={isDarkMode}
+                      onUpdateClub={async (c) => { await db.updateClub(c); await refreshData(); }}
+                      onSwitchToDashboard={() => navigate('/auth')}
+                      onApply={handleNewApplication}
+                      onRegister={handleRegisterEvent}
+                    />
+                  );
+                })()}
+              </div>
+            } />
+
+            <Route path="/club/:id/*" element={
+              currentUser ? (
+                (() => {
+                  const clubIdFromPath = location.pathname.split('/')[2];
+                  const isClubMember = currentUser.clubMemberships.some(m => m.clubId === clubIdFromPath);
+                  const isGlobalStaff = currentUser.globalRole === Role.FACULTY ||
+                                        currentUser.globalRole === Role.SUPER_ADMIN ||
+                                        currentUser.globalRole === Role.DEAN;
+
+                  // Non-members go straight to public website — no sidebar, no dashboard
+                  if (!isClubMember && !isGlobalStaff) {
+                    return <Navigate to={`/public/club/${clubIdFromPath}`} replace />;
+                  }
+
+                  return (
+                    <div className="flex flex-col h-screen bg-[var(--bg-main)] text-[var(--text-main)] overflow-hidden">
+                      <Navbar
+                        user={currentUser} clubs={data.clubs} activeContext={activeContext} onLogout={handleLogout}
+                        isDarkMode={isDarkMode} onToggleTheme={() => {}}
+                        onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        onGoHome={() => handleContextChange('Global')} onOpenProfile={() => { handleContextChange('Global'); handleTabChange('profile'); }}
+                        onOpenDeveloper={() => navigate('/developer-profile')}
+                      />
+
+                      <div className="flex flex-1 overflow-hidden">
+                        <Sidebar
+                          user={currentUser} clubs={data.clubs} activeContext={activeContext} onContextChange={handleContextChange}
+                          userRole={currentUser?.globalRole || Role.STUDENT} clubRole={currentUser?.clubMemberships.find(m => m.clubId === activeContext)?.role || null}
+                          activeTab={activeTab} setActiveTab={handleTabChange} isDarkMode={isDarkMode} isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} onSwitchRole={handleSwitchRole}
+                        />
+
+                        <main className="flex-1 flex flex-col overflow-hidden">
+                          <div className="flex-1 overflow-y-auto custom-scrollbar pb-24 md:pb-0">
+                            {renderDashboardContent()}
+                          </div>
+                        </main>
+                      </div>
+
+                      <MobileNav activeTab={activeTab} setActiveTab={handleTabChange} onToggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)} isDarkMode={isDarkMode} />
+                    </div>
+                  );
+                })()
+              ) : <Navigate to="/auth" replace />
+            } />
+
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
       </div>
     </div>
   );

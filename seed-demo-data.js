@@ -11,7 +11,7 @@ const dbPath = path.join(process.cwd(), 'db.json');
 let existing = {};
 try {
   existing = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
-} catch (e) {}
+} catch (e) { }
 
 // Preserve user-created users (like Naman's signup)
 const runtimeUsers = (existing.users || []).filter(u =>
@@ -345,7 +345,7 @@ const logs = [
   { id: 'log-012', timestamp: '2024-03-19 11:00:00', user: 'Kavya Sharma', action: 'Poetry Slam event created and submitted for approval.', clubId: 'club-cultural' },
   { id: 'log-013', timestamp: '2024-03-20 09:15:00', user: 'Vikram Tiwari', action: 'Inter-College Cricket Tournament registrations opened.', clubId: 'club-sports' },
   { id: 'log-014', timestamp: '2024-03-20 15:30:00', user: 'Sneha Jain', action: 'Registered for Cybersecurity Workshop — Ticket Issued.', clubId: 'club-csit' },
-  { id: 'log-015', timestamp: '2024-03-21 10:00:00', user: 'Admin (Demo)', action: 'Club "Cultural Club" recruitment cycle closed.' , clubId: 'club-cultural' },
+  { id: 'log-015', timestamp: '2024-03-21 10:00:00', user: 'Admin (Demo)', action: 'Club "Cultural Club" recruitment cycle closed.', clubId: 'club-cultural' },
 ];
 
 const activities = [
@@ -399,6 +399,115 @@ const batches = [
   },
 ];
 
+// ── ENHANCED CERTIFICATE BATCHES ──
+const enhancedBatches = [
+  ...batches,
+  // Additional certificate batches for demo users with multiple certificates each
+  {
+    id: 'batch-004', clubId: 'club-csit', eventId: 'evt-006', status: 'Approved',
+    createdBy: 'Aryan Sharma', createdAt: '2024-06-02T10:00:00.000Z',
+    certificates: [
+      { serialNumber: 'MITS-CSI-2024-00004', studentId: 'demo-student-001', studentName: 'Aryan Sharma', enrollmentNumber: '0901CS211001', eventName: 'AI/ML Workshop', clubId: 'club-csit', clubName: 'CSIT Club', date: '2024-06-01', hash: 'c1d2e3f4a5b6789012345678abcdef01234567890abcdef01234567890abcdef04', batchId: 'batch-004' },
+      { serialNumber: 'MITS-CSI-2024-00005', studentId: 'stu-006', studentName: 'Pooja Choudhary', enrollmentNumber: '0901CS211006', eventName: 'AI/ML Workshop', clubId: 'club-csit', clubName: 'CSIT Club', date: '2024-06-01', hash: 'd2e3f4a5b6c7890123456789abcdef01234567890abcdef01234567890abcdef5', batchId: 'batch-004' },
+      { serialNumber: 'MITS-CSI-2024-00006', studentId: 'stu-011', studentName: 'Nikhil Rajput', enrollmentNumber: '0901CS221011', eventName: 'AI/ML Workshop', clubId: 'club-csit', clubName: 'CSIT Club', date: '2024-06-01', hash: 'e3f4a5b6c7d8901234567890abcdef01234567890abcdef01234567890abcdef06', batchId: 'batch-004' },
+    ],
+    approvalChain: [
+      { role: 'Faculty', approverName: 'Prof. Suresh Kumar', status: 'Approved', approvedAt: '2024-06-03T10:00:00.000Z' },
+      { role: 'Dean', approverName: 'Dr. Manish Dixit', status: 'Approved', approvedAt: '2024-06-04T09:00:00.000Z' },
+    ],
+  },
+  {
+    id: 'batch-005', clubId: 'club-csit', eventId: 'evt-007', status: 'Approved',
+    createdBy: 'Aryan Sharma', createdAt: '2024-06-16T10:00:00.000Z',
+    certificates: [
+      { serialNumber: 'MITS-CSI-2024-00007', studentId: 'demo-student-001', studentName: 'Aryan Sharma', enrollmentNumber: '0901CS211001', eventName: 'Cybersecurity Awareness Workshop', clubId: 'club-csit', clubName: 'CSIT Club', date: '2024-06-15', hash: 'f4a5b6c7d8e9012345678abcdef01234567890abcdef012345678abcdef07', batchId: 'batch-005' },
+      { serialNumber: 'MITS-CSI-2024-00008', studentId: 'stu-002', studentName: 'Sneha Jain', enrollmentNumber: '0901CS211002', eventName: 'Cybersecurity Awareness Workshop', clubId: 'club-csit', clubName: 'CSIT Club', date: '2024-06-15', hash: 'a5b6c7d8e9f0123456789abcdef01234567890abcdef0123456789abcdef08', batchId: 'batch-005' },
+    ],
+    approvalChain: [
+      { role: 'Faculty', approverName: 'Prof. Suresh Kumar', status: 'Approved', approvedAt: '2024-06-17T10:00:00.000Z' },
+      { role: 'Dean', approverName: 'Dr. Manish Dixit', status: 'Approved', approvedAt: '2024-06-18T09:00:00.000Z' },
+    ],
+  },
+  {
+    id: 'batch-006', clubId: 'club-robo', eventId: 'evt-008', status: 'PendingFaculty',
+    createdBy: 'Rahul Mishra', createdAt: '2024-07-06T10:00:00.000Z',
+    certificates: [
+      { serialNumber: 'MITS-RBO-2024-0001', studentId: 'stu-007', studentName: 'Amit Dubey', enrollmentNumber: '0901EE211007', eventName: 'IoT Bootcamp – Smart Campus', clubId: 'club-robo', clubName: 'Robotics Club', date: '2024-07-05', hash: 'b6c7d8e9f0a1234567890abcdef01234567890abcdef01234567890abcdef0001', batchId: 'batch-006' },
+      { serialNumber: 'MITS-RBO-2024-0002', studentId: 'stu-014', studentName: 'Divya Soni', enrollmentNumber: '0901EC221014', eventName: 'IoT Bootcamp – Smart Campus', clubId: 'club-robo', clubName: 'Robotics Club', date: '2024-07-05', hash: 'c7d8e9f0a1b2345678901abcdef01234567890abcdef01234567890abcdef0002', batchId: 'batch-006' },
+    ],
+    approvalChain: [
+      { role: 'Faculty', approverName: 'Dr. Anita Patel', status: 'Pending' },
+      { role: 'Dean', approverName: 'Dr. Manish Dixit', status: 'Pending' },
+    ],
+  },
+  {
+    id: 'batch-007', clubId: 'club-cultural', eventId: 'evt-004', status: 'Approved',
+    createdBy: 'Kavya Sharma', createdAt: '2024-04-06T10:00:00.000Z',
+    certificates: [
+      { serialNumber: 'MITS-CUL-2024-0001', studentId: 'stu-008', studentName: 'Kavya Sharma', enrollmentNumber: '0901CS221008', eventName: 'Rangmanch – Annual Cultural Fest', clubId: 'club-cultural', clubName: 'Cultural Club', date: '2024-04-05', hash: 'd8e9f0a1b2c3456789012abcdef01234567890abcdef01234567890abcdef0003', batchId: 'batch-007' },
+      { serialNumber: 'MITS-CUL-2024-0002', studentId: 'stu-004', studentName: 'Anjali Gupta', enrollmentNumber: '0901CE211004', eventName: 'Rangmanch – Annual Cultural Fest', clubId: 'club-cultural', clubName: 'Cultural Club', date: '2024-04-05', hash: 'e9f0a1b2c3d4567890123bcdef01234567890abcdef01234567890abcdef0004', batchId: 'batch-007' },
+    ],
+    approvalChain: [
+      { role: 'Faculty', approverName: 'Dr. Priya Verma', status: 'Approved', approvedAt: '2024-04-07T10:00:00.000Z' },
+      { role: 'Dean', approverName: 'Dr. Manish Dixit', status: 'Approved', approvedAt: '2024-04-08T09:00:00.000Z' },
+    ],
+  },
+];
+
+// ── PAYMENT & TRANSACTION DATA ──
+const payments = [
+  { id: 'pay-001', registrationId: 'reg-003', studentId: 'demo-student-001', studentName: 'Aryan Sharma', eventId: 'evt-002', eventName: 'Web Dev Bootcamp', amount: 200, status: 'Success', paymentMethod: 'UPI', transactionId: 'TXN20240310001', timestamp: '2024-03-10T15:30:00.000Z', upiId: 'aryan@paytm', verifiedBy: 'system' },
+  { id: 'pay-002', registrationId: 'reg-006', studentId: 'stu-006', studentName: 'Pooja Choudhary', eventId: 'evt-002', eventName: 'Web Dev Bootcamp', amount: 200, status: 'Success', paymentMethod: 'Gateway', transactionId: 'RZP2024310001234', timestamp: '2024-03-10T16:45:00.000Z', verifiedBy: 'system' },
+  { id: 'pay-003', registrationId: 'reg-009', studentId: 'stu-007', studentName: 'Amit Dubey', eventId: 'evt-008', eventName: 'IoT Bootcamp – Smart Campus', amount: 300, status: 'Success', paymentMethod: 'UPI', transactionId: 'TXN20240611001', timestamp: '2024-06-11T10:15:00.000Z', upiId: 'amit@upi', verifiedBy: 'system' },
+  { id: 'pay-004', registrationId: 'reg-013', studentId: 'stu-004', studentName: 'Anjali Gupta', eventId: 'evt-012', eventName: 'Photography Walk – Heritage Gwalior', amount: 100, status: 'Success', paymentMethod: 'UPI', transactionId: 'TXN20240620001', timestamp: '2024-06-20T09:00:00.000Z', upiId: 'anjali@gpay', verifiedBy: 'system' },
+  { id: 'pay-005', registrationId: 'reg-014', studentId: 'stu-006', studentName: 'Pooja Choudhary', eventId: 'evt-006', eventName: 'AI/ML Workshop', amount: 150, status: 'Success', paymentMethod: 'Gateway', transactionId: 'RZP2024601001567', timestamp: '2024-06-01T11:20:00.000Z', verifiedBy: 'system' },
+  { id: 'pay-006', registrationId: 'reg-018', studentId: 'stu-014', studentName: 'Divya Soni', eventId: 'evt-008', eventName: 'IoT Bootcamp – Smart Campus', amount: 300, status: 'Success', paymentMethod: 'UPI', transactionId: 'TXN20240705001', timestamp: '2024-07-05T14:30:00.000Z', upiId: 'divya@phonepe', verifiedBy: 'system' },
+  { id: 'pay-007', registrationId: 'demo-pay-001', studentId: 'demo-student-001', studentName: 'Aryan Sharma', eventId: 'evt-001', eventName: 'HackMITS 2024', amount: 0, status: 'N/A', paymentMethod: 'Free', timestamp: '2024-04-20T10:00:00.000Z', verifiedBy: 'system' },
+  { id: 'pay-008', registrationId: 'demo-pay-002', studentId: 'demo-faculty-example', studentName: 'Demo Faculty', eventId: 'evt-002', eventName: 'Web Dev Bootcamp', amount: 200, status: 'Success', paymentMethod: 'UPI', transactionId: 'TXN20240310999', timestamp: '2024-03-10T17:00:00.000Z', upiId: 'demo@upi', verifiedBy: 'Admin' },
+];
+
+// ── ENHANCED REGISTRATIONS with more demo user activity ──
+const enhancedRegistrations = [
+  ...registrations,
+  { id: 'reg-demo-001', eventId: 'evt-001', studentId: 'demo-student-001', studentName: 'Aryan Sharma', studentRoll: '0901CS211001', studentBranch: 'Computer Science & IT', status: 'Approved', paymentType: 'Free', ticketId: 'TKT-EVT001-ARYAN-DEMO', attendanceMarked: true, certificateId: 'MITS-CSI-2024-00002' },
+  { id: 'reg-demo-002', eventId: 'evt-002', studentId: 'demo-student-example', studentName: 'Demo Student', studentRoll: 'DEMO-STU-001', studentBranch: 'Computer Science & IT', status: 'Approved', paymentType: 'UPI', paymentProofUrl: 'https://example.com/proof-01.jpg', transactionId: 'TXN20240310999', ticketId: 'TKT-EVT002-DEMO-STU', attendanceMarked: false },
+  { id: 'reg-demo-003', eventId: 'evt-004', studentId: 'demo-student-001', studentName: 'Aryan Sharma', studentRoll: '0901CS211001', studentBranch: 'Computer Science & IT', status: 'Approved', paymentType: 'Free', ticketId: 'TKT-EVT004-ARYAN', attendanceMarked: true },
+  { id: 'reg-demo-004', eventId: 'evt-011', studentId: 'demo-student-001', studentName: 'Aryan Sharma', studentRoll: '0901CS211001', studentBranch: 'Computer Science & IT', status: 'Approved', paymentType: 'Free', ticketId: 'TKT-EVT011-ARYAN', attendanceMarked: true },
+  { id: 'reg-demo-005', eventId: 'evt-006', studentId: 'demo-student-001', studentName: 'Aryan Sharma', studentRoll: '0901CS211001', studentBranch: 'Computer Science & IT', status: 'Approved', paymentType: 'UPI', transactionId: 'TXN20240601001', ticketId: 'TKT-EVT006-ARYAN', attendanceMarked: true },
+  { id: 'reg-demo-006', eventId: 'evt-007', studentId: 'demo-student-001', studentName: 'Aryan Sharma', studentRoll: '0901CS211001', studentBranch: 'Computer Science & IT', status: 'Approved', paymentType: 'Free', ticketId: 'TKT-EVT007-ARYAN', attendanceMarked: true },
+  { id: 'reg-demo-007', eventId: 'evt-009', studentId: 'demo-student-example', studentName: 'Demo Student', studentRoll: 'DEMO-STU-001', studentBranch: 'Computer Science & IT', status: 'Approved', paymentType: 'Free', ticketId: 'TKT-EVT009-DEMO-STU', attendanceMarked: false },
+];
+
+// ── ENHANCED APPLICANTS with more recruitment cycles ──
+const enhancedApplicants = [
+  ...applicants,
+  { id: 'app-011', name: 'Mohit Kumar', rollNumber: '0901CS221030', branch: 'Computer Science & IT', domain: 'Mobile Development', stage: 'Selected', whyJoin: 'Passionate about building cross-platform mobile apps with Flutter.', recruitmentCycle: '2024-Spring', clubId: 'club-csit', email: 'mohit@example.com' },
+  { id: 'app-012', name: 'Ritika Verma', rollNumber: '0901IT221031', branch: 'Information Technology', domain: 'DevOps & Cloud', stage: 'Offer', whyJoin: 'Interested in Kubernetes, Docker and CI/CD pipelines.', recruitmentCycle: '2024-Spring', clubId: 'club-csit', email: 'ritika@example.com' },
+  { id: 'app-013', name: 'Jatin Patel', rollNumber: '0901EC221032', branch: 'Electronics & Communication', domain: 'FPGA Development', stage: 'Interview', whyJoin: 'Want to work on FPGA and hardware design projects.', recruitmentCycle: '2024-Spring', clubId: 'club-robo', email: 'jatin@example.com' },
+  { id: 'app-014', name: 'Neha Singh', rollNumber: '0901CS221033', branch: 'Computer Science & IT', domain: 'Web Design', stage: 'Screening', whyJoin: 'Specialized in UI/UX and want to contribute to club projects.', recruitmentCycle: '2024-Spring', clubId: 'club-csit', email: 'neha@example.com' },
+  { id: 'app-015', name: 'Arjun Reddy', rollNumber: '0901ME221034', branch: 'Mechanical Engineering', domain: 'Manufacturing', stage: 'Applied', whyJoin: 'Interested in CNC machining and 3D printing for robotics.', recruitmentCycle: '2024-Spring', clubId: 'club-robo', email: 'arjun@example.com' },
+  { id: 'app-016', name: 'Pragya Nair', rollNumber: '0901CS221035', branch: 'Computer Science & IT', domain: 'Competitive Programming', stage: 'Applied', whyJoin: 'Active on CodeChef and LeetCode, want to guide juniors.', recruitmentCycle: '2024-Spring', clubId: 'club-csit', email: 'pragya@example.com' },
+  { id: 'app-017', name: 'Vipul Gaur', rollNumber: '0901EE221036', branch: 'Electrical Engineering', domain: 'Automation', stage: 'Selected', whyJoin: 'Expertise in PLC programming and industrial automation.', recruitmentCycle: '2024-Spring', clubId: 'club-robo', email: 'vipul@example.com' },
+  { id: 'app-018', name: 'Shreya Mittal', rollNumber: '0901CS221037', branch: 'Computer Science & IT', domain: 'Music & Audio', stage: 'Applied', whyJoin: 'Trained musician, interested in audio processing projects.', recruitmentCycle: '2024-Spring', clubId: 'club-cultural', email: 'shreya@example.com' },
+  { id: 'app-019', name: 'Kunal Verma', rollNumber: '0901CE221038', branch: 'Civil Engineering', domain: 'Photography', stage: 'Screening', whyJoin: 'Professional photographer, want to handle club events coverage.', recruitmentCycle: '2024-Spring', clubId: 'club-cultural', email: 'kunal@example.com' },
+  { id: 'app-020', name: 'Aditya Sharma', rollNumber: '0901ME221039', branch: 'Mechanical Engineering', domain: 'Football', stage: 'Selected', whyJoin: 'District-level football player, captain wannabe.', recruitmentCycle: '2024-Spring', clubId: 'club-sports', email: 'aditya.sports@example.com' },
+];
+
+// ── ENHANCED ACTIVITIES ──
+const enhancedActivities = [
+  ...activities,
+  { id: 'act-011', clubId: 'club-csit', title: 'React Advanced Concepts', description: 'Deep dive into React Hooks, Context API, and performance optimization. Intermediate level workshop.', category: 'Workshop', date: '2024-04-05', location: 'CS Lab 2', outcome: '40 students completed all exercises. 8 student-led projects initiated.', participantsCount: 40, isPublic: true },
+  { id: 'act-012', clubId: 'club-csit', title: 'LeetCode Contest #5', description: 'Monthly competitive programming contest on LeetCode. Hard level problems. Top 3 get Amazon vouchers.', category: 'Competition', date: '2024-04-12', location: 'Online (LeetCode)', outcome: '95 participants, 3 perfect scores, $150 in prizes distributed', participantsCount: 95, isPublic: true },
+  { id: 'act-013', clubId: 'club-robo', title: 'PCB Design Workshop', description: 'Two-day intensive on circuit design, PCB layout & manufacturing. Hands-on with Altium Designer.', category: 'Workshop', date: '2024-04-08', location: 'Robotics Lab', outcome: '3 PCBs designed and ordered for manufacturing', participantsCount: 12, isPublic: true },
+  { id: 'act-014', clubId: 'club-robo', title: 'Drone Racing Championship', description: 'First inter-college drone racing event. 5 teams competing. Prize pool ₹20K.', category: 'Competition', date: '2024-05-15', location: 'Open Ground', outcome: 'MITS Robotics won 1st place. 300+ spectators attended.', participantsCount: 50, isPublic: true },
+  { id: 'act-015', clubId: 'club-cultural', title: 'Music Production Workshop', description: 'Introduction to music production using FL Studio and Ableton Live. Recording & mixing basics.', category: 'Workshop', date: '2024-04-18', location: 'Audio Room', outcome: '22 students completed. 2 students produced original tracks.', participantsCount: 22, isPublic: true },
+  { id: 'act-016', clubId: 'club-cultural', title: 'Stand-up Comedy Night', description: 'Monthly stand-up comedy event. Featuring student comedians and some external performers.', category: 'Meetup', date: '2024-04-22', location: 'Main Auditorium', outcome: '250+ audience, 8 performers. Highly appreciated event.', participantsCount: 258, isPublic: true },
+  { id: 'act-017', clubId: 'club-sports', title: 'Badminton League – Group Stage', description: 'Inter-branch singles and doubles tournament. Best-of-3 matches.', category: 'Competition', date: '2024-04-10', location: 'Badminton Courts', outcome: 'CS, ME, CE qualified for semifinals. 80 students participated.', participantsCount: 80, isPublic: true },
+  { id: 'act-018', clubId: 'club-sports', title: 'Nutrition & Fitness Seminar', description: 'Ft. Sports Nutritionist and Olympic trainer. Panel discussion on health & fitness.', category: 'Seminar', date: '2024-05-05', location: 'Main Auditorium', outcome: '400+ students attended. 50+ nutrition consultations done.', participantsCount: 450, isPublic: true },
+  { id: 'act-019', clubId: 'club-csit', title: 'Database Design Deep Dive', description: 'SQL optimization, query performance, indexing strategies. Companies hiring track.', category: 'Workshop', date: '2024-05-20', location: 'CS Lab 1', outcome: '35 students. 5 participants got internship offers from TechCorp.', participantsCount: 35, isPublic: true },
+  { id: 'act-020', clubId: 'club-robo', title: 'Green Robotics Hackathon', description: 'Build eco-friendly robots. Theme: Sustainability. 6-hour challenge.', category: 'Competition', date: '2024-05-25', location: 'Robotics Lab & Ground', outcome: '10 teams, 3 prizes. Winning bot: Solar-powered sweeper.', participantsCount: 40, isPublic: true },
+];
+
 const messages = [
   { id: 'msg-seed-001', senderId: 'demo-student-001', senderName: 'Aryan Sharma', clubId: 'club-csit', content: 'Hey everyone! HackMITS registrations are now open. Spread the word! 🚀', timestamp: '2024-03-15T10:00:00.000Z', read: false },
   { id: 'msg-seed-002', senderId: 'stu-002', senderName: 'Sneha Jain', clubId: 'club-csit', content: 'Amazing! I will share it with all the juniors. Can we also post it on the notice board?', timestamp: '2024-03-15T10:05:00.000Z', read: false },
@@ -407,28 +516,58 @@ const messages = [
   { id: 'msg-seed-005', senderId: 'stu-007', senderName: 'Amit Dubey', clubId: 'club-robo', content: 'The new ESP32 modules have arrived. IoT bootcamp prep looking good!', timestamp: '2024-03-20T14:30:00.000Z', read: false },
   { id: 'msg-seed-006', senderId: 'stu-008', senderName: 'Kavya Sharma', clubId: 'club-cultural', content: 'Rangmanch rehearsals start next week. All wing leads please confirm your schedules.', timestamp: '2024-03-18T09:00:00.000Z', read: false },
   { id: 'msg-seed-007', senderId: 'stu-004', senderName: 'Anjali Gupta', clubId: 'club-cultural', content: 'Dance wing is ready! We have 15 performers confirmed for the opening act. 💃', timestamp: '2024-03-18T09:15:00.000Z', read: false },
+  { id: 'msg-seed-demo-001', senderId: 'demo-student-001', senderName: 'Aryan Sharma', clubId: 'club-csit', content: 'Great work on the workshop Pooja! The participation was amazing.', timestamp: '2024-06-02T10:00:00.000Z', read: false },
+  { id: 'msg-seed-demo-002', senderId: 'demo-faculty-example', senderName: 'Demo Faculty', clubId: 'club-csit', content: 'Excellent execution of the bootcamp this year. Keep up the momentum!', timestamp: '2024-05-18T14:30:00.000Z', read: false },
 ];
 
 const dbData = {
   users,
   clubs,
   events,
-  registrations,
-  applicants,
+  registrations: enhancedRegistrations,
+  applicants: enhancedApplicants,
   logs,
-  activities,
-  batches,
+  activities: enhancedActivities,
+  batches: enhancedBatches,
   messages,
+  payments,
 };
 
 fs.writeFileSync(dbPath, JSON.stringify(dbData, null, 2));
-console.log('✅ db.json seeded with rich demo data!');
-console.log(`   → ${users.length} users`);
+console.log('✅ db.json seeded with comprehensive demo data!');
+console.log(`   → ${users.length} users (demo + students + faculty)`);
 console.log(`   → ${clubs.length} clubs`);
 console.log(`   → ${events.length} events`);
-console.log(`   → ${registrations.length} registrations`);
-console.log(`   → ${applicants.length} applicants`);
-console.log(`   → ${activities.length} activities`);
-console.log(`   → ${batches.length} certificate batches`);
-console.log(`   → ${messages.length} messages`);
+console.log(`   → ${enhancedRegistrations.length} registrations (with demo user events)`);
+console.log(`   → ${enhancedApplicants.length} applicants (recruitment pipeline)`);
+console.log(`   → ${enhancedActivities.length} activities (workshops, competitions, etc.)`);
+console.log(`   → ${enhancedBatches.length} certificate batches`);
+console.log(`   → ${payments.length} payment transactions`);
+console.log(`   → ${messages.length} club messages`);
 console.log(`   → ${logs.length} audit logs`);
+console.log('');
+console.log('📊 Demo User Quick Access:');
+console.log('   Student: aryan@mitsgwl.ac.in / demo-student@example.com');
+console.log('   Faculty: priya.verma@mitsgwl.ac.in / demo-faculty@example.com');
+console.log('   Admin:   admin@mitsgwl.ac.in / demo-admin@example.com');
+console.log('');
+console.log('🎓 Clubs Available:');
+console.log('   • CSIT Club (Technical) - President: Aryan Sharma');
+console.log('   • Robotics Club (Technical) - President: Rahul Mishra');
+console.log('   • Cultural Club (Cultural) - President: Kavya Sharma');
+console.log('   • Sports Committee (Sports) - President: Vikram Tiwari');
+console.log('');
+console.log('🎟️ Tickets & Certificates:');
+console.log(`   • ${payments.length} paid event transactions`);
+console.log(`   • ${enhancedBatches.length} certificate batches (approved & pending)`);
+console.log(`   • ${enhancedRegistrations.filter(r => r.ticketId).length} event tickets issued`);
+console.log('');
+console.log('📝 Sample Data Coverage:');
+console.log('   ✓ Club memberships & roles');
+console.log('   ✓ Event registrations (free & paid)');
+console.log('   ✓ UPI & Payment Gateway transactions');
+console.log('   ✓ Issued certificates with hashes');
+console.log('   ✓ Recruitment applications (all stages)');
+console.log('   ✓ Club activities & outcomes');
+console.log('   ✓ Chat messages & announcements');
+console.log('   ✓ Audit logs of all major actions');

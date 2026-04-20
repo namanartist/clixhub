@@ -1,14 +1,34 @@
-
 import React, { useMemo, useState, useEffect } from 'react';
-import { Event, Club, Registration, User, ClubRole } from '../../types';
-import { Calendar, MapPin, Users, Ticket, Sparkles, Filter, Search, Zap, Clock, Heart, X, Share2, Copy, UserPlus, CheckCircle2, CreditCard, Loader2 } from 'lucide-react';
+import { Event, Club, Registration, User } from '../../types';
+import { 
+  Calendar, 
+  MapPin, 
+  Users, 
+  Ticket, 
+  Sparkles, 
+  Filter, 
+  Search, 
+  Zap, 
+  Clock, 
+  Heart, 
+  X, 
+  Share2, 
+  UserPlus, 
+  CheckCircle2, 
+  CreditCard, 
+  Loader2,
+  ArrowRight,
+  TrendingUp,
+  Fingerprint,
+  Hexagon
+} from 'lucide-react';
 import { db } from '../../db';
 
 interface Props {
   events: Event[];
   clubs: Club[];
   registrations: Registration[];
-  onRegister: (eventId: string, proxyStudent?: { name: string, roll: string, branch: string }) => void;
+  onRegister: (eventId: string, proxyStudent?: { name: string, roll: string, branch: string }) => Promise<Registration | undefined>;
   isDarkMode: boolean;
   user: User;
 }
@@ -17,14 +37,12 @@ const CampusEvents: React.FC<Props> = ({ events, clubs, registrations, onRegiste
   const userRegistrations = registrations.filter(r => r.studentId === user.id);
   const [savedEventIds, setSavedEventIds] = useState<string[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-  
-  // Proxy Registration State
   const [isProxyMode, setIsProxyMode] = useState(false);
   const [proxyData, setProxyData] = useState({ name: '', roll: '', branch: '' });
-
-  // Payment State
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [successTicket, setSuccessTicket] = useState<Registration | null>(null);
+  const [activePrintId, setActivePrintId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchSaved = async () => {
@@ -36,417 +54,378 @@ const CampusEvents: React.FC<Props> = ({ events, clubs, registrations, onRegiste
 
   const handleToggleSave = async (eventId: string) => {
     await db.toggleSavedEvent(user.id, eventId);
-    if (savedEventIds.includes(eventId)) {
-        setSavedEventIds(prev => prev.filter(id => id !== eventId));
-    } else {
-        setSavedEventIds(prev => [...prev, eventId]);
-    }
-  };
-
-  const handleShare = (event: Event) => {
-    // Generate a simulated deep link for the event
-    const eventLink = `${window.location.origin}/events/${event.id}`;
-    const shareText = `Check out ${event.title} at MITS Gwalior!\nDate: ${event.date}\nLink: ${eventLink}`;
-    navigator.clipboard.writeText(shareText);
-    alert("Event registration link copied to clipboard!");
+    setSavedEventIds(prev => prev.includes(eventId) ? prev.filter(id => id !== eventId) : [...prev, eventId]);
   };
 
   const handleRegistrationClick = async () => {
     if (selectedEvent) {
-      const club = clubs.find(c => c.id === selectedEvent.clubId);
-      const isGatewayActive = selectedEvent.type === 'Paid' && club?.paymentGatewayConfig?.isActive && club.paymentGatewayConfig.provider !== 'ManualUPI';
-
       if (isProxyMode) {
-        if (!proxyData.name || !proxyData.roll || !proxyData.branch) {
-          alert("Please enter full details (Name, Roll No, Branch) for proxy registration.");
-          return;
-        }
-        onRegister(selectedEvent.id, proxyData);
+        if (!proxyData.name || !proxyData.roll || !proxyData.branch) { alert("Complete all proxy details."); return; }
+        const reg = await onRegister(selectedEvent.id, proxyData);
+        if (reg) setSuccessTicket(reg);
         setProxyData({ name: '', roll: '', branch: '' });
         setIsProxyMode(false);
         setSelectedEvent(null);
       } else {
-        if (isGatewayActive) {
-            // Trigger Gateway Flow
+        const club = clubs.find(c => c.id === selectedEvent.clubId);
+        if (selectedEvent.type === 'Paid' && club?.paymentGatewayConfig?.isActive && club.paymentGatewayConfig.provider !== 'ManualUPI') {
             setIsProcessingPayment(true);
-            
-            // SIMULATION: In real app, call Razorpay/Stripe API here
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
+            await new Promise(r => setTimeout(r, 1500));
             setIsProcessingPayment(false);
             setPaymentSuccess(true);
-            
-            // Auto Register after success
-            setTimeout(() => {
-                onRegister(selectedEvent.id); 
-                setPaymentSuccess(false);
-                setSelectedEvent(null);
-            }, 1500);
+            setTimeout(async () => { 
+                const reg = await onRegister(selectedEvent.id); 
+                if (reg) setSuccessTicket(reg);
+                setPaymentSuccess(false); 
+                setSelectedEvent(null); 
+            }, 1000);
         } else {
-            // Free or Manual UPI
-            onRegister(selectedEvent.id);
+            const reg = await onRegister(selectedEvent.id);
+            if (reg) setSuccessTicket(reg);
             setSelectedEvent(null);
         }
       }
     }
   };
 
-  const liveEvents = useMemo(() => events.filter(e => {
-    const eventDate = new Date(e.date);
-    const now = new Date();
-    return eventDate.toDateString() === now.toDateString();
-  }), [events]);
-
-  const upcomingEvents = useMemo(() => events.filter(e => {
-    const eventDate = new Date(e.date);
-    const now = new Date();
-    return eventDate > now && eventDate.toDateString() !== now.toDateString();
-  }), [events]).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-
-  // Check if user is a member of the selected event's club (allowed to proxy)
-  const isClubMember = useMemo(() => {
-    if (!selectedEvent) return false;
-    // Allow any member of the club (Role.MEMBER and above) or Faculty/Admin to proxy
-    return user.clubMemberships.some(m => m.clubId === selectedEvent.clubId) || user.globalRole !== 'Student';
-  }, [selectedEvent, user]);
-
-  // Determine Button Text & State
-  const getButtonConfig = () => {
-      if (!selectedEvent) return { text: 'Register', disabled: false };
-      const club = clubs.find(c => c.id === selectedEvent.clubId);
-      const isGatewayActive = selectedEvent.type === 'Paid' && club?.paymentGatewayConfig?.isActive && club.paymentGatewayConfig.provider !== 'ManualUPI';
-      const provider = club?.paymentGatewayConfig?.provider;
-
-      if (isProxyMode) return { text: 'Register Student Proxy', disabled: false };
-      
-      const isRegistered = registrations.some(r => r.eventId === selectedEvent.id && r.studentId === user.id);
-      if (isRegistered) return { text: 'Already Registered', disabled: true };
-
-      if (isGatewayActive) return { text: `Pay ₹${selectedEvent.fee} via ${provider}`, disabled: false, isGateway: true };
-      
-      return { text: 'Confirm Registration', disabled: false };
+  const handlePrint = (ticketId: string) => {
+    setActivePrintId(ticketId);
+    setTimeout(() => {
+        window.print();
+        setActivePrintId(null);
+    }, 300);
   };
 
-  const btnConfig = getButtonConfig();
+  const liveEvents = useMemo(() => events.filter(e => new Date(e.date).toDateString() === new Date().toDateString()), [events]);
+  const upcomingEvents = useMemo(() => events.filter(e => new Date(e.date) > new Date() && new Date(e.date).toDateString() !== new Date().toDateString()).sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime()), [events]);
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-12">
-      <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div>
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight mb-2">Campus Event Pipeline</h1>
-          <p className="text-slate-500 font-medium text-lg">Live pulses and future marathons at MITS Gwalior.</p>
-        </div>
-        <div className="flex gap-4 w-full md:w-auto">
-          <div className="relative flex-1 md:flex-none">
-            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input 
-              type="text" 
-              placeholder="Search events..." 
-              className={`pl-12 pr-6 py-3 rounded-2xl border outline-none focus:border-blue-500 transition-all text-sm w-full md:w-64 ${isDarkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-white border-slate-200 shadow-sm'}`}
-            />
-          </div>
-          <button className={`p-3 rounded-2xl border ${isDarkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-white border-slate-200'}`}>
-            <Filter size={20} className="text-slate-400" />
-          </button>
-        </div>
+    <div className="min-h-screen p-8 lg:p-12 space-y-16 bg-[#050505] text-[var(--text-main)]">
+      
+      {/* ─ HEADER ─ */}
+      <header className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-10 reveal">
+         <div className="space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary">
+               <TrendingUp size={14} />
+               <span className="text-[10px] font-black uppercase tracking-[0.3em]">Institutional Pulse</span>
+            </div>
+            <h1 className="text-6xl font-[1000] tracking-[-0.05em] uppercase italic leading-none">Event <br/><span className="text-gradient">Pipeline</span></h1>
+            <p className="text-sm font-medium opacity-50 max-w-sm">Synchronized schedule of upcoming marathons, technical workshops, and cultural galas.</p>
+         </div>
+
+         <div className="flex flex-wrap gap-4 w-full lg:w-auto">
+            <div className="relative flex-1 lg:min-w-[400px]">
+               <Search size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
+               <input placeholder="Search Active Transmissions..." className="w-full h-18 bg-white/5 border border-white/10 rounded-2xl pl-16 pr-8 font-black text-sm outline-none focus:border-primary/50 transition-all" />
+            </div>
+            <button className="h-18 w-18 bento-card flex items-center justify-center hover:bg-white/10 transition-all group">
+               <Filter size={24} className="group-hover:scale-110 transition-transform" />
+            </button>
+         </div>
       </header>
 
-      {/* Live Section */}
-      <section className="space-y-8">
-        <div className="flex items-center gap-3">
-          <div className="w-3 h-3 bg-rose-500 rounded-full animate-ping" />
-          <h2 className="text-xl font-black uppercase tracking-[0.2em] opacity-60">Happening Today</h2>
-        </div>
-        {liveEvents.length > 0 ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {liveEvents.map(e => {
-              const club = clubs.find(c => c.id === e.clubId);
-              const isRegistered = userRegistrations.some(r => r.eventId === e.id);
-              return (
-                <div key={e.id} className={`p-6 md:p-10 rounded-[3rem] border-2 relative overflow-hidden transition-all group ${
-                  isDarkMode ? 'bg-slate-900 border-rose-500/20 shadow-2xl shadow-rose-500/5' : 'bg-white border-rose-100 shadow-xl'
-                }`}>
-                  <div className="absolute top-0 right-0 p-8">
-                    <Zap size={48} className="text-rose-500 opacity-10 group-hover:opacity-20 transition-opacity" />
-                  </div>
-                  <div className="relative z-10 space-y-6">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <span className="text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full bg-rose-500 text-white shadow-lg shadow-rose-500/30">Live Now</span>
-                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Venue: SAC Auditorium</span>
+      {/* ─ LIVE NOW ─ */}
+      <section className="space-y-10 reveal" style={{ animationDelay: '0.1s' }}>
+         <div className="flex items-center gap-4">
+            <div className="w-3 h-3 bg-primary rounded-full animate-ping" />
+            <h2 className="text-[10px] font-black uppercase tracking-[0.5em] opacity-40">Live Matrix</h2>
+         </div>
+
+         {liveEvents.length > 0 ? (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+               {liveEvents.map(e => (
+                   <div key={e.id} className="bento-card p-1 p-0 overflow-hidden group hover:border-primary/40 transition-all duration-700">
+                      <div className="h-full grid grid-cols-1 lg:grid-cols-12">
+                         <div className="lg:col-span-5 relative overflow-hidden">
+                            <img src={e.bannerUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800"} 
+                                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-black/80 lg:from-transparent to-transparent" />
+                            <div className="absolute top-6 left-6 px-4 py-2 bg-primary text-white text-[10px] font-[1000] uppercase tracking-widest rounded-xl shadow-2xl shadow-primary/40">Active Node</div>
+                         </div>
+                         <div className="lg:col-span-7 p-10 flex flex-col justify-between gap-6 bg-white/2">
+                            <div className="space-y-4">
+                               <div className="flex justify-between items-start">
+                                  <span className="text-[10px] font-black uppercase tracking-widest text-primary italic">Organized by {clubs.find(c => c.id === e.clubId)?.name}</span>
+                                  <button onClick={() => handleToggleSave(e.id)} className={`transition-all ${savedEventIds.includes(e.id) ? 'text-rose-500 scale-125' : 'text-white/20 hover:text-rose-400'}`}>
+                                     <Heart size={20} fill={savedEventIds.includes(e.id) ? "currentColor" : "none"} />
+                                  </button>
+                               </div>
+                               <h3 className="text-4xl font-black tracking-tighter uppercase italic leading-tight group-hover:text-primary transition-colors">{e.title}</h3>
+                               <div className="flex items-center gap-6 opacity-40">
+                                  <div className="flex items-center gap-2"><MapPin size={14}/> <span className="text-[10px] font-black uppercase tracking-widest">SAC Aud.</span></div>
+                                  <div className="flex items-center gap-2"><Users size={14}/> <span className="text-[10px] font-black uppercase tracking-widest">480 Joined</span></div>
+                               </div>
+                            </div>
+                            <button onClick={() => setSelectedEvent(e)}
+                                    className="h-14 w-full bg-white text-black rounded-xl font-black text-[10px] uppercase tracking-[0.4em] shadow-3xl hover:translate-y-[-4px] transition-all">
+                               Instant Uplink
+                            </button>
+                         </div>
+                      </div>
+                   </div>
+               ))}
+            </div>
+         ) : (
+            <div className="bento-card py-20 bg-white/2 border-2 border-dashed border-white/5 text-center opacity-30">
+               <p className="text-[10px] font-black uppercase tracking-[1em]">Frequency Silent • No signals today</p>
+            </div>
+         )}
+      </section>
+
+      {/* ─ FUTURE PIPELINE ─ */}
+      <section className="space-y-10 reveal" style={{ animationDelay: '0.2s' }}>
+         <div className="flex items-center gap-4">
+            <Hexagon size={16} className="text-primary" />
+            <h2 className="text-[10px] font-black uppercase tracking-[0.5em] opacity-40">Future Sequence</h2>
+         </div>
+
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {upcomingEvents.map(e => {
+               const date = new Date(e.date);
+               const isRegistered = userRegistrations.some(r => r.eventId === e.id);
+               return (
+                  <div key={e.id} className="bento-card p-10 flex flex-col gap-8 group hover:border-white/20 transition-all reveal">
+                     <div className="flex justify-between items-start">
+                        <div className="h-16 w-16 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center">
+                           <span className="text-xl font-black text-primary leading-none">{date.getDate()}</span>
+                           <span className="text-[8px] font-black uppercase tracking-widest opacity-40">{date.toLocaleString('default', { month: 'short' })}</span>
                         </div>
-                        <button 
-                            onClick={() => handleToggleSave(e.id)}
-                            className={`p-2 rounded-full ${savedEventIds.includes(e.id) ? 'text-rose-500 bg-rose-500/10' : 'text-slate-400 hover:text-rose-500'}`}
-                        >
-                            <Heart size={20} fill={savedEventIds.includes(e.id) ? "currentColor" : "none"} />
+                        <div className="flex gap-2">
+                           <div className={`px-4 py-1.5 rounded-full text-[8px] font-black uppercase tracking-widest border ${e.type === 'Paid' ? 'border-amber-500/20 text-amber-500 bg-amber-500/5' : 'border-emerald-500/20 text-emerald-400 bg-emerald-500/5'}`}>
+                              {e.type}
+                           </div>
+                           <button onClick={() => handleToggleSave(e.id)} className={`p-3 bg-white/5 rounded-xl transition-all ${savedEventIds.includes(e.id) ? 'text-rose-500' : 'text-white/20 hover:text-rose-400'}`}>
+                              <Heart size={16} fill={savedEventIds.includes(e.id) ? "currentColor" : "none"} />
+                           </button>
+                        </div>
+                     </div>
+
+                     <div className="space-y-2">
+                        <h4 className="text-2xl font-black tracking-tight uppercase italic leading-tight group-hover:text-primary transition-colors cursor-pointer" onClick={() => setSelectedEvent(e)}>{e.title}</h4>
+                        <p className="text-[10px] font-black uppercase tracking-widest opacity-30 italic">Target: {clubs.find(c => c.id === e.clubId)?.name}</p>
+                     </div>
+
+                     <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between">
+                        <div className="flex items-center gap-4 opacity-40">
+                           <div className="flex items-center gap-1"><Users size={12}/> <span className="text-[8px] font-black uppercase tracking-widest">24/100</span></div>
+                        </div>
+                        <button onClick={() => setSelectedEvent(e)}
+                                className={`h-12 px-8 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all ${isRegistered ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/20' : 'bg-primary text-white shadow-xl shadow-primary/20 hover:scale-105'}`}>
+                           {isRegistered ? 'Node Committed' : 'Commit Registration'}
                         </button>
-                    </div>
-                    <h3 
-                      onClick={() => setSelectedEvent(e)}
-                      className="text-3xl md:text-4xl font-black tracking-tighter leading-tight cursor-pointer hover:text-rose-500 transition-colors"
-                    >
-                      {e.title}
-                    </h3>
-                    <p className="text-slate-500 font-medium line-clamp-2">{e.description}</p>
-                    <div className="flex items-center gap-8 pt-4">
-                      <div className="flex items-center gap-2">
-                        <Users size={18} className="text-blue-500" />
-                        <span className="text-sm font-black">450+ Attending</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Clock size={18} className="text-amber-500" />
-                        <span className="text-sm font-black text-amber-500">Ends in 2h</span>
-                      </div>
-                    </div>
-                    <button 
-                      onClick={() => setSelectedEvent(e)}
-                      disabled={isRegistered}
-                      className={`w-full py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] transition-all ${
-                        isRegistered ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : 'bg-rose-600 text-white hover:bg-rose-700 shadow-xl shadow-rose-600/20'
-                      }`}
-                    >
-                      {isRegistered ? 'Credentials Issued' : 'Instant Hall Entry'}
-                    </button>
+                     </div>
                   </div>
-                </div>
-              );
+               );
             })}
-          </div>
-        ) : (
-          <div className="p-20 border-4 border-dashed border-slate-800/30 rounded-[3rem] text-center">
-            <p className="text-[10px] font-black uppercase tracking-[0.5em] opacity-30">The campus is currently between major pulses.</p>
-          </div>
-        )}
+         </div>
       </section>
 
-      {/* Upcoming Section */}
-      <section className="space-y-8">
-        <div className="flex items-center gap-3">
-          <Calendar className="text-blue-500" size={24} />
-          <h2 className="text-xl font-black uppercase tracking-[0.2em] opacity-60">Future Pipeline (Next 4 Weeks)</h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {upcomingEvents.map(e => {
-            const club = clubs.find(c => c.id === e.clubId);
-            const isRegistered = userRegistrations.some(r => r.eventId === e.id);
-            const isSaved = savedEventIds.includes(e.id);
-            const eventDate = new Date(e.date);
-            
-            return (
-              <div key={e.id} className={`p-8 rounded-[2.5rem] border transition-all hover:scale-[1.02] ${
-                isDarkMode ? 'bg-[#161b2a] border-slate-800 hover:border-blue-500/50' : 'bg-white border-slate-100 shadow-sm'
-              }`}>
-                <div className="flex justify-between items-start mb-8">
-                  <div className="w-14 h-14 rounded-2xl bg-slate-800 flex flex-col items-center justify-center border border-slate-700 shadow-inner">
-                    <span className="text-xs font-black text-blue-500">{eventDate.getDate()}</span>
-                    <span className="text-[8px] font-bold opacity-40 uppercase">{eventDate.toLocaleString('default', { month: 'short' })}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className={`px-4 py-1.5 rounded-full text-[9px] font-black tracking-widest uppercase border ${
-                        e.type === 'Paid' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
-                    }`}>
-                        {e.type} Event
-                    </div>
-                    <button 
-                        onClick={() => handleToggleSave(e.id)}
-                        className={`p-1.5 rounded-full transition-colors ${isSaved ? 'text-rose-500 bg-rose-500/10' : 'text-slate-400 hover:text-rose-500'}`}
-                    >
-                        <Heart size={18} fill={isSaved ? "currentColor" : "none"} />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="space-y-4 mb-10">
-                  <h3 
-                    onClick={() => setSelectedEvent(e)}
-                    className="text-2xl font-black tracking-tight leading-tight cursor-pointer hover:text-blue-500 transition-colors"
-                  >
-                    {e.title}
-                  </h3>
-                  <div className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-                    <Sparkles size={12} className="text-blue-500" /> Organized by {club?.name}
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest opacity-40">
-                    <span>Slots Left: 45/100</span>
-                    <span>Starts in 12 days</span>
-                  </div>
-                  <button 
-                    onClick={() => setSelectedEvent(e)}
-                    className={`w-full py-4 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
-                      isRegistered ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg'
-                    }`}
-                  >
-                    {isRegistered ? 'View Ticket' : 'Register Now'}
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Detail Modal */}
+      {/* ─ MODAL ─ */}
       {selectedEvent && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md" onClick={() => setSelectedEvent(null)}>
-            <div className={`relative w-full max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar rounded-[3rem] p-10 shadow-2xl animate-in zoom-in-95 duration-300 ${isDarkMode ? 'bg-[#111C44] border border-white/10' : 'bg-white'}`} onClick={e => e.stopPropagation()}>
-            
-            <div className="absolute top-8 right-8 z-10 flex gap-2">
-                <button 
-                    onClick={() => handleShare(selectedEvent)}
-                    className="p-3 rounded-full bg-white/5 hover:bg-blue-500 hover:text-white transition-all text-slate-400"
-                    title="Share Event Link"
-                >
-                    <Share2 size={20} />
-                </button>
-                <button 
-                    onClick={() => setSelectedEvent(null)}
-                    className="p-3 rounded-full bg-white/5 hover:bg-rose-500 hover:text-white transition-all text-slate-400"
-                >
-                    <X size={20} />
-                </button>
-            </div>
-
-            {selectedEvent.bannerUrl && (
-                <div className="w-full h-56 rounded-[2rem] overflow-hidden mb-8 shadow-lg relative">
-                    <img src={selectedEvent.bannerUrl} alt="" className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#111C44]/80 to-transparent" />
-                </div>
-            )}
-
-            {/* Payment Processing Overlay */}
-            {isProcessingPayment && (
-                <div className="absolute inset-0 z-50 bg-[#111C44]/95 flex flex-col items-center justify-center text-center p-8 backdrop-blur-xl rounded-[3rem]">
-                    <Loader2 size={64} className="text-emerald-500 animate-spin mb-6" />
-                    <h3 className="text-2xl font-black text-white tracking-tight">Secure Payment Gateway</h3>
-                    <p className="text-slate-400 mt-2 font-mono text-xs">Redirecting to {clubs.find(c => c.id === selectedEvent.clubId)?.paymentGatewayConfig?.provider}...</p>
-                    <div className="mt-8 px-6 py-3 bg-white/5 rounded-2xl border border-white/10 text-xs font-bold text-slate-300">
-                        Do not close this window.
-                    </div>
-                </div>
-            )}
-
-            {/* Success Overlay */}
-            {paymentSuccess && (
-                <div className="absolute inset-0 z-50 bg-[#111C44]/95 flex flex-col items-center justify-center text-center p-8 backdrop-blur-xl rounded-[3rem]">
-                    <CheckCircle2 size={80} className="text-emerald-500 mb-6 animate-in zoom-in duration-300" />
-                    <h3 className="text-3xl font-black text-white tracking-tight">Payment Verified</h3>
-                    <p className="text-emerald-400 mt-2 font-bold text-sm">Transaction ID: TXN-{Date.now()}</p>
-                    <p className="text-slate-400 mt-4 max-w-sm">Your registration is confirmed. Generating digital ticket...</p>
-                </div>
-            )}
-
-            <div className="space-y-8">
-                <div>
-                    <div className="flex items-center gap-3 mb-3">
-                        <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border ${selectedEvent.type === 'Paid' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'}`}>
-                            {selectedEvent.type} Access
-                        </span>
-                        {selectedEvent.type === 'Paid' && <span className="text-sm font-black text-amber-500">₹{selectedEvent.fee}</span>}
-                    </div>
-                    <h2 className={`text-4xl font-black tracking-tighter leading-tight ${isDarkMode ? 'text-white' : 'text-[#2B3674]'}`}>
-                    {selectedEvent.title}
-                    </h2>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                    <div className={`p-4 rounded-2xl border flex items-center gap-3 ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-slate-50 border-slate-100'}`}>
-                    <Calendar className="text-blue-500" size={20} />
-                    <div>
-                        <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Date</p>
-                        <p className="text-sm font-bold">{selectedEvent.date}</p>
-                    </div>
-                    </div>
-                    <div className={`p-4 rounded-2xl border flex items-center gap-3 ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-slate-50 border-slate-100'}`}>
-                    <MapPin className="text-rose-500" size={20} />
-                    <div>
-                        <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Location</p>
-                        <p className="text-sm font-bold">MITS Campus</p>
-                    </div>
+         <div className="fixed inset-0 z-[1000] bg-black/95 backdrop-blur-3xl flex items-center justify-center p-8">
+            <div className="relative w-full max-w-2xl bento-card p-0 overflow-hidden shadow-4xl animate-in zoom-in-95 duration-300" onClick={e => e.stopPropagation()}>
+                
+                {/* Visual Header */}
+                <div className="relative h-64 overflow-hidden">
+                    <img src={selectedEvent.bannerUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800"} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent" />
+                    <button onClick={() => setSelectedEvent(null)} className="absolute top-6 right-6 p-4 bg-black/50 backdrop-blur-xl rounded-2xl text-white hover:bg-rose-500 transition-all"><X size={24}/></button>
+                    <div className="absolute bottom-8 left-10 space-y-2">
+                       <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border ${selectedEvent.type === 'Paid' ? 'border-amber-500/40 text-amber-500 bg-amber-500/20' : 'border-emerald-500/40 text-emerald-400 bg-emerald-500/20'}`}>
+                          {selectedEvent.type} Protocol
+                       </span>
+                       <h3 className="text-5xl font-black tracking-tighter uppercase italic text-white">{selectedEvent.title}</h3>
                     </div>
                 </div>
 
-                <div className="space-y-2">
-                    <h4 className="text-[10px] font-black uppercase tracking-widest opacity-40">Event Brief</h4>
-                    <p className={`text-base font-medium leading-relaxed ${isDarkMode ? 'text-[#A3AED0]' : 'text-slate-600'}`}>
-                    {selectedEvent.description}
-                    </p>
-                </div>
-
-                {/* Proxy Registration Panel */}
-                {(isClubMember || isProxyMode) && (
-                    <div className="p-6 rounded-2xl border border-dashed border-slate-600/30 bg-slate-900/30">
-                        <div className="flex items-center justify-between mb-4">
-                            <h4 className="text-[10px] font-black uppercase tracking-widest text-emerald-500 flex items-center gap-2">
-                                <UserPlus size={14} /> Club Privilege: Proxy Registration
-                            </h4>
-                            <div className="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                                <input 
-                                    type="checkbox" 
-                                    name="toggle" 
-                                    id="proxy-toggle" 
-                                    className="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out checked:translate-x-full checked:bg-emerald-500"
-                                    checked={isProxyMode}
-                                    onChange={() => setIsProxyMode(!isProxyMode)}
-                                />
-                                <label htmlFor="proxy-toggle" className="toggle-label block overflow-hidden h-5 rounded-full bg-gray-700 cursor-pointer"></label>
-                            </div>
+                <div className="p-12 space-y-10 bg-[#050505]">
+                    <div className="grid grid-cols-2 gap-8">
+                        <div className="p-6 bg-white/5 border border-white/10 rounded-3xl flex items-center gap-5">
+                           <div className="p-3 bg-primary/10 text-primary rounded-2xl"><Calendar size={24}/></div>
+                           <div>
+                              <p className="text-[10px] font-black uppercase tracking-widest opacity-30">Timestamp</p>
+                              <p className="text-lg font-black italic">{selectedEvent.date}</p>
+                           </div>
                         </div>
-                        
-                        {isProxyMode && (
-                            <div className="space-y-4 animate-in fade-in slide-in-from-top-2">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <input 
-                                        type="text" 
-                                        placeholder="Student Name"
-                                        value={proxyData.name}
-                                        onChange={(e) => setProxyData({...proxyData, name: e.target.value})}
-                                        className="px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm font-bold outline-none focus:border-emerald-500"
-                                    />
-                                    <input 
-                                        type="text" 
-                                        placeholder="Roll Number"
-                                        value={proxyData.roll}
-                                        onChange={(e) => setProxyData({...proxyData, roll: e.target.value})}
-                                        className="px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm font-bold outline-none focus:border-emerald-500"
-                                    />
-                                </div>
-                                <input 
-                                    type="text" 
-                                    placeholder="Branch (e.g. CSE, IT, MAC)"
-                                    value={proxyData.branch}
-                                    onChange={(e) => setProxyData({...proxyData, branch: e.target.value})}
-                                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm font-bold outline-none focus:border-emerald-500"
-                                />
-                            </div>
-                        )}
+                        <div className="p-6 bg-white/5 border border-white/10 rounded-3xl flex items-center gap-5">
+                           <div className="p-3 bg-amber-500/10 text-amber-500 rounded-2xl"><MapPin size={24}/></div>
+                           <div>
+                              <p className="text-[10px] font-black uppercase tracking-widest opacity-30">Venue Node</p>
+                              <p className="text-lg font-black italic">MITS_CORE</p>
+                           </div>
+                        </div>
                     </div>
-                )}
 
-                <div className="pt-6 border-t border-white/5">
-                    <button 
-                        onClick={handleRegistrationClick}
-                        disabled={btnConfig.disabled}
-                        className={`w-full py-5 text-white rounded-2xl font-black text-xs uppercase tracking-[0.3em] shadow-xl hover:scale-[1.02] transition-all flex items-center justify-center gap-3 ${
-                            btnConfig.disabled 
-                                ? 'bg-slate-700 cursor-not-allowed opacity-50' 
-                                : isProxyMode 
-                                    ? 'bg-emerald-600 hover:bg-emerald-700' 
-                                    : btnConfig.isGateway 
-                                        ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500' 
-                                        : 'bg-blue-600 hover:bg-blue-700'
-                        }`}
-                    >
-                        {btnConfig.isGateway ? <CreditCard size={18} /> : null}
-                        {btnConfig.text}
-                    </button>
+                    <div className="space-y-4">
+                       <h5 className="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 flex items-center gap-2"><Fingerprint size={14}/> Mission Briefing</h5>
+                       <p className="text-md font-medium opacity-60 leading-relaxed italic">"{selectedEvent.description}"</p>
+                    </div>
+
+                    {/* Proxy Panel */}
+                    {(user.globalRole !== 'Student' || user.clubMemberships.some(m => m.clubId === selectedEvent.clubId)) && (
+                        <div className="p-8 bg-white/2 border border-dashed border-white/20 rounded-3xl space-y-6">
+                           <div className="flex justify-between items-center">
+                              <div className="flex items-center gap-4">
+                                 <UserPlus size={20} className="text-emerald-400" />
+                                 <h6 className="text-[10px] font-black uppercase tracking-widest text-emerald-400">Identity Proxy Registration</h6>
+                              </div>
+                              <input type="checkbox" checked={isProxyMode} onChange={() => setIsProxyMode(!isProxyMode)} className="h-6 w-12 rounded-full bg-white/10 appearance-none checked:bg-emerald-500 relative cursor-pointer transition-colors after:content-[''] after:absolute after:top-1 after:left-1 after:h-4 after:w-4 after:bg-white after:rounded-full after:transition-all checked:after:left-7" />
+                           </div>
+                           {isProxyMode && (
+                               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in slide-in-from-top-4">
+                                  <input placeholder="Student Alias" value={proxyData.name} onChange={e => setProxyData({...proxyData, name: e.target.value})} className="h-14 bg-black border border-white/10 rounded-xl px-4 font-bold outline-none focus:border-emerald-500" />
+                                  <input placeholder="Sequence ID (Roll)" value={proxyData.roll} onChange={e => setProxyData({...proxyData, roll: e.target.value})} className="h-14 bg-black border border-white/10 rounded-xl px-4 font-bold outline-none focus:border-emerald-500" />
+                                  <input placeholder="Division (Branch)" value={proxyData.branch} onChange={e => setProxyData({...proxyData, branch: e.target.value})} className="col-span-full h-14 bg-black border border-white/10 rounded-xl px-4 font-bold outline-none focus:border-emerald-500" />
+                               </div>
+                           )}
+                        </div>
+                    )}
+
+                    <div className="pt-6 relative">
+                       {isProcessingPayment && (
+                           <div className="absolute inset-x-0 -top-20 flex flex-col items-center gap-4 text-primary animate-pulse">
+                              <Loader2 size={32} className="animate-spin" />
+                              <span className="text-[10px] font-black uppercase tracking-[0.4em]">Establishing Gateway Uplink...</span>
+                           </div>
+                       )}
+                       {paymentSuccess && (
+                           <div className="absolute inset-0 bg-black/90 backdrop-blur-xl z-50 flex flex-col items-center justify-center gap-4 text-emerald-400">
+                              <CheckCircle2 size={64} className="animate-in zoom-in" />
+                              <span className="text-xl font-black uppercase tracking-widest italic">Node Verified</span>
+                           </div>
+                       )}
+                       <button onClick={handleRegistrationClick}
+                               disabled={isProcessingPayment}
+                               className={`w-full h-20 rounded-3xl font-black text-[12px] uppercase tracking-[0.5em] shadow-4xl hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-4 ${isProxyMode ? 'bg-emerald-600 text-white' : 'bg-white text-black'}`}>
+                           {isProxyMode ? 'Register Proxy Student' : selectedEvent.type === 'Paid' ? `Commit ₹${selectedEvent.fee} Enrollment` : 'Commit Free Enrollment'}
+                           <Ticket size={24} />
+                       </button>
+                    </div>
                 </div>
             </div>
-            </div>
-        </div>
+         </div>
+      )}
+
+      {/* SUCCESS TICKET PASS MODAL */}
+      {successTicket && (
+          <div className="fixed inset-0 z-[2000] bg-[#050505]/98 backdrop-blur-3xl flex flex-col items-center justify-center p-6 md:p-12 overflow-y-auto no-scrollbar">
+              <div className="w-full max-w-4xl animate-in zoom-in-95 duration-500 relative py-20 flex flex-col items-center">
+                   <button 
+                       onClick={() => setSuccessTicket(null)}
+                       className="absolute top-0 right-0 p-4 bg-white/5 border border-white/10 rounded-2xl text-white hover:bg-rose-500 transition-all z-10"
+                   >
+                       <X size={24} />
+                   </button>
+
+                   <div className="text-center space-y-6 mb-12">
+                       <div className="inline-flex items-center gap-4 px-6 py-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-full">
+                          <CheckCircle2 size={24} className="animate-bounce" />
+                          <span className="text-xs font-black uppercase tracking-[0.4em]">Node Successfully Committed</span>
+                       </div>
+                       <h2 className="text-5xl md:text-7xl font-[1000] tracking-tighter uppercase italic leading-none">Your Entry <span className="text-gradient">Protocol</span></h2>
+                       <p className="text-slate-500 font-medium italic opacity-60">"Mission details indexed. Digital pass generated."</p>
+                   </div>
+
+                   {/* The Actual Pass Visual */}
+                   <div className="w-full max-w-2xl bg-white rounded-[3.5rem] p-12 text-black flex flex-col gap-10 shadow-[0_0_100px_rgba(37,99,235,0.2)]">
+                       <div className="flex justify-between items-start">
+                           <div className="space-y-4">
+                               <div className="flex items-center gap-4">
+                                  <div className="w-16 h-16 bg-black text-white flex items-center justify-center text-3xl font-black rounded-2xl">
+                                     {clubs.find(c => c.id === events.find(e => e.id === successTicket.eventId)?.clubId)?.name?.[0] || 'A'}
+                                  </div>
+                                  <div>
+                                     <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Authorized Entry</p>
+                                     <h2 className="text-2xl font-black uppercase italic tracking-tighter">Institutional Hub</h2>
+                                  </div>
+                               </div>
+                               <h3 className="text-6xl font-[1000] tracking-tighter leading-[0.85] uppercase italic mt-6">PASS</h3>
+                           </div>
+                           <div className="p-4 border-2 border-black rounded-3xl bg-white">
+                               <img src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${successTicket.ticketId || successTicket.id}`} className="w-40 h-40" alt="Pass QR" />
+                           </div>
+                       </div>
+
+                       <div className="pt-8 border-t-2 border-black border-dashed grid grid-cols-2 gap-8">
+                           <div>
+                              <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Mission Subject</p>
+                              <p className="text-2xl font-black">{events.find(e => e.id === successTicket.eventId)?.title}</p>
+                           </div>
+                           <div className="text-right">
+                              <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Agent Identity</p>
+                              <p className="text-2xl font-black">{successTicket.studentName}</p>
+                           </div>
+                       </div>
+
+                       <div className="flex justify-between items-end border-t-2 border-black pt-8">
+                           <div>
+                              <p className="text-xs font-bold opacity-30 uppercase tracking-[0.2em] mb-1">Pass ID</p>
+                              <p className="text-sm font-mono font-black">{successTicket.ticketId || 'Pending_Approval'}</p>
+                           </div>
+                           <button 
+                               onClick={() => handlePrint(successTicket.ticketId || successTicket.id)}
+                               className="px-10 py-5 bg-black text-white rounded-2xl font-black text-[10px] uppercase tracking-widest flex items-center gap-3 hover:scale-105 active:scale-95 transition-all"
+                           >
+                               <Download size={18} /> Execute Download
+                           </button>
+                       </div>
+                   </div>
+
+                   <p className="mt-12 text-[10px] font-black text-slate-600 uppercase tracking-[0.4em] text-center max-w-md italic leading-relaxed opacity-40">
+                       Institutional pass remains valid only with physical student identity verification at the node intake.
+                   </p>
+              </div>
+
+              {/* HIDDEN PRINT VIEW */}
+              {activePrintId === (successTicket.ticketId || successTicket.id) && (
+                  <div className="fixed inset-0 z-[-1] opacity-0 pointer-events-none">
+                      <div key={successTicket.id} className="w-[100vw] h-[100vh] bg-white flex flex-col items-center justify-center p-20 font-sans text-black">
+                         <div className="w-full max-w-4xl border-4 border-black p-12 rounded-[3.5rem] relative overflow-hidden flex flex-col gap-12 bg-white">
+                             <div className="absolute top-0 left-0 w-full h-10 bg-black flex items-center justify-center">
+                                <p className="text-[10px] font-black uppercase text-white tracking-[1em]">Institutional Access Protocol</p>
+                             </div>
+                             <div className="flex justify-between items-start mt-8">
+                                 <div className="space-y-4">
+                                     <div className="flex items-center gap-5">
+                                         <div className="w-20 h-20 bg-black text-white flex items-center justify-center text-4xl font-black rounded-3xl">
+                                             {clubs.find(c => c.id === events.find(e => e.id === successTicket.eventId)?.clubId)?.name?.[0] || 'A'}
+                                         </div>
+                                         <div>
+                                             <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Command Center</p>
+                                             <h2 className="text-3xl font-black uppercase italic tracking-tighter">{clubs.find(c => c.id === events.find(e => e.id === successTicket.eventId)?.clubId)?.name}</h2>
+                                         </div>
+                                     </div>
+                                     <h1 className="text-7xl font-[1000] tracking-tighter leading-[0.8] uppercase italic mt-10">ENTRY <br/><span className="text-stroke-black text-transparent">PASS</span></h1>
+                                 </div>
+                                 <div className="p-4 border-4 border-black rounded-[2.5rem] inline-block bg-white shadow-2xl">
+                                     <img src={`https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${successTicket.ticketId || successTicket.id}`} alt="QR" className="w-52 h-52" />
+                                 </div>
+                             </div>
+                             <div className="grid grid-cols-2 gap-16 pt-12 border-t-4 border-black border-dashed">
+                                 <div>
+                                     <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Mission / Event</p>
+                                     <h3 className="text-5xl font-black tracking-tighter leading-tight">{events.find(e => e.id === successTicket.eventId)?.title}</h3>
+                                 </div>
+                                 <div className="space-y-4">
+                                     <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Agent Identity</p>
+                                     <h3 className="text-4xl font-black tracking-tight">{successTicket.studentName}</h3>
+                                     <p className="text-sm font-black uppercase tracking-widest">{successTicket.studentRoll}</p>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                     <style>{`
+                         @media print {
+                             body * { visibility: hidden !important; }
+                             .fixed.inset-0.z-\[-1\], .fixed.inset-0.z-\[-1\] * { visibility: visible !important; }
+                             .fixed.inset-0.z-\[-1\] { position: absolute !important; left: 0 !important; top: 0 !important; width: 100vw !important; height: 100vh !important; background: white !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+                             @page { size: landscape; margin: 0; }
+                         }
+                         .text-stroke-black { -webkit-text-stroke: 1px black; }
+                     `}</style>
+                  </div>
+              )}
+          </div>
       )}
     </div>
   );

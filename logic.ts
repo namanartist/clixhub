@@ -1,7 +1,7 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
 
-export class AIService {
+export class SmartLogicService {
   async screenApplicant(whyJoin: string) {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const response = await ai.models.generateContent({
@@ -67,4 +67,4 @@ export class AIService {
   }
 }
 
-export const aiService = new AIService();
+export const smartLogicService = new SmartLogicService();

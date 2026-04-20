@@ -7,12 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "server": "node server/index.js"
+    "server": "node server/index.js",
+    "kill-port": "for /f \"tokens=5\" %a in ('netstat -aon ^| findstr :4000') do taskkill /f /pid %a"
   },
   "dependencies": {
     "@clerk/react": "^6.1.0",
     "@google/genai": "^1.39.0",
-    "@supabase/supabase-js": "^2.48.1",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^16.6.1",
@@ -27,7 +27,9 @@
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.13.1",
-    "recharts": "^3.7.0"
+    "recharts": "^3.7.0",
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3"
   },
   "devDependencies": {
     "@types/mongoose": "^5.11.96",

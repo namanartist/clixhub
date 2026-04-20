@@ -1,3 +1,5 @@
+import { Server } from 'socket.io';
+import { createServer } from 'http';
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -37,8 +39,53 @@ if (!JWT_SECRET) {
 app.use(cors()); // Permissive for local demo
 app.use(express.json());
 
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
+});
+
+// Real-time Chat Management
+io.on('connection', (socket) => {
+  console.log('User connected:', socket.id);
+
+  socket.on('join', (room) => {
+    socket.join(room);
+    console.log(`Socket ${socket.id} joined room: ${room}`);
+  });
+
+  socket.on('send_message', (data) => {
+    // Determine room: either the clubId or a combined DM ID
+    const room = data.clubId || [data.senderId, data.recipientId].sort().join('_');
+
+    // Broadcast to everyone in the room except sender (sender already updated UI optimistically)
+    socket.to(room).emit('receive_message', data);
+
+    // Also notify the recipient if it's a DM (to show unread badges)
+    if (data.recipientId) {
+      io.to(data.recipientId).emit('notification', {
+        type: 'message',
+        senderName: data.senderName,
+        content: data.content
+      });
+    }
+  });
+
+  socket.on('typing', (data) => {
+    const room = data.clubId || [data.senderId, data.recipientId].sort().join('_');
+    socket.to(room).emit('user_typing', { userId: data.userId, isTyping: data.isTyping });
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  });
+});
+
 let db;
 let mongoClient;
+let connectionPromise; // Prevent race conditions during connection
 
 const DATA_FILE = path.join(rootDir, 'db.json');
 let localDb = null;
@@ -164,61 +211,70 @@ const localCollection = (name) => ({
 async function connectToMongo() {
   if (db) return db;
 
-  // If MONGODB_URI is intentionally or accidentally empty/unset, use local fallback
-  if (!MONGODB_URI || MONGODB_URI.trim() === '') {
-    console.warn('[DB] MONGODB_URI not found. Using local JSON storage.');
-    db = { collection: localCollection };
-    return db;
-  }
+  // If connection is in progress, wait for it
+  if (connectionPromise) return connectionPromise;
 
-  try {
-    if (!mongoClient) {
-      console.log('[DB] Initializing MongoClient...');
-
-      // Try Atlas first, then fallback to local
-      const uris = [
-        MONGODB_URI,
-        'mongodb://localhost:27017/ccms'
-      ];
-
-      for (const uri of uris) {
-        if (!uri) continue;
-
-        try {
-          console.log(`[DB] Trying to connect to: ${uri.includes('localhost') ? 'localhost' : 'Atlas'}`);
-          mongoClient = new MongoClient(uri, {
-            tls: !uri.includes('localhost'), // Disable TLS for localhost
-            connectTimeoutMS: 5000,
-            serverSelectionTimeoutMS: 5000,
-            maxPoolSize: 10,
-            minPoolSize: 1,
-          });
-
-          const connectPromise = mongoClient.connect();
-          const timeoutPromise = new Promise((_, reject) =>
-            setTimeout(() => reject(new Error('Connection timed out')), 6000)
-          );
-
-          await Promise.race([connectPromise, timeoutPromise]);
-
-          db = mongoClient.db(DB_NAME);
-          console.log(`[DB] Connected to ${uri.includes('localhost') ? 'Local MongoDB' : 'MongoDB Atlas'} Successfully`);
-          return db;
-        } catch (e) {
-          console.warn(`[DB] Failed to connect to ${uri.includes('localhost') ? 'localhost' : 'Atlas'}: ${e.message}`);
-          mongoClient = null;
-        }
+  connectionPromise = (async () => {
+    try {
+      // If MONGODB_URI is intentionally or accidentally empty/unset, use local fallback
+      if (!MONGODB_URI || MONGODB_URI.trim() === '') {
+        console.warn('[DB] MONGODB_URI not found. Using local JSON storage.');
+        db = { collection: localCollection };
+        return db;
       }
 
-      throw new Error('All MongoDB connection attempts failed');
-    }
+      if (!mongoClient) {
+        console.log('[DB] Initializing MongoClient...');
 
-    return db;
-  } catch (e) {
-    console.warn(`[DB] Could not connect to MongoDB: ${e.message}. Falling back to local JSON storage.`);
-    db = { collection: localCollection };
-    return db;
-  }
+        // Try Atlas first, then fallback to local
+        const uris = [
+          MONGODB_URI,
+          'mongodb://localhost:27017/ccms'
+        ];
+
+        for (const uri of uris) {
+          if (!uri) continue;
+
+          try {
+            console.log(`[DB] Trying to connect to: ${uri.includes('localhost') ? 'localhost' : 'Atlas'}`);
+            mongoClient = new MongoClient(uri, {
+              tls: !uri.includes('localhost'), // Disable TLS for localhost
+              connectTimeoutMS: 5000,
+              serverSelectionTimeoutMS: 5000,
+              maxPoolSize: 10,
+              minPoolSize: 1,
+            });
+
+            const connectPromise = mongoClient.connect();
+            const timeoutPromise = new Promise((_, reject) =>
+              setTimeout(() => reject(new Error('Connection timed out')), 6000)
+            );
+
+            await Promise.race([connectPromise, timeoutPromise]);
+
+            db = mongoClient.db(DB_NAME);
+            console.log(`[DB] Connected to ${uri.includes('localhost') ? 'Local MongoDB' : 'MongoDB Atlas'} Successfully`);
+            return db;
+          } catch (e) {
+            console.warn(`[DB] Failed to connect to ${uri.includes('localhost') ? 'localhost' : 'Atlas'}: ${e.message}`);
+            mongoClient = null;
+          }
+        }
+
+        throw new Error('All MongoDB connection attempts failed');
+      }
+
+      return db;
+    } catch (e) {
+      console.warn(`[DB] Could not connect to MongoDB: ${e.message}. Falling back to local JSON storage.`);
+      db = { collection: localCollection };
+      return db;
+    } finally {
+      connectionPromise = null; // Clear the promise after connection is done
+    }
+  })();
+
+  return connectionPromise;
 }
 
 function generateToken(user) {
@@ -1046,8 +1102,17 @@ app.post('/api/messages', async (req, res) => {
 
     await messages.insertOne(message);
 
-    // TODO: Emit via WebSocket/Socket.io for real-time updates
-    // socket.emit('new-message', message);
+    // Broadcast via Socket.io
+    const room = message.clubId || [message.senderId, message.recipientId].sort().join('_');
+    io.to(room).emit('receive_message', message);
+
+    if (message.recipientId) {
+      io.to(message.recipientId).emit('notification', {
+        type: 'message',
+        senderName: message.senderName,
+        content: message.content
+      });
+    }
 
     res.json(message);
   } catch (e) {
@@ -1101,6 +1166,14 @@ app.patch('/api/messages/:messageId/read', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`[CLIX HUB] Server running on http://localhost:${PORT}`);
+httpServer.listen(PORT, () => {
+  console.log(`[CLIX HUB] Real-time server running on http://localhost:${PORT}`);
+}).on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`\n❌ [PORT CONFLICT] Port ${PORT} is already in use.`);
+    console.error(`💡 Use 'npm run kill-port' to clear it and then try again.\n`);
+    process.exit(1);
+  } else {
+    console.error(err);
+  }
 });

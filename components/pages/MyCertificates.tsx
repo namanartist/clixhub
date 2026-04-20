@@ -21,6 +21,8 @@ interface Props {
 
 const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
   const [activePrintId, setActivePrintId] = useState<string | null>(null);
+  const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
+  const [selectedCert, setSelectedCert] = useState<{cert: IssuedCertificate, batch: CertificateBatch} | null>(null);
   const userCertificates = useMemo(() => {
     return batches
       .filter(batch => batch.status === 'Approved')
@@ -36,7 +38,12 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
       setTimeout(() => {
           window.print();
           setActivePrintId(null);
-      }, 100);
+      }, 300);
+  };
+
+  const handlePreview = (cert: IssuedCertificate, batch: CertificateBatch) => {
+    setSelectedCert({ cert, batch });
+    setIsPreviewModalOpen(true);
   };
 
   return (
@@ -81,10 +88,9 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
           {userCertificates.map(({ cert, batch }) => (
             <div key={cert.serialNumber} className="group flex flex-col bg-white dark:bg-[#111C44] rounded-[3.5rem] border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:scale-[1.01]">
                 
-                {/* Certificate Visual Part */}
-                <div className="p-8 pb-0 flex flex-col items-center bg-slate-50 dark:bg-black/20 group-hover:bg-transparent transition-colors" id={`print-${cert.serialNumber}`}>
-                    <div className="w-full shadow-2xl rounded-sm overflow-hidden transform scale-95 group-hover:scale-100 transition-transform duration-500" 
-                         id={cert.serialNumber === activePrintId ? "certificate-print-area" : undefined}>
+                <div className="p-8 pb-0 flex flex-col items-center bg-slate-50 dark:bg-black/20 group-hover:bg-transparent transition-colors cursor-zoom-in" 
+                     onClick={() => handlePreview(cert, batch)}>
+                    <div className="w-full shadow-2xl rounded-sm overflow-hidden transform scale-95 group-hover:scale-100 transition-transform duration-500">
                       <CertificatePreview 
                           studentName={cert.studentName}
                           enrollmentNumber={cert.enrollmentNumber}
@@ -116,7 +122,7 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
 
                     <div className="grid grid-cols-2 gap-4">
                         <button 
-                            onClick={() => handlePrint(cert.serialNumber)}
+                            onClick={() => handlePreview(cert, batch)}
                             className="flex items-center justify-center gap-3 py-4 bg-blue-600 text-white rounded-[2rem] font-black text-xs uppercase tracking-widest hover:bg-blue-700 transition-all shadow-xl shadow-blue-900/20"
                         >
                             <Printer size={18} /> Print Legal Copy
@@ -133,6 +139,71 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
             </div>
           ))}
         </div>
+      )}
+
+      {/* Preview & Print Modal */}
+      {isPreviewModalOpen && selectedCert && (
+          <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-8 bg-black/95 backdrop-blur-3xl animate-in fade-in duration-300">
+              <div className="relative w-full max-w-[1240px] flex flex-col items-center gap-8 max-h-screen overflow-y-auto py-10 no-scrollbar">
+                  <button 
+                    onClick={() => setIsPreviewModalOpen(false)}
+                    className="absolute top-4 right-4 md:top-8 md:right-8 p-4 bg-white/10 hover:bg-rose-500/20 hover:text-rose-500 text-white rounded-2xl border border-white/10 transition-all z-[1100]"
+                  >
+                    <ChevronRight size={24} className="rotate-180" />
+                  </button>
+
+                  <div className="text-center space-y-2 mb-2 relative z-10">
+                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black uppercase tracking-widest mb-4">
+                         <Printer size={14} /> Print Protocol Active
+                      </div>
+                      <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-none">Institutional Credential Preview</h2>
+                      <p className="text-slate-400 font-medium italic opacity-60">"Set Destination to 'PDF' or 'Printer', Layout to 'Landscape', and Margins to 'None'"</p>
+                  </div>
+
+                  <div className="w-full shadow-[0_0_150px_rgba(37,99,235,0.25)] rounded-sm overflow-hidden border border-white/10 bg-white transition-all transform scale-[1.0] md:scale-[1.05] mt-4 print-preview-container">
+                    <CertificatePreview 
+                        studentName={selectedCert.cert.studentName}
+                        enrollmentNumber={selectedCert.cert.enrollmentNumber}
+                        eventName={selectedCert.cert.eventName}
+                        clubName={selectedCert.cert.clubName}
+                        id={selectedCert.cert.serialNumber}
+                        date={selectedCert.cert.date}
+                        template={selectedCert.batch.templateId}
+                    />
+                  </div>
+
+                  <div className="flex flex-col md:flex-row gap-6 mt-12 w-full max-w-2xl px-6">
+                     <button 
+                        onClick={() => handlePrint(selectedCert.cert.serialNumber)}
+                        className="flex-1 px-12 py-7 bg-blue-600 text-white rounded-[2rem] font-black text-sm uppercase tracking-[0.3em] shadow-3xl shadow-blue-600/40 hover:scale-[1.05] active:scale-95 transition-all flex items-center justify-center gap-4"
+                     >
+                        <Printer size={22} /> Execute Print
+                     </button>
+                     <button 
+                        onClick={() => setIsPreviewModalOpen(false)}
+                        className="px-12 py-7 bg-white/5 text-white rounded-[2rem] font-black text-sm uppercase tracking-[0.3em] border border-white/10 hover:bg-white/10 transition-all flex items-center justify-center gap-4"
+                     >
+                        Cancel
+                     </button>
+                  </div>
+              </div>
+
+              {/* Hidden Print Area that only becomes visible during window.print() via CertificatePreview's CSS */}
+              {activePrintId === selectedCert.cert.serialNumber && (
+                <div className="fixed inset-0 z-[-1] opacity-0 pointer-events-none">
+                    <CertificatePreview 
+                        studentName={selectedCert.cert.studentName}
+                        enrollmentNumber={selectedCert.cert.enrollmentNumber}
+                        eventName={selectedCert.cert.eventName}
+                        clubName={selectedCert.cert.clubName}
+                        id={selectedCert.cert.serialNumber}
+                        date={selectedCert.cert.date}
+                        template={selectedCert.batch.templateId}
+                        isPrintReady={true}
+                    />
+                </div>
+              )}
+          </div>
       )}
 
       {/* Verification Notice */}

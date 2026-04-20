@@ -1,16 +1,16 @@
-import { SEED_USERS, CLUBS, EVENTS, INITIAL_REGISTRATIONS, INITIAL_APPLICANTS, INITIAL_AUDIT_LOGS } from './constants.tsx';
-
-const seedData = {
-    users: SEED_USERS,
-    clubs: CLUBS,
-    events: EVENTS,
-    registrations: INITIAL_REGISTRATIONS,
-    applicants: INITIAL_APPLICANTS,
-    logs: INITIAL_AUDIT_LOGS
-};
+// seed-db.ts — Run this script to seed the database with demo data from db.json
+// Usage: node --loader ts-node/esm seed-db.ts
+import * as fs from 'fs';
+import * as path from 'path';
 
 async function seed() {
     try {
+        const dbPath = path.join(process.cwd(), 'db.json');
+        if (!fs.existsSync(dbPath)) {
+            console.error('db.json not found. Please run the server first to generate it.');
+            process.exit(1);
+        }
+        const seedData = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
         const res = await fetch('http://localhost:4000/api/db/seed', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
