@@ -37,8 +37,8 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
       setActivePrintId(serial);
       setTimeout(() => {
           window.print();
-          setActivePrintId(null);
-      }, 300);
+          setTimeout(() => setActivePrintId(null), 1000);
+      }, 400);
   };
 
   const handlePreview = (cert: IssuedCertificate, batch: CertificateBatch) => {
@@ -98,7 +98,7 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
                           clubName={cert.clubName}
                           id={cert.serialNumber}
                           date={cert.date}
-                          template={batch.templateId}
+                          template={batch.templateId || 'classic'}
                       />
                     </div>
                 </div>
@@ -168,7 +168,7 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
                         clubName={selectedCert.cert.clubName}
                         id={selectedCert.cert.serialNumber}
                         date={selectedCert.cert.date}
-                        template={selectedCert.batch.templateId}
+                        template={selectedCert.batch.templateId || 'classic'}
                     />
                   </div>
 
@@ -188,9 +188,9 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
                   </div>
               </div>
 
-              {/* Hidden Print Area that only becomes visible during window.print() via CertificatePreview's CSS */}
+              {/* Hidden Print Area – made visible by @media print in CertificatePreview */}
               {activePrintId === selectedCert.cert.serialNumber && (
-                <div className="fixed inset-0 z-[-1] opacity-0 pointer-events-none">
+                <div id="cert-print-root" style={{position:'fixed',inset:0,zIndex:9999,background:'white',opacity:0,pointerEvents:'none'}}>
                     <CertificatePreview 
                         studentName={selectedCert.cert.studentName}
                         enrollmentNumber={selectedCert.cert.enrollmentNumber}
@@ -198,7 +198,7 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
                         clubName={selectedCert.cert.clubName}
                         id={selectedCert.cert.serialNumber}
                         date={selectedCert.cert.date}
-                        template={selectedCert.batch.templateId}
+                        template={selectedCert.batch.templateId || 'classic'}
                         isPrintReady={true}
                     />
                 </div>

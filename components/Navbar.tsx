@@ -108,15 +108,7 @@ const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           <div className="flex items-center gap-2 md:gap-3">
-            <button
-              onClick={onToggleTheme}
-              className={`p-3 md:p-4 rounded-xl md:rounded-2xl transition-all border ${isDarkMode
-                ? 'bg-white/5 border-white/5 text-slate-400 hover:text-white hover:border-white/20'
-                : 'bg-slate-100 border-slate-200 text-slate-500 hover:text-primary'
-                }`}
-            >
-              {isDarkMode ? <Sun size={18} className="md:size-[20px]" /> : <Moon size={18} className="md:size-[20px]" />}
-            </button>
+            {/* Removed Theme Toggle */}
 
             <div className="relative">
               <button

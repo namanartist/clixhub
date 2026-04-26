@@ -44,7 +44,7 @@ const LiveFeedPublic: React.FC<Props> = ({ events, logs, onBack }) => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-[600px]">
         
         {/* Left: Activity Ticker */}
-        <div className="lg:col-span-2 flex flex-col gap-6 h-full">
+        <div className="hidden lg:flex lg:col-span-2 flex-col gap-6 h-full">
            <div className="p-8 rounded-[2.5rem] bg-[#111C44]/50 border border-white/10 flex items-center justify-between">
               <div className="flex items-center gap-4">
                  <div className="relative">

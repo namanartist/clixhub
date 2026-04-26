@@ -204,7 +204,7 @@ const GlobalStudentDashboard: React.FC<Props> = ({
                 </div>
 
                 {/* ─── LIVE DATA STREAM ─── */}
-                <div className="lg:col-span-4 h-full">
+                <div className="lg:col-span-4 h-full hidden md:block">
                     <div className="bento-card h-full min-h-[700px] flex flex-col p-12 overflow-hidden relative">
                         <div className="absolute top-0 right-0 p-16 opacity-[0.02] rotate-12"><Activity size={300} /></div>
                         

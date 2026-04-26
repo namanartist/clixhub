@@ -31,7 +31,6 @@ interface Props {
   onLogin: () => void;
   onRegister: () => void;
   isDarkMode: boolean;
-  onToggleTheme: () => void;
   onOpenDeveloper?: () => void;
   onOpenProfile?: () => void;
   onNavigate?: (page: string) => void;
@@ -54,7 +53,7 @@ const useCounter = (target: number, duration: number = 2000) => {
   return { count, startCounting: () => setStarted(true) };
 };
 
-const LandingPage: React.FC<Props> = ({ events, clubs, onLogin, onRegister, isDarkMode, onToggleTheme, onOpenDeveloper, onOpenProfile, onNavigate }) => {
+const LandingPage: React.FC<Props> = ({ events, clubs, onLogin, onRegister, isDarkMode, onOpenDeveloper, onOpenProfile, onNavigate }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const upcomingEvents = events
     .filter(e => new Date(e.date) > new Date())

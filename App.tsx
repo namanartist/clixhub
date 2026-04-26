@@ -662,7 +662,6 @@ const App: React.FC = () => {
                   onLogin={() => navigate('/auth')}
                   onRegister={() => navigate('/auth')}
                   isDarkMode={isDarkMode}
-                  onToggleTheme={() => setIsDarkMode(!isDarkMode)}
                   onOpenDeveloper={() => navigate('/developers')}
                   onOpenProfile={() => navigate('/developer-profile')}
                   onNavigate={(p) => navigate(`/${p}`)}
@@ -673,7 +672,6 @@ const App: React.FC = () => {
               currentUser ? <Navigate to="/dashboard" replace /> :
                 <JWTAuthPage
                   isDarkMode={isDarkMode}
-                  onToggleTheme={() => setIsDarkMode(!isDarkMode)}
                 />
             } />
 
@@ -697,7 +695,7 @@ const App: React.FC = () => {
                 <div className="flex flex-col h-screen bg-[var(--bg-main)] text-[var(--text-main)] overflow-hidden">
                   <Navbar
                     user={currentUser} clubs={data.clubs} activeContext="Global" onLogout={handleLogout}
-                    isDarkMode={isDarkMode} onToggleTheme={() => setIsDarkMode(!isDarkMode)}
+                    isDarkMode={isDarkMode}
                     onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     onGoHome={() => handleContextChange('Global')} onOpenProfile={() => handleTabChange('profile')}
                     onOpenDeveloper={() => navigate('/developer-profile')}
@@ -764,7 +762,7 @@ const App: React.FC = () => {
                     <div className="flex flex-col h-screen bg-[var(--bg-main)] text-[var(--text-main)] overflow-hidden">
                       <Navbar
                         user={currentUser} clubs={data.clubs} activeContext={activeContext} onLogout={handleLogout}
-                        isDarkMode={isDarkMode} onToggleTheme={() => {}}
+                        isDarkMode={isDarkMode}
                         onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                         onGoHome={() => handleContextChange('Global')} onOpenProfile={() => { handleContextChange('Global'); handleTabChange('profile'); }}
                         onOpenDeveloper={() => navigate('/developer-profile')}

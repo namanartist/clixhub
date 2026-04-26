@@ -319,22 +319,32 @@ const CertificatePreview: React.FC<CertificateProps> = ({
         {/* Print Styles */}
         <style>{`
             @media print {
-                body * {
-                    visibility: hidden;
-                }
-                #certificate-print-area, #certificate-print-area * {
-                    visibility: visible;
-                }
-                #certificate-print-area {
-                    position: fixed;
-                    left: 0;
-                    top: 0;
-                    width: 100vw;
-                    height: 100vh;
+                @page {
+                    size: A4 landscape;
                     margin: 0;
-                    padding: 0;
-                    z-index: 9999;
-                    box-shadow: none;
+                }
+                body * {
+                    visibility: hidden !important;
+                }
+                #certificate-print-area,
+                #certificate-print-area *,
+                #cert-print-root,
+                #cert-print-root * {
+                    visibility: visible !important;
+                }
+                #certificate-print-area,
+                #cert-print-root {
+                    display: block !important;
+                    position: fixed !important;
+                    left: 0 !important;
+                    top: 0 !important;
+                    width: 100vw !important;
+                    height: 100vh !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    z-index: 999999 !important;
+                    box-shadow: none !important;
+                    opacity: 1 !important;
                 }
             }
         `}</style>

@@ -33,10 +33,9 @@ const DEPARTMENTS = [
 
 interface Props {
     isDarkMode: boolean;
-    onToggleTheme: () => void;
 }
 
-const JWTAuthPage: React.FC<Props> = ({ isDarkMode, onToggleTheme }) => {
+const JWTAuthPage: React.FC<Props> = ({ isDarkMode }) => {
     const navigate = useNavigate();
     const { login, signup, demoLogin } = useAuth();
 
