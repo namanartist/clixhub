@@ -10,6 +10,7 @@ import JWTAuthPage from './components/pages/JWTAuthPage';
 import LandingPage from './components/pages/LandingPage';
 import { db } from './db';
 import { ShieldAlert, Zap } from 'lucide-react';
+import ThemeToggle from './components/ThemeToggle';
 
 // Page Components
 import GlobalStudentDashboard from './components/pages/GlobalStudentDashboard';
@@ -892,6 +893,7 @@ const App: React.FC = () => {
 
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
+          <ThemeToggle isDarkMode={isDarkMode} toggleTheme={() => setIsDarkMode(!isDarkMode)} />
       </div>
     </div>
   );
