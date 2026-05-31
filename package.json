@@ -1,14 +1,19 @@
 {
   "name": "clix-hub",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "server": "node api/index.js",
-    "kill-port": "for /f \"tokens=5\" %a in ('netstat -aon ^| findstr :4000') do taskkill /f /pid %a"
+    "kill-port": "for /f \"tokens=5\" %a in ('netstat -aon ^| findstr :4000') do taskkill /f /pid %a",
+    "electron-dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron-build": "vite build && electron-builder",
+    "mobile:build": "vite build && npx cap sync",
+    "mobile:android": "npx cap open android",
+    "mobile:ios": "npx cap open ios"
   },
   "dependencies": {
     "@clerk/react": "^6.1.0",
@@ -34,15 +39,25 @@
     "socket.io-client": "^4.8.3"
   },
   "devDependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/app": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/ios": "^7.0.0",
+    "@capacitor/splash-screen": "^7.0.0",
     "@types/mongoose": "^5.11.96",
     "@types/node": "^22.14.0",
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^5.0.0",
     "autoprefixer": "^10.5.0",
+    "concurrently": "^8.2.2",
+    "electron": "^31.0.0",
+    "electron-builder": "^25.1.1",
+    "electron-is-dev": "^3.0.1",
     "postcss": "^8.5.10",
     "tailwindcss": "^3.4.19",
     "tsx": "^4.21.0",
     "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "vite": "^6.2.0",
+    "wait-on": "^7.0.1"
   }
 }
