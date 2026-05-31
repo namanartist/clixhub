@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { User, Club, Notification } from '../types';
-import { Bell, Menu, Search, ChevronDown, Command, LogOut, User as UserIcon, Sparkles, Fingerprint, Code, ArrowLeft, Hexagon } from 'lucide-react';
+import { Bell, Menu, Search, ChevronDown, Command, LogOut, User as UserIcon, Sparkles, Fingerprint, Code, ArrowLeft, Hexagon, Moon, Sun } from 'lucide-react';
 import { db } from '../db';
 
 interface NavbarProps {
@@ -12,11 +12,13 @@ interface NavbarProps {
   onToggleMobileMenu: () => void;
   onGoHome?: () => void;
   onOpenProfile?: () => void;
+  onOpenProfile?: () => void;
   onOpenDeveloper?: () => void;
+  onToggleTheme?: () => void;
 }
 
 const Navbar: React.FC<NavbarProps> = ({
-  user, clubs, activeContext, onLogout, isDarkMode, onToggleMobileMenu, onGoHome, onOpenProfile, onOpenDeveloper
+  user, clubs, activeContext, onLogout, isDarkMode, onToggleMobileMenu, onGoHome, onOpenProfile, onOpenDeveloper, onToggleTheme
 }) => {
   const currentClub = clubs.find(c => c.id === activeContext);
   const contextName = activeContext === 'Global' ? 'Dashboard' : (currentClub?.name || 'Club');
@@ -90,6 +92,16 @@ const Navbar: React.FC<NavbarProps> = ({
 
         {/* RIGHT: Actions & Profile */}
         <div className="flex items-center gap-3 md:gap-4 flex-shrink-0">
+          <button
+            onClick={onToggleTheme}
+            className={`p-2.5 md:p-3 rounded-xl md:rounded-2xl transition-all border hover:scale-105 active:scale-95 shadow-md ${isDarkMode
+              ? 'bg-white/ border-white/5 text-slate-400 hover:text-amber-400 hover:border-amber-400/30'
+              : 'bg-whiteborder-slate-200 text-slate-600 hover:text-indigo-600 hover:border-indigo-600/30'
+              }`}
+          >
+            {isDarkMode ? <Sun size={18} className="md:size-[20px]" /> : <Moon size={18} className="md:size-[20px]" />}
+          </button>
+
           <button
             onClick={() => setIsNotifOpen(!isNotifOpen)}
             className={`p-2.5 md:p-3 rounded-xl md:rounded-2xl transition-all border relative hover:scale-105 active:scale-95 shadow-md ${isDarkMode

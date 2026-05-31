@@ -801,6 +801,7 @@ const App: React.FC = () => {
                     onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     onGoHome={() => handleContextChange('Global')} onOpenProfile={() => handleTabChange('profile')}
                     onOpenDeveloper={() => navigate('/developer-profile')}
+                    onToggleTheme={() => setIsDarkMode(!isDarkMode)}
                   />
 
                   <div className="flex flex-1 overflow-hidden">
@@ -868,6 +869,7 @@ const App: React.FC = () => {
                         onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                         onGoHome={() => handleContextChange('Global')} onOpenProfile={() => { handleContextChange('Global'); handleTabChange('profile'); }}
                         onOpenDeveloper={() => navigate('/developer-profile')}
+                        onToggleTheme={() => setIsDarkMode(!isDarkMode)}
                       />
 
                       <div className="flex flex-1 overflow-hidden">
@@ -893,7 +895,6 @@ const App: React.FC = () => {
 
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
-          <ThemeToggle isDarkMode={isDarkMode} toggleTheme={() => setIsDarkMode(!isDarkMode)} />
       </div>
     </div>
   );
