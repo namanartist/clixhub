@@ -2,7 +2,7 @@ import { Club, Applicant, Registration, Event, AuditLog, User, Role, ClubRole, I
 import { storage } from './lib/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://127.0.0.1:4000/api';
+const API_BASE = import.meta.env.PROD ? '/api' : (import.meta.env.VITE_API_BASE || 'http://127.0.0.1:4000/api');
 
 class InstitutionalAPI {
     private hasInitialized = false;
