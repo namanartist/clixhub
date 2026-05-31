@@ -1166,14 +1166,20 @@ app.patch('/api/messages/:messageId/read', async (req, res) => {
   }
 });
 
-httpServer.listen(PORT, () => {
-  console.log(`[CLIX HUB] Real-time server running on http://localhost:${PORT}`);
-}).on('error', (err) => {
-  if (err.code === 'EADDRINUSE') {
-    console.error(`\n❌ [PORT CONFLICT] Port ${PORT} is already in use.`);
-    console.error(`💡 Use 'npm run kill-port' to clear it and then try again.\n`);
-    process.exit(1);
-  } else {
-    console.error(err);
-  }
-});
+// Only start the server if not running in Vercel Serverless environment
+if (!process.env.VERCEL) {
+  httpServer.listen(PORT, () => {
+    console.log(`[CLIX HUB] Real-time server running on http://localhost:${PORT}`);
+  }).on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`\n❌ [PORT CONFLICT] Port ${PORT} is already in use.`);
+      console.error(`💡 Use 'npm run kill-port' to clear it and then try again.\n`);
+      process.exit(1);
+    } else {
+      console.error(err);
+    }
+  });
+}
+
+// Export for Vercel Serverless Functions
+export default app;
