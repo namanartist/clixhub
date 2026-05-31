@@ -56,7 +56,7 @@ const CertificatePreview: React.FC<CertificateProps> = ({
             ) : (
                 <div className={`font-serif italic text-2xl mb-4 ${isDark ? 'text-white/30' : 'text-slate-300'}`}>Digitally Signed</div>
             )}
-            <div className={`h-px w-48 ${isDark ? 'bg-white/30' : 'bg-slate-800'}`}></div>
+            <div className={`h-px w-48 ${isDark ? 'bg-white/' : 'bg-slate-800}`}></div>
             <p className={`mt-2 font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>{facultyName}</p>
             <p className={`text-[10px] uppercase tracking-widest ${isDark ? 'text-white/60' : 'text-slate-500'}`}>Faculty Coordinator</p>
         </div>
@@ -66,7 +66,7 @@ const CertificatePreview: React.FC<CertificateProps> = ({
             ) : (
                 <div className={`font-serif italic text-2xl mb-4 ${isDark ? 'text-white/30' : 'text-slate-300'}`}>Digitally Signed</div>
             )}
-            <div className={`h-px w-48 ${isDark ? 'bg-white/30' : 'bg-slate-800'}`}></div>
+            <div className={`h-px w-48 ${isDark ? 'bg-white/' : 'bg-slate-800}`}></div>
             <p className={`mt-2 font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>{presidentName}</p>
             <p className={`text-[10px] uppercase tracking-widest ${isDark ? 'text-white/60' : 'text-slate-500'}`}>President, {clubName}</p>
         </div>
@@ -111,7 +111,7 @@ const CertificatePreview: React.FC<CertificateProps> = ({
             </div>
         </div>
         <div className="absolute bottom-8 right-8 z-20 flex flex-col items-center">
-            <div className="p-2 bg-white rounded-lg shadow-sm border border-slate-100">
+            <div className="p-2 bg-whiterounded-lg shadow-sm border border-slate-100">
                 <QRCodeSVG value={verificationUrl} size={64} />
             </div>
             <p className="text-[7px] font-black text-center mt-2 uppercase opacity-40">Scan to Verify</p>
@@ -120,8 +120,8 @@ const CertificatePreview: React.FC<CertificateProps> = ({
   );
 
   const renderModern = () => (
-    <div className="relative w-full h-full bg-white flex flex-col font-sans overflow-hidden">
-        <div className="absolute top-0 left-0 w-1/3 h-full bg-slate-50 z-0"></div>
+    <div className="relative w-full h-full bg-whiteflex flex-col font-sans overflow-hidden">
+        <div className="absolute top-0 left-0 w-1/3 h-full bg-slate-50z-0"></div>
         <div className="absolute top-0 left-0 w-2 h-full bg-[#1B2559] z-10"></div>
         
         <div className="relative z-20 flex h-full">
@@ -139,7 +139,7 @@ const CertificatePreview: React.FC<CertificateProps> = ({
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-6 mb-1">Certificate ID</p>
                     <p className="text-xs font-mono text-[#1B2559]">{id}</p>
                     <div className="mt-8">
-                        <div className="inline-block p-2 bg-white rounded-lg border border-slate-100">
+                        <div className="inline-block p-2 bg-whiterounded-lg border border-slate-100">
                             <QRCodeSVG value={verificationUrl} size={64} />
                         </div>
                     </div>
@@ -182,12 +182,12 @@ const CertificatePreview: React.FC<CertificateProps> = ({
         <div className="absolute inset-0" style={{backgroundImage: 'linear-gradient(rgba(0, 255, 0, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 0, 0.03) 1px, transparent 1px)', backgroundSize: '30px 30px'}}></div>
         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500"></div>
         <div className="absolute bottom-0 right-0 p-8 opacity-40">
-            <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
+            <div className="p-3 bg-white/ backdrop-blur-md rounded-2xl border border-white/20">
                 <QRCodeSVG value={verificationUrl} size={80} bgColor="transparent" fgColor="white" />
             </div>
         </div>
 
-        <div className="relative z-10 w-full max-w-5xl border border-white/10 bg-white/5 backdrop-blur-sm p-12 rounded-3xl shadow-2xl">
+        <div className="relative z-10 w-full max-w-5xl border border-white/10 bg-white/ backdrop-blur-sm p-12 rounded-3xl shadow-2xl">
             <div className="flex justify-between items-start mb-12">
                 <div className="flex items-center gap-4">
                     <img src="/mitslogo.jpg" className="w-16 grayscale brightness-200" />
@@ -251,7 +251,7 @@ const CertificatePreview: React.FC<CertificateProps> = ({
   );
 
   const renderMinimal = () => (
-    <div className="relative w-full h-full bg-white p-20 flex flex-col justify-between font-sans text-black">
+    <div className="relative w-full h-full bg-whitep-20 flex flex-col justify-between font-sans text-black">
         <div className="flex justify-between items-start">
             <h1 className="text-6xl font-black tracking-tighter leading-none">Certificate<br/><span className="text-slate-300">Of Completion</span></h1>
             <img src="/mitslogo.jpg" className="w-24 grayscale opacity-20" />
@@ -303,13 +303,13 @@ const CertificatePreview: React.FC<CertificateProps> = ({
   return (
     <div 
         id={isPrintReady ? "certificate-print-area" : undefined}
-        className="w-full h-full relative overflow-hidden bg-white shadow-2xl"
+        className="w-full h-full relative overflow-hidden bg-whiteshadow-2xl"
         style={{ aspectRatio: '1.414/1' }} // A4 Landscape Ratio
     >
         {customBackgroundUrl && (
             <div className="absolute inset-0 z-0">
                 <img src={customBackgroundUrl} className="w-full h-full object-cover" alt="Cert BG" />
-                <div className="absolute inset-0 bg-white/80 backdrop-blur-sm" /> {/* Overlay to ensure text readability */}
+                <div className="absolute inset-0 bg-white/ backdrop-blur-sm" /> {/* Overlay to ensure text readability */}
             </div>
         )}
         <div className="relative z-10 w-full h-full">

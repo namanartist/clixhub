@@ -74,7 +74,7 @@ const FacultyFeed: React.FC<Props> = ({ user, clubs, onManageClub }) => {
                             >
                                 <Settings size={16} /> Enter Control Panel
                             </button>
-                            <button className="p-4 bg-white/5 text-[#A3AED0] rounded-2xl hover:bg-white/10 transition-all">
+                            <button className="p-4 bg-white/ text-[#A3AED0] rounded-2xl hover:bg-white/ transition-all">
                                 <ArrowRight size={20} />
                             </button>
                         </div>
@@ -102,7 +102,7 @@ const FacultyFeed: React.FC<Props> = ({ user, clubs, onManageClub }) => {
               <h3 className="text-3xl font-black tracking-tighter leading-tight uppercase">Strategic Integrity Check</h3>
               <p className="text-lg opacity-80 font-medium">Verified student engagement metrics across all wings have surged by 24% this cycle.</p>
           </div>
-          <button className="px-10 py-5 bg-white text-primary rounded-full font-black text-[10px] uppercase tracking-[0.3em] shadow-2xl hover:scale-105 transition-all relative z-10 active:scale-95">
+          <button className="px-10 py-5 bg-whitetext-primary rounded-full font-black text-[10px] uppercase tracking-[0.3em] shadow-2xl hover:scale-105 transition-all relative z-10 active:scale-95">
               Launch Detailed Audit
           </button>
       </section>

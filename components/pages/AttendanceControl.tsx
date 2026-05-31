@@ -218,7 +218,7 @@ const AttendanceControl: React.FC<Props> = ({ registrations, events = [], onMark
                 </div>
               </div>
               {/* Progress bar */}
-              <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+              <div className="h-2 w-full bg-slate-800rounded-full overflow-hidden">
                 <div className="h-full bg-[#0055FF] rounded-full transition-all duration-700"
                      style={{ width: `${percentage}%` }} />
               </div>
@@ -319,7 +319,7 @@ const AttendanceControl: React.FC<Props> = ({ registrations, events = [], onMark
                      className="p-4 rounded-2xl flex items-center justify-between transition-all group bg-[#0B1437] hover:bg-[#151E40]">
                   <div className="flex items-center gap-4">
                     {/* Avatar */}
-                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-sm font-black shrink-0 transition-colors ${reg.attendanceMarked ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'bg-slate-800 text-slate-500'}`}>
+                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-sm font-black shrink-0 transition-colors ${reg.attendanceMarked ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'bg-slate-800text-slate-500'}`}>
                       {reg.attendanceMarked ? <CheckCircle2 size={20} /> : reg.studentName[0]}
                     </div>
                     <div>

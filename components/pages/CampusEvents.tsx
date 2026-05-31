@@ -50,6 +50,8 @@ const CampusEvents: React.FC<Props> = ({ events, clubs, registrations, onRegiste
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [successTicket, setSuccessTicket] = useState<Registration | null>(null);
   const [activePrintId, setActivePrintId] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState<'Upcoming' | 'Past' | 'My Events'>('Upcoming');
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -173,17 +175,17 @@ const CampusEvents: React.FC<Props> = ({ events, clubs, registrations, onRegiste
             <div className="relative flex-1 lg:min-w-[400px]">
                <Search className={`absolute left-4 top-1/2 -translate-y-1/2 ${isDarkMode ? 'text-white/50' : 'text-slate-400'}`} size={20} />
                <input type="text" placeholder="Search events..." value={search} onChange={e => setSearch(e.target.value)}
-                  className={`w-full pl-12 pr-4 py-4 rounded-2xl outline-none font-black tracking-widest text-[10px] uppercase transition-all ${isDarkMode ? 'bg-white/5 text-white placeholder-white/30 border border-white/10 focus:border-primary/50' : 'bg-white text-slate-900 placeholder-slate-400 border border-slate-200 focus:border-primary shadow-sm'}`} />
+                  className={`w-full pl-12 pr-4 py-4 rounded-2xl outline-none font-black tracking-widest text-[10px] uppercase transition-all ${isDarkMode ? 'bg-white/ text-white placeholder-white/30 border border-white/10 focus:border-primary/50' : 'bg-whitetext-slate-900 placeholder-slate-400 border border-slate-200 focus:border-primary shadow-sm'}`} />
             </div>
             <div className="flex gap-4">
                {['Upcoming', 'Past', 'My Events'].map(t => (
                   <button key={t} onClick={() => setFilter(t as any)}
-                     className={`px-8 py-4 rounded-2xl font-black text-[10px] tracking-widest uppercase transition-all ${filter === t ? 'bg-primary text-white shadow-xl shadow-primary/30 scale-105' : (isDarkMode ? 'bg-white/5 text-white/50 hover:bg-white/10' : 'bg-white text-slate-500 hover:bg-slate-50 shadow-sm border border-slate-200')}`}>
+                     className={`px-8 py-4 rounded-2xl font-black text-[10px] tracking-widest uppercase transition-all ${filter === t ? 'bg-primary text-white shadow-xl shadow-primary/30 scale-105' : (isDarkMode ? 'bg-white/ text-white/50 hover:bg-white/' : 'bg-whitetext-slate-500 hover:bg-slate-50shadow-sm border border-slate-200')}`}>
                      {t}
                   </button>
                ))}
             </div>
-            <button className="h-18 w-18 bento-card flex items-center justify-center hover:bg-white/10 transition-all group">
+            <button className="h-18 w-18 bento-card flex items-center justify-center hover:bg-white/ transition-all group">
                <Filter size={24} className="group-hover:scale-110 transition-transform" />
             </button>
          </div>
@@ -207,11 +209,11 @@ const CampusEvents: React.FC<Props> = ({ events, clubs, registrations, onRegiste
                             <div className="absolute inset-0 bg-gradient-to-r from-black/80 lg:from-transparent to-transparent" />
                             <div className="absolute top-6 left-6 px-4 py-2 bg-primary text-white text-[10px] font-[1000] uppercase tracking-widest rounded-xl shadow-2xl shadow-primary/40">Active Node</div>
                          </div>
-                         <div className={`lg:col-span-7 p-6 md:p-10 flex flex-col justify-between gap-6 ${isDarkMode ? 'bg-white/2' : 'bg-white/50'}`}>
+                         <div className={`lg:col-span-7 p-6 md:p-10 flex flex-col justify-between gap-6 ${isDarkMode ? 'bg-white/' : 'bg-white/'}`}>
                             <div className="space-y-4">
                                <div className="flex justify-between items-start">
                                   <span className="text-[10px] font-black uppercase tracking-widest text-primary italic">Organized by {clubs.find(c => c.id === e.clubId)?.name}</span>
-                                  <span className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'bg-white/5 text-white/50' : 'bg-slate-100 text-slate-500'}`}>{e.type}</span>
+                                  <span className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'bg-white/ text-white/50' : 'bg-slate-100 text-slate-500'}`}>{e.type}</span>
                                </div>
                                <h3 className="text-4xl lg:text-5xl font-[1000] tracking-tighter uppercase italic leading-none">{e.title}</h3>
                                <p className={`text-sm font-medium ${isDarkMode ? 'text-white/50' : 'text-slate-500'} leading-relaxed max-w-xl`}>{e.description}</p>
@@ -219,7 +221,7 @@ const CampusEvents: React.FC<Props> = ({ events, clubs, registrations, onRegiste
                             <div className={`flex flex-wrap items-center gap-6 text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'text-white/70' : 'text-slate-600'}`}>
                                <div className="flex items-center gap-3"><Calendar size={16} className="text-primary" /> {new Date(e.date).toLocaleDateString()}</div>
                                <button onClick={() => setSelectedEvent(e)}
-                                    className="h-14 w-full bg-white text-black rounded-xl font-black text-[10px] uppercase tracking-[0.4em] shadow-3xl hover:translate-y-[-4px] transition-all">
+                                    className="h-14 w-full bg-whitetext-black rounded-xl font-black text-[10px] uppercase tracking-[0.4em] shadow-3xl hover:translate-y-[-4px] transition-all">
                                Instant Uplink
                             </button>
                             </div>
@@ -229,7 +231,7 @@ const CampusEvents: React.FC<Props> = ({ events, clubs, registrations, onRegiste
                ))}
             </div>
          ) : (
-            <div className="bento-card py-20 bg-white/2 border-2 border-dashed border-white/5 text-center opacity-30">
+            <div className="bento-card py-20 bg-white/ border-2 border-dashed border-white/5 text-center opacity-30">
                <p className="text-[10px] font-black uppercase tracking-[1em]">Frequency Silent • No signals today</p>
             </div>
          )}
@@ -247,20 +249,20 @@ const CampusEvents: React.FC<Props> = ({ events, clubs, registrations, onRegiste
                const date = new Date(e.date);
                const isRegistered = userRegistrations.some(r => r.eventId === e.id);
                return (
-                  <div key={e.id} className={`bento-card p-6 md:p-10 flex flex-col gap-6 md:gap-8 group transition-all reveal ${isDarkMode ? 'bg-[#050505] border border-white/10' : 'bg-white border border-slate-200'}`}>
+                  <div key={e.id} className={`bento-card p-6 md:p-10 flex flex-col gap-6 md:gap-8 group transition-all reveal ${isDarkMode ? 'bg-[#050505] border border-white/10' : 'bg-whiteborder border-slate-200'}`}>
                      <div className="flex justify-between items-start">
-                        <div className={`h-16 w-16 border rounded-2xl flex flex-col items-center justify-center ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-200'}`}>
+                        <div className={`h-16 w-16 border rounded-2xl flex flex-col items-center justify-center ${isDarkMode ? 'bg-white/ border-white/10' : 'bg-slate-50border-slate-200'}`}>
                            <span className="text-xl font-black text-primary leading-none">{date.getDate()}</span>
                            <span className="text-[8px] font-black uppercase tracking-widest opacity-40">{date.toLocaleString('default', { month: 'short' })}</span>
                         </div>
-                        <button onClick={() => handleToggleSave(e.id)} className={`p-3 bg-white/5 rounded-xl transition-all ${savedEventIds.includes(e.id) ? 'text-rose-500' : 'text-white/20 hover:text-rose-400'}`}>
+                        <button onClick={() => handleToggleSave(e.id)} className={`p-3 bg-white/ rounded-xl transition-all ${savedEventIds.includes(e.id) ? 'text-rose-500' : 'text-white/20 hover:text-rose-400'}`}>
                            <Heart size={16} fill={savedEventIds.includes(e.id) ? "currentColor" : "none"} />
                         </button>
                      </div>
 
                      <div className="space-y-4 flex-1">
                         <div className="flex items-center gap-3">
-                           <span className={`px-3 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest ${isDarkMode ? 'bg-white/5 text-white/50' : 'bg-slate-100 text-slate-500'}`}>{e.type}</span>
+                           <span className={`px-3 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest ${isDarkMode ? 'bg-white/ text-white/50' : 'bg-slate-100 text-slate-500'}`}>{e.type}</span>
                            {isRegistered && <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-lg text-[8px] font-black uppercase tracking-widest border border-emerald-500/20">Registered</span>}
                         </div>
                         <h4 className="text-2xl font-black uppercase italic tracking-tighter leading-none cursor-pointer" onClick={() => setSelectedEvent(e)}>{e.title}</h4>
@@ -280,7 +282,7 @@ const CampusEvents: React.FC<Props> = ({ events, clubs, registrations, onRegiste
       {selectedEvent && (
          <div className="fixed inset-0 z-[1000] flex justify-end">
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedEvent(null)} />
-            <div className={`relative w-full md:w-[600px] h-full shadow-4xl flex flex-col animate-in slide-in-from-right duration-500 ${isDarkMode ? 'bg-[#0a0a0a] border-l border-white/10' : 'bg-white border-l border-slate-200'}`}>
+            <div className={`relative w-full md:w-[600px] h-full shadow-4xl flex flex-col animate-in slide-in-from-right duration-500 ${isDarkMode ? 'bg-[#0a0a0a] border-l border-white/10' : 'bg-whiteborder-l border-slate-200'}`}>
                <div className="relative h-64 shrink-0">
                   <img src={selectedEvent.bannerUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800"} className="w-full h-full object-cover" />
                   <button onClick={() => setSelectedEvent(null)} className="absolute top-6 right-6 p-3 bg-black/50 backdrop-blur-xl rounded-2xl text-white hover:bg-rose-500"><X size={20}/></button>
@@ -288,7 +290,7 @@ const CampusEvents: React.FC<Props> = ({ events, clubs, registrations, onRegiste
                <div className="flex-1 overflow-y-auto custom-scrollbar p-8 space-y-10">
                   <div className="space-y-4">
                      <div className="flex items-center gap-4">
-                        <span className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'bg-white/5 text-primary' : 'bg-blue-50 text-blue-600'}`}>{selectedEvent.type}</span>
+                        <span className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'bg-white/ text-primary' : 'bg-blue-50 text-blue-600'}`}>{selectedEvent.type}</span>
                         <span className={`text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'text-white/40' : 'text-slate-400'}`}>ID: {selectedEvent.id.split('-')[0]}</span>
                      </div>
                      <h2 className={`text-4xl font-[1000] tracking-tighter uppercase italic leading-none ${!isDarkMode && 'text-slate-900'}`}>{selectedEvent.title}</h2>
@@ -297,10 +299,10 @@ const CampusEvents: React.FC<Props> = ({ events, clubs, registrations, onRegiste
 
                   {/* Proxy Panel */}
                   {(user.globalRole !== 'Student' || user.clubMemberships.some(m => m.clubId === selectedEvent.clubId)) && (
-                      <div className={`p-6 border border-dashed rounded-3xl space-y-4 ${isDarkMode ? 'bg-white/2 border-white/20' : 'bg-slate-50 border-slate-300'}`}>
+                      <div className={`p-6 border border-dashed rounded-3xl space-y-4 ${isDarkMode ? 'bg-white/ border-white/20' : 'bg-slate-50border-slate-300'}`}>
                          <div className="flex justify-between items-center">
                             <h6 className="text-[10px] font-black uppercase tracking-widest text-emerald-400">Identity Proxy</h6>
-                            <input type="checkbox" checked={isProxyMode} onChange={() => setIsProxyMode(!isProxyMode)} className="h-6 w-12 rounded-full bg-white/10 appearance-none checked:bg-emerald-500 relative cursor-pointer" />
+                            <input type="checkbox" checked={isProxyMode} onChange={() => setIsProxyMode(!isProxyMode)} className="h-6 w-12 rounded-full bg-white/ appearance-none checked:bg-emerald-500 relative cursor-pointer" />
                          </div>
                          {isProxyMode && (
                              <div className="grid grid-cols-1 gap-4">
@@ -313,7 +315,7 @@ const CampusEvents: React.FC<Props> = ({ events, clubs, registrations, onRegiste
                </div>
                
                {/* Action Bar */}
-               <div className={`p-8 border-t flex gap-4 ${isDarkMode ? 'bg-[#0a0a0a] border-white/10' : 'bg-white border-slate-200'}`}>
+               <div className={`p-8 border-t flex gap-4 ${isDarkMode ? 'bg-[#0a0a0a] border-white/10' : 'bg-whiteborder-slate-200'}`}>
                   <button onClick={handleRegistrationClick} className="flex-1 h-16 bg-primary text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[10px]">
                      {userRegistrations.some(r => r.eventId === selectedEvent.id) ? 'Already Committed' : 'Confirm Registration'}
                   </button>
@@ -324,10 +326,10 @@ const CampusEvents: React.FC<Props> = ({ events, clubs, registrations, onRegiste
 
       {/* SUCCESS TICKET PASS MODAL */}
       {successTicket && (
-          <div className={`fixed inset-0 z-[2000] backdrop-blur-3xl flex flex-col items-center justify-center p-6 md:p-12 overflow-y-auto ${isDarkMode ? 'bg-[#050505]/98' : 'bg-slate-900/40'}`}>
+          <div className={`fixed inset-0 z-[2000] backdrop-blur-3xl flex flex-col items-center justify-center p-6 md:p-12 overflow-y-auto ${isDarkMode ? 'bg-[#050505]/98' : 'bg-slate-900/'}`}>
               <div className="w-full max-w-4xl flex flex-col items-center">
-                    <button onClick={() => setSuccessTicket(null)} className="absolute top-10 right-10 p-4 bg-white/5 border border-white/10 rounded-2xl text-white hover:bg-rose-500"><X size={24} /></button>
-                    <div className={`w-full max-w-2xl rounded-[3.5rem] p-12 flex flex-col gap-10 shadow-[0_0_100px_rgba(37,99,235,0.2)] ${isDarkMode ? 'bg-[#111] text-white' : 'bg-white text-black'}`}>
+                    <button onClick={() => setSuccessTicket(null)} className="absolute top-10 right-10 p-4 bg-white/ border border-white/10 rounded-2xl text-white hover:bg-rose-500"><X size={24} /></button>
+                    <div className={`w-full max-w-2xl rounded-[3.5rem] p-12 flex flex-col gap-10 shadow-[0_0_100px_rgba(37,99,235,0.2)] ${isDarkMode ? 'bg-[#111] text-white' : 'bg-whitetext-black'}`}>
                         <div className="flex justify-between items-start">
                             <h3 className="text-6xl font-[1000] tracking-tighter leading-[0.85] uppercase italic">PASS</h3>
                             <img src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${successTicket?.ticketId}`} className="w-40 h-40" alt="Pass QR" />
@@ -354,7 +356,7 @@ const CampusEvents: React.FC<Props> = ({ events, clubs, registrations, onRegiste
         const club = clubs.find(c => c.id === shareQrEvent.clubId);
         return (
           <div className="fixed inset-0 z-[3000] bg-black/95 backdrop-blur-3xl flex items-center justify-center p-4 md:p-8 overflow-y-auto" onClick={() => setShareQrEvent(null)}>
-            <div className={`relative w-full max-w-md border rounded-[2.5rem] overflow-hidden shadow-[0_0_100px_rgba(59,130,246,0.2)] my-auto animate-in zoom-in-95 duration-300 ${isDarkMode ? 'bg-[#050505] border-white/10' : 'bg-white border-slate-200'}`} onClick={e => e.stopPropagation()}>
+            <div className={`relative w-full max-w-md border rounded-[2.5rem] overflow-hidden shadow-[0_0_100px_rgba(59,130,246,0.2)] my-auto animate-in zoom-in-95 duration-300 ${isDarkMode ? 'bg-[#050505] border-white/10' : 'bg-whiteborder-slate-200'}`} onClick={e => e.stopPropagation()}>
               <div className="h-1.5 w-full" style={{ background: `linear-gradient(90deg, ${club?.themeColor || '#4318FF'}, #a855f7)` }} />
               <div className="p-10 space-y-8">
                 <div className="flex justify-between items-start">
@@ -363,21 +365,21 @@ const CampusEvents: React.FC<Props> = ({ events, clubs, registrations, onRegiste
                     <h3 className="text-2xl font-black tracking-tighter uppercase italic text-white leading-tight">{shareQrEvent.title}</h3>
                     <p className="text-[10px] font-bold text-slate-500 uppercase">{club?.name} • {shareQrEvent.date}</p>
                   </div>
-                  <button onClick={() => setShareQrEvent(null)} className="p-3 bg-white/5 rounded-2xl text-white hover:bg-rose-500 transition-all"><X size={18}/></button>
+                  <button onClick={() => setShareQrEvent(null)} className="p-3 bg-white/ rounded-2xl text-white hover:bg-rose-500 transition-all"><X size={18}/></button>
                 </div>
 
                 {/* QR Code */}
                 <div className="flex flex-col items-center gap-6">
-                  <div className="p-4 bg-white rounded-[2rem] shadow-2xl">
+                  <div className="p-4 bg-whiterounded-[2rem] shadow-2xl">
                     <img src={qrUrl} alt="Event QR" className="w-56 h-56" />
                   </div>
                   <div className="text-center space-y-2">
                     <p className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500">Scan QR to Register Directly</p>
-                    <div className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl">
+                    <div className="flex items-center gap-2 px-4 py-2 bg-white/ border border-white/10 rounded-xl">
                       <p className="text-[9px] font-mono text-slate-400 truncate flex-1">{shareUrl}</p>
                       <button
                         onClick={() => handleCopyLink(shareUrl)}
-                        className={`p-2 rounded-lg transition-all ${copiedLink ? 'bg-emerald-500 text-white' : 'bg-white/10 text-slate-400 hover:text-white'}`}
+                        className={`p-2 rounded-lg transition-all ${copiedLink ? 'bg-emerald-500 text-white' : 'bg-white/ text-slate-400 hover:text-white'}`}
                       >
                         {copiedLink ? <Check size={14}/> : <Copy size={14}/>}
                       </button>
@@ -389,7 +391,7 @@ const CampusEvents: React.FC<Props> = ({ events, clubs, registrations, onRegiste
                 <div className="grid grid-cols-2 gap-4">
                   <button
                     onClick={() => handleCopyLink(shareUrl)}
-                    className={`h-14 rounded-2xl font-black text-[9px] uppercase tracking-widest flex items-center justify-center gap-2 transition-all ${copiedLink ? 'bg-emerald-500 text-white' : 'bg-white/5 border border-white/10 text-white hover:bg-white/10'}`}
+                    className={`h-14 rounded-2xl font-black text-[9px] uppercase tracking-widest flex items-center justify-center gap-2 transition-all ${copiedLink ? 'bg-emerald-500 text-white' : 'bg-white/ border border-white/10 text-white hover:bg-white/'}`}
                   >
                     {copiedLink ? <><Check size={16}/> Copied!</> : <><Copy size={16}/> Copy Link</>}
                   </button>

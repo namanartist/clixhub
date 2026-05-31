@@ -195,7 +195,7 @@ const LandingPage: React.FC<Props> = ({ events, clubs, onLogin, onRegister, isDa
                 <button
                   key={item.label}
                   onClick={() => { item.action(); setIsMobileMenuOpen(false); }}
-                  className="w-full flex items-center justify-between p-6 rounded-[2rem] border border-[var(--border-color)] bg-white/5 hover:bg-primary/10 hover:border-primary/30 transition-all animate-slide-up"
+                  className="w-full flex items-center justify-between p-6 rounded-[2rem] border border-[var(--border-color)] bg-white/ hover:bg-primary/10 hover:border-primary/30 transition-all animate-slide-up"
                   style={{ animationDelay: `${idx * 100}ms` }}
                 >
                   <div className="flex items-center gap-6">
@@ -343,7 +343,7 @@ const LandingPage: React.FC<Props> = ({ events, clubs, onLogin, onRegister, isDa
                <div className="relative z-10 space-y-6">
                  <h3 className="text-3xl font-black tracking-tight">Rapid Screening</h3>
                  <p className="text-lg font-medium text-[var(--text-secondary)]">Automated interview scheduling and applicant tracking with Institutional Logic integration.</p>
-                 <div className="pt-4 h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                 <div className="pt-4 h-1.5 w-full bg-slate-100 dark:bg-slate-800rounded-full overflow-hidden">
                     <div className="h-full bg-amber-500 animate-pulse w-[75%]" />
                  </div>
                </div>
@@ -422,7 +422,7 @@ const LandingPage: React.FC<Props> = ({ events, clubs, onLogin, onRegister, isDa
       </section>
 
       {/* ─── UNIT GENESIS SECTION ─── */}
-      <section className="py-24 md:py-40 px-6 md:px-8 relative overflow-hidden bg-white/2 border-y border-white/5">
+      <section className="py-24 md:py-40 px-6 md:px-8 relative overflow-hidden bg-white/ border-y border-white/5">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-20 items-center">
            <div className="space-y-10">
               <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500">
@@ -442,17 +442,17 @@ const LandingPage: React.FC<Props> = ({ events, clubs, onLogin, onRegister, isDa
                  </button>
                  <div className="flex -space-x-3">
                     {[1,2,3,4].map(i => (
-                      <div key={i} className="w-14 h-14 rounded-2xl border-4 border-[#050505] overflow-hidden bg-white/5">
+                      <div key={i} className="w-14 h-14 rounded-2xl border-4 border-[#050505] overflow-hidden bg-white/">
                         <img src={`https://i.pravatar.cc/100?u=${i+10}`} alt="avatar" />
                       </div>
                     ))}
-                    <div className="w-14 h-14 rounded-2xl border-4 border-[#050505] bg-white/5 flex items-center justify-center text-primary font-black text-xs">+12</div>
+                    <div className="w-14 h-14 rounded-2xl border-4 border-[#050505] bg-white/ flex items-center justify-center text-primary font-black text-xs">+12</div>
                  </div>
               </div>
            </div>
            
            <div className="relative mt-8 lg:mt-0">
-              <div className="bento-card p-6 md:p-10 space-y-8 bg-white/2 border-white/10">
+              <div className="bento-card p-6 md:p-10 space-y-8 bg-white/ border-white/10">
                  <div className="flex justify-between items-start">
                     <div className="space-y-2">
                        <p className="text-[10px] font-black uppercase tracking-widest text-primary">Live Intake Statistics</p>
@@ -463,14 +463,14 @@ const LandingPage: React.FC<Props> = ({ events, clubs, onLogin, onRegister, isDa
                     </div>
                  </div>
                  <div className="space-y-6">
-                    <div className="p-6 bg-white/5 rounded-3xl border border-white/5 flex justify-between items-center group hover:border-primary/40 transition-all">
+                    <div className="p-6 bg-white/ rounded-3xl border border-white/5 flex justify-between items-center group hover:border-primary/40 transition-all">
                        <div>
                           <p className="text-[10px] font-black uppercase tracking-widest text-[#00E5FF]">Processing Time</p>
                           <p className="text-xl font-black text-white italic tracking-widest leading-none">48 HOURS</p>
                        </div>
                        <ChevronRight size={20} className="text-primary group-hover:translate-x-2 transition-transform" />
                     </div>
-                    <div className="p-6 bg-white/5 rounded-3xl border border-white/5 flex justify-between items-center group hover:border-primary/40 transition-all">
+                    <div className="p-6 bg-white/ rounded-3xl border border-white/5 flex justify-between items-center group hover:border-primary/40 transition-all">
                        <div>
                           <p className="text-[10px] font-black uppercase tracking-widest text-amber-500">Global Vacancy</p>
                           <p className="text-xl font-black text-white italic tracking-widest leading-none">04 UNITS</p>
@@ -489,7 +489,7 @@ const LandingPage: React.FC<Props> = ({ events, clubs, onLogin, onRegister, isDa
            <div className="relative w-full max-w-3xl bg-[#050505] border border-white/10 rounded-[2.5rem] md:rounded-[3rem] p-8 md:p-16 space-y-8 md:space-y-12 my-auto animate-in zoom-in-95 duration-500 shadow-[0_0_100px_rgba(59,130,246,0.1)]" onClick={e => e.stopPropagation()}>
               <button 
                 onClick={() => setIsProposalModalOpen(false)}
-                className="absolute top-6 md:top-10 right-6 md:right-10 p-3 md:p-4 bg-white/5 hover:bg-rose-500/20 hover:text-rose-500 rounded-xl md:rounded-2xl transition-all border border-white/10"
+                className="absolute top-6 md:top-10 right-6 md:right-10 p-3 md:p-4 bg-white/ hover:bg-rose-500/20 hover:text-rose-500 rounded-xl md:rounded-2xl transition-all border border-white/10"
               >
                 <X size={20} />
               </button>
@@ -510,12 +510,12 @@ const LandingPage: React.FC<Props> = ({ events, clubs, onLogin, onRegister, isDa
                           <button 
                            type="button"
                            onClick={() => setProposalData({...proposalData, type: 'Club'})}
-                           className={`h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest border transition-all ${proposalData.type === 'Club' ? 'bg-primary border-primary text-white' : 'bg-white/5 border-white/10 text-white/40 hover:bg-white/10'}`}
+                           className={`h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest border transition-all ${proposalData.type === 'Club' ? 'bg-primary border-primary text-white' : 'bg-white/ border-white/10 text-white/40 hover:bg-white/'}`}
                           >Permanent Club</button>
                           <button 
                            type="button"
                            onClick={() => setProposalData({...proposalData, type: 'Team'})}
-                           className={`h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest border transition-all ${proposalData.type === 'Team' ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white/5 border-white/10 text-white/40 hover:bg-white/10'}`}
+                           className={`h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest border transition-all ${proposalData.type === 'Team' ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white/ border-white/10 text-white/40 hover:bg-white/'}`}
                           >Temporary Team</button>
                        </div>
                     </div>
@@ -526,7 +526,7 @@ const LandingPage: React.FC<Props> = ({ events, clubs, onLogin, onRegister, isDa
                         value={proposalData.title}
                         onChange={e => setProposalData({...proposalData, title: e.target.value})}
                         placeholder="e.g. Quantum Computing Node"
-                        className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-6 font-black text-sm text-white focus:border-primary outline-none transition-all"
+                        className="w-full h-14 bg-white/ border border-white/10 rounded-2xl px-6 font-black text-sm text-white focus:border-primary outline-none transition-all"
                        />
                     </div>
                  </div>
@@ -539,14 +539,14 @@ const LandingPage: React.FC<Props> = ({ events, clubs, onLogin, onRegister, isDa
                         value={proposalData.proposerName}
                         onChange={e => setProposalData({...proposalData, proposerName: e.target.value})}
                         placeholder="Full Legal Name"
-                        className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-6 font-black text-sm text-white focus:border-primary outline-none transition-all"
+                        className="w-full h-14 bg-white/ border border-white/10 rounded-2xl px-6 font-black text-sm text-white focus:border-primary outline-none transition-all"
                        />
                        <input 
                         required
                         value={proposalData.proposerRoll}
                         onChange={e => setProposalData({...proposalData, proposerRoll: e.target.value})}
                         placeholder="Roll (0901CSXX...)"
-                        className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-6 font-black text-sm text-white focus:border-primary outline-none transition-all uppercase"
+                        className="w-full h-14 bg-white/ border border-white/10 rounded-2xl px-6 font-black text-sm text-white focus:border-primary outline-none transition-all uppercase"
                        />
                        <input 
                         required
@@ -554,7 +554,7 @@ const LandingPage: React.FC<Props> = ({ events, clubs, onLogin, onRegister, isDa
                         value={proposalData.proposerEmail}
                         onChange={e => setProposalData({...proposalData, proposerEmail: e.target.value})}
                         placeholder="Institute Email"
-                        className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-6 font-black text-sm text-white focus:border-primary outline-none transition-all"
+                        className="w-full h-14 bg-white/ border border-white/10 rounded-2xl px-6 font-black text-sm text-white focus:border-primary outline-none transition-all"
                        />
                     </div>
                  </div>
@@ -567,7 +567,7 @@ const LandingPage: React.FC<Props> = ({ events, clubs, onLogin, onRegister, isDa
                      value={proposalData.missionStatement}
                      onChange={e => setProposalData({...proposalData, missionStatement: e.target.value})}
                      placeholder="Outline the core objective, planned activities, and institutional benefit..."
-                     className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 font-medium text-sm text-white focus:border-primary outline-none transition-all resize-none leading-relaxed italic"
+                     className="w-full bg-white/ border border-white/10 rounded-2xl p-6 font-medium text-sm text-white focus:border-primary outline-none transition-all resize-none leading-relaxed italic"
                     />
                  </div>
 
@@ -575,7 +575,7 @@ const LandingPage: React.FC<Props> = ({ events, clubs, onLogin, onRegister, isDa
                     <button 
                      type="submit"
                      disabled={isSubmittingProposal}
-                     className="w-full h-20 bg-white text-black rounded-[2rem] font-black text-xs uppercase tracking-[0.6em] shadow-4xl hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 flex items-center justify-center gap-4"
+                     className="w-full h-20 bg-whitetext-black rounded-[2rem] font-black text-xs uppercase tracking-[0.6em] shadow-4xl hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 flex items-center justify-center gap-4"
                     >
                        {isSubmittingProposal ? <>Establishing Uplink... <Loader2 className="animate-spin" size={24}/></> : <>Commit Proposal to Dean <ShieldCheck size={24}/></>}
                     </button>
@@ -599,7 +599,7 @@ const LandingPage: React.FC<Props> = ({ events, clubs, onLogin, onRegister, isDa
                     <h3 className="text-4xl font-black uppercase italic tracking-tighter text-white">Proposal Logged.</h3>
                     <p className="text-slate-500 text-sm leading-relaxed">Your unit proposal has been successfully transmitted to the Dean Student Welfare dashboard. Sequence reference: <strong className="text-white text-xs font-mono">{proposalSuccess}</strong></p>
                  </div>
-                 <button onClick={() => setProposalSuccess(null)} className="w-full h-16 bg-white text-black rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
+                 <button onClick={() => setProposalSuccess(null)} className="w-full h-16 bg-whitetext-black rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
                     Acknowledge Transmission
                  </button>
               </div>

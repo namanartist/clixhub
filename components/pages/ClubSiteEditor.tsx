@@ -137,7 +137,7 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave }) => {
 
   const removePost = (id: string) => setFormData(prev => ({ ...prev, customSections: (prev.customSections || []).filter(s => s.id !== id) }));
 
-  const inputCls = 'w-full bg-white/5 border border-white/10 px-4 py-3 rounded-xl outline-none focus:border-primary/60 text-white font-medium text-sm transition-all placeholder:text-white/25';
+  const inputCls = 'w-full bg-white/ border border-white/10 px-4 py-3 rounded-xl outline-none focus:border-primary/60 text-white font-medium text-sm transition-all placeholder:text-white/25';
   const areaCls  = `${inputCls} leading-relaxed resize-none`;
 
   const tabs = [
@@ -216,7 +216,7 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave }) => {
                   <input value={aiThemePrompt} onChange={e => setAiThemePrompt(e.target.value)}
                          onKeyDown={e => e.key === 'Enter' && handleGenerateAITheme()}
                          placeholder="e.g. futuristic robotics, coding warriors..."
-                         className="flex-1 bg-white/8 border border-white/10 px-3 py-2 rounded-xl text-xs text-white placeholder:text-white/25 outline-none focus:border-primary/50 transition-all" />
+                         className="flex-1 bg-white/ border border-white/10 px-3 py-2 rounded-xl text-xs text-white placeholder:text-white/25 outline-none focus:border-primary/50 transition-all" />
                   <button onClick={handleGenerateAITheme} disabled={isGeneratingTheme || !aiThemePrompt.trim()}
                           className="px-3 py-2 rounded-xl bg-primary/15 text-primary border border-primary/20 hover:bg-primary/25 transition-all disabled:opacity-40 flex items-center gap-1.5">
                     {isGeneratingTheme ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
@@ -340,7 +340,7 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave }) => {
                       Publish
                     </button>
                     <button onClick={() => { setIsAddingPost(false); setNewPost({ title: '', content: '' }); }}
-                            className="px-4 py-2.5 rounded-xl bg-white/5 text-white/50 text-[9px] font-black uppercase hover:bg-white/10 transition-all">
+                            className="px-4 py-2.5 rounded-xl bg-white/ text-white/50 text-[9px] font-black uppercase hover:bg-white/ transition-all">
                       Cancel
                     </button>
                   </div>
@@ -393,7 +393,7 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave }) => {
               <div className="flex gap-2">
                 {(['desktop', 'mobile'] as const).map(m => (
                   <button key={m} onClick={() => setPreviewMode(m)}
-                          className={`flex-1 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-1.5 ${previewMode === m ? 'bg-primary text-white' : 'bg-white/5 text-white/40 hover:bg-white/10'}`}>
+                          className={`flex-1 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-1.5 ${previewMode === m ? 'bg-primary text-white' : 'bg-white/ text-white/40 hover:bg-white/'}`}>
                     {m === 'desktop' ? <Monitor size={13} /> : <Smartphone size={13} />} {m}
                   </button>
                 ))}
@@ -426,10 +426,10 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave }) => {
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-[9px] font-black uppercase tracking-widest text-white/40">Live Preview</span>
           </div>
-          <div className="flex p-1 bg-white/5 rounded-xl border border-white/5">
+          <div className="flex p-1 bg-white/ rounded-xl border border-white/5">
             {(['desktop', 'mobile'] as const).map(m => (
               <button key={m} onClick={() => setPreviewMode(m)}
-                      className={`px-3 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-widest transition-all flex items-center gap-1 ${previewMode === m ? 'bg-white/10 text-white' : 'text-white/25'}`}>
+                      className={`px-3 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-widest transition-all flex items-center gap-1 ${previewMode === m ? 'bg-white/ text-white' : 'text-white/25'}`}>
                 {m === 'desktop' ? <Monitor size={11} /> : <Smartphone size={11} />}{m}
               </button>
             ))}

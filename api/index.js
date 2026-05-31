@@ -624,6 +624,42 @@ app.patch('/api/clubs/:id', async (req, res) => {
   }
 });
 
+// --- Proposals ---
+app.get('/api/proposals', async (_req, res) => {
+  try {
+    const dbConn = await connectToMongo();
+    const proposals = await dbConn.collection('proposals').find({}).toArray();
+    res.json(proposals);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Failed to fetch proposals' });
+  }
+});
+
+app.post('/api/proposals', async (req, res) => {
+  try {
+    const dbConn = await connectToMongo();
+    const proposal = req.body;
+    await dbConn.collection('proposals').insertOne(proposal);
+    res.json(proposal);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Failed to add proposal' });
+  }
+});
+
+app.put('/api/proposals/:id', async (req, res) => {
+  try {
+    const dbConn = await connectToMongo();
+    const { id } = req.params;
+    await dbConn.collection('proposals').updateOne({ id }, { $set: req.body }, { upsert: true });
+    res.json(req.body);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Failed to update proposal' });
+  }
+});
+
 // --- Events ---
 app.get('/api/events', async (_req, res) => {
   try {

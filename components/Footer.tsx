@@ -20,7 +20,7 @@ const Footer: React.FC<Props> = ({ onOpenDeveloper, onOpenProfile, onNavigate, i
   ];
 
   return (
-    <footer className={`border-t transition-colors duration-500 ${isDarkMode ? 'bg-[#02040a] border-white/5 text-slate-400' : 'bg-white border-slate-100 text-slate-500'}`}>
+    <footer className={`border-t transition-colors duration-500 ${isDarkMode ? 'bg-[#02040a] border-white/5 text-slate-400' : 'bg-whiteborder-slate-100 text-slate-500'}`}>
       <div className="max-w-[1600px] mx-auto px-6 md:px-8 py-8 md:py-12">
         
         {variant === 'default' && (
@@ -48,7 +48,7 @@ const Footer: React.FC<Props> = ({ onOpenDeveloper, onOpenProfile, onNavigate, i
                           href={social.href} 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="p-3 rounded-full bg-white/5 hover:bg-white/10 hover:text-white transition-all border border-transparent hover:border-white/10"
+                          className="p-3 rounded-full bg-white/ hover:bg-white/ hover:text-white transition-all border border-transparent hover:border-white/10"
                           title={social.label}
                       >
                           <social.icon size={18} />
@@ -56,7 +56,7 @@ const Footer: React.FC<Props> = ({ onOpenDeveloper, onOpenProfile, onNavigate, i
                   ))}
                   
                   {/* Separator for Moodle */}
-                  <div className="w-px h-8 bg-white/10 mx-2 hidden sm:block"></div>
+                  <div className="w-px h-8 bg-white/ mx-2 hidden sm:block"></div>
 
                   <a 
                       href="http://moodle.mitsweb.in/" 
@@ -71,7 +71,7 @@ const Footer: React.FC<Props> = ({ onOpenDeveloper, onOpenProfile, onNavigate, i
                       href="http://moodle.mitsgwalior.in/" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="p-3 rounded-full bg-white/5 hover:bg-white/10 hover:text-white transition-all opacity-60 hover:opacity-100"
+                      className="p-3 rounded-full bg-white/ hover:bg-white/ hover:text-white transition-all opacity-60 hover:opacity-100"
                       title="Moodle (Legacy)"
                   >
                       <GraduationCap size={18} />
@@ -137,7 +137,7 @@ const Footer: React.FC<Props> = ({ onOpenDeveloper, onOpenProfile, onNavigate, i
                     onClick={onOpenDeveloper}
                     className={`flex items-center gap-2 px-3 py-1 rounded-full border transition-all ${
                         isDarkMode 
-                        ? 'border-white/10 bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white' 
+                        ? 'border-white/10 bg-white/ hover:bg-white/ text-slate-400 hover:text-white' 
                         : 'border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-600'
                     }`}
                 >
@@ -147,7 +147,7 @@ const Footer: React.FC<Props> = ({ onOpenDeveloper, onOpenProfile, onNavigate, i
 
                 <div className="flex items-center gap-2 text-xs font-bold">
                     <span className="opacity-50">Architected by</span>
-                    <button onClick={onOpenProfile} className={`flex items-center gap-2 px-3 py-1 rounded-full ${isDarkMode ? 'bg-white/5 hover:bg-white/10 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-900'} transition-all`}>
+                    <button onClick={onOpenProfile} className={`flex items-center gap-2 px-3 py-1 rounded-full ${isDarkMode ? 'bg-white/ hover:bg-white/ text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-900'} transition-all`}>
                         <Code size={12} /> Naman Lahariya
                     </button>
                 </div>

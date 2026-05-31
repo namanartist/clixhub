@@ -32,7 +32,7 @@ const EventRegistry: React.FC<Props> = ({ events, clubs, onBack, isDarkMode = tr
       {/* Back Button */}
       <button
         onClick={onBack}
-        className={`fixed top-8 left-8 z-50 p-3 rounded-xl transition-all ${isDarkMode ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'}`}
+        className={`fixed top-8 left-8 z-50 p-3 rounded-xl transition-all ${isDarkMode ? 'text-slate-400 hover:text-white hover:bg-white/' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'}`}
         title="Back"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,7 +69,7 @@ const EventRegistry: React.FC<Props> = ({ events, clubs, onBack, isDarkMode = tr
       </section>
 
       {/* Filters & Search */}
-      <section className={`py-8 px-6 border-b ${isDarkMode ? 'bg-white/[0.015] border-white/[0.06]' : 'bg-slate-50/50 border-slate-200/50'}`}>
+      <section className={`py-8 px-6 border-b ${isDarkMode ? 'bg-white/[0.015] border-white/[0.06]' : 'bg-slate-50/ border-slate-200/50'}`}>
         <div className="max-w-[1200px] mx-auto">
           <div className="flex flex-col md:flex-row gap-6 items-center justify-center">
             <div className="relative flex-1 w-full max-w-md">
@@ -79,11 +79,11 @@ const EventRegistry: React.FC<Props> = ({ events, clubs, onBack, isDarkMode = tr
                 placeholder="Search events..."
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
-                className={`w-full rounded-2xl pl-14 pr-6 py-3.5 text-sm font-bold transition-all outline-none border ${isDarkMode ? 'bg-white/5 border-white/10 text-white placeholder:text-slate-600 focus:bg-white/10 focus:border-cyan-400/50' : 'bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-cyan-400'}`}
+                className={`w-full rounded-2xl pl-14 pr-6 py-3.5 text-sm font-bold transition-all outline-none border ${isDarkMode ? 'bg-white/ border-white/10 text-white placeholder:text-slate-600 focus:bg-white/ focus:border-cyan-400/50' : 'bg-whiteborder-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-cyan-400'}`}
               />
             </div>
 
-            <div className={`flex gap-2 p-2 rounded-2xl border ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-slate-200'}`}>
+            <div className={`flex gap-2 p-2 rounded-2xl border ${isDarkMode ? 'bg-white/ border-white/10' : 'bg-whiteborder-slate-200'}`}>
               {['All', 'Upcoming', 'Past'].map(t => (
                 <button
                   key={t}
@@ -91,7 +91,7 @@ const EventRegistry: React.FC<Props> = ({ events, clubs, onBack, isDarkMode = tr
                   className={`px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${filterType === t
                     ? 'bg-gradient-to-r from-cyan-400 to-blue-500 text-white shadow-lg shadow-cyan-500/30'
                     : isDarkMode
-                      ? 'text-slate-400 hover:text-white hover:bg-white/5'
+                      ? 'text-slate-400 hover:text-white hover:bg-white/'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                     }`}
                 >
@@ -120,7 +120,7 @@ const EventRegistry: React.FC<Props> = ({ events, clubs, onBack, isDarkMode = tr
                 return (
                   <div
                     key={event.id}
-                    className={`group relative p-8 rounded-3xl border transition-all hover:scale-[1.02] hover:-translate-y-1 cursor-pointer ${isDarkMode ? 'bg-[#0d121d] border-white/10 hover:border-cyan-400/50 hover:shadow-2xl' : 'bg-white border-slate-200 hover:shadow-xl'}`}
+                    className={`group relative p-8 rounded-3xl border transition-all hover:scale-[1.02] hover:-translate-y-1 cursor-pointer ${isDarkMode ? 'bg-[#0d121d]border-white/10 hover:border-cyan-400/50 hover:shadow-2xl' : 'bg-whiteborder-slate-200 hover:shadow-xl'}`}
                   >
                     <div className="flex items-start justify-between mb-6">
                       <div>
@@ -141,10 +141,10 @@ const EventRegistry: React.FC<Props> = ({ events, clubs, onBack, isDarkMode = tr
                     </p>
 
                     <div className="grid grid-cols-2 gap-4 mb-8">
-                      <div className={`flex items-center gap-3 text-xs font-bold p-3 rounded-xl border ${isDarkMode ? 'bg-white/[0.02] text-slate-300 border-white/5' : 'bg-slate-50 text-slate-600 border-slate-100'}`}>
+                      <div className={`flex items-center gap-3 text-xs font-bold p-3 rounded-xl border ${isDarkMode ? 'bg-white/[0.02] text-slate-300 border-white/5' : 'bg-slate-50text-slate-600 border-slate-100'}`}>
                         <Calendar size={14} className="text-cyan-400" /> {event.date}
                       </div>
-                      <div className={`flex items-center gap-3 text-xs font-bold p-3 rounded-xl border ${isDarkMode ? 'bg-white/[0.02] text-slate-300 border-white/5' : 'bg-slate-50 text-slate-600 border-slate-100'}`}>
+                      <div className={`flex items-center gap-3 text-xs font-bold p-3 rounded-xl border ${isDarkMode ? 'bg-white/[0.02] text-slate-300 border-white/5' : 'bg-slate-50text-slate-600 border-slate-100'}`}>
                         <MapPin size={14} className="text-cyan-400" /> MITS Campus
                       </div>
                     </div>
@@ -157,7 +157,7 @@ const EventRegistry: React.FC<Props> = ({ events, clubs, onBack, isDarkMode = tr
               })}
             </div>
           ) : (
-            <div className={`py-20 text-center space-y-4 rounded-3xl border ${isDarkMode ? 'bg-[#0d121d]/50 border-white/5' : 'bg-slate-50 border-slate-200'}`}>
+            <div className={`py-20 text-center space-y-4 rounded-3xl border ${isDarkMode ? 'bg-[#0d121d]/50 border-white/5' : 'bg-slate-50border-slate-200'}`}>
               <Calendar size={64} className={isDarkMode ? 'text-slate-700 mx-auto' : 'text-slate-300 mx-auto'} />
               <p className={`text-xl font-bold ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>No events found</p>
             </div>

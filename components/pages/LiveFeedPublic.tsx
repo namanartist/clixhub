@@ -100,7 +100,7 @@ const LiveFeedPublic: React.FC<Props> = ({ events, logs, onBack }) => {
                  {activeEvents.map(e => (
                     <div key={e.id} className="group p-5 rounded-[2rem] bg-[#02040a] border border-white/5 hover:border-rose-500/30 transition-all cursor-default">
                        <div className="flex justify-between items-start mb-3">
-                          <span className="px-3 py-1 rounded-full bg-white/5 text-[9px] font-black uppercase tracking-widest text-slate-300 border border-white/10">
+                          <span className="px-3 py-1 rounded-full bg-white/ text-[9px] font-black uppercase tracking-widest text-slate-300 border border-white/10">
                              {e.type}
                           </span>
                           <span className="text-xs font-bold text-rose-500 flex items-center gap-1">

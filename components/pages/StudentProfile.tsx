@@ -132,7 +132,7 @@ const StudentProfile: React.FC<Props> = ({ user, onSave, isDarkMode, registratio
   const inputClasses = `w-full h-16 px-6 rounded-2xl border outline-none transition-all text-sm font-[900] uppercase tracking-widest ${
     isDarkMode 
       ? 'bg-primary-soft/30 border-[var(--border-color)] text-white focus:border-primary placeholder:text-slate-600' 
-      : 'bg-slate-50 border-slate-200 focus:border-primary placeholder:text-slate-400'
+      : 'bg-slate-50border-slate-200 focus:border-primary placeholder:text-slate-400'
   } ${!isEditing ? 'opacity-60 cursor-default' : ''}`;
 
   return (
@@ -309,7 +309,7 @@ const StudentProfile: React.FC<Props> = ({ user, onSave, isDarkMode, registratio
                                <h5 className="text-xl font-black tracking-tight">{m.role}</h5>
                                <p className="text-[9px] font-medium text-slate-500 uppercase tracking-[0.2em]">{m.domain || 'Unassigned Division'}</p>
                             </div>
-                            <div className="p-3 rounded-2xl bg-white/5 text-amber-500 group-hover:scale-110 transition-transform">
+                            <div className="p-3 rounded-2xl bg-white/ text-amber-500 group-hover:scale-110 transition-transform">
                                <Fingerprint size={24} />
                             </div>
                          </div>

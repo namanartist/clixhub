@@ -140,7 +140,7 @@ const FacultyOversight: React.FC<Props> = ({ events, clubs, batches, currentUser
 
                       <div className="space-y-4 mb-8 relative z-10">
                          <h3 className="text-2xl font-black tracking-tight text-white leading-tight">Certificates for {event?.title}</h3>
-                         <div className="p-4 rounded-xl bg-white/5 border border-white/5 text-xs text-slate-400 font-medium italic">
+                         <div className="p-4 rounded-xl bg-white/ border border-white/5 text-xs text-slate-400 font-medium italic">
                              "Verification of student participation and excellence in {event?.title} conducted on {event?.date}."
                          </div>
                       </div>

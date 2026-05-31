@@ -69,7 +69,7 @@ const Onboarding: React.FC<Props> = ({ isDarkMode, onToggleTheme, onLogin, onSup
       {/* Theme Toggle */}
       <button
         onClick={onToggleTheme}
-        className={`fixed top-8 right-8 z-50 p-4 rounded-2xl backdrop-blur-xl border transition-all duration-300 ${isDarkMode ? 'bg-white/5 border-white/10 text-white hover:bg-white/10' : 'bg-white/80 border-slate-200 text-slate-600 hover:shadow-xl'}`}
+        className={`fixed top-8 right-8 z-50 p-4 rounded-2xl backdrop-blur-xl border transition-all duration-300 ${isDarkMode ? 'bg-white/ border-white/10 text-white hover:bg-white/' : 'bg-white/ border-slate-200 text-slate-600 hover:shadow-xl'}`}
       >
         {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
       </button>
@@ -125,7 +125,7 @@ const Onboarding: React.FC<Props> = ({ isDarkMode, onToggleTheme, onLogin, onSup
           <div className="w-full max-w-md space-y-6 animate-in fade-in zoom-in-95 duration-700">
 
             {/* Mode Switcher Tabs */}
-            <div className={`flex rounded-2xl p-1 ${isDarkMode ? 'bg-white/5' : 'bg-slate-100'}`}>
+            <div className={`flex rounded-2xl p-1 ${isDarkMode ? 'bg-white/' : 'bg-slate-100'}`}>
               <button
                 onClick={() => setAuthMode('demo')}
                 className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
@@ -170,9 +170,9 @@ const Onboarding: React.FC<Props> = ({ isDarkMode, onToggleTheme, onLogin, onSup
                 </button>
 
                 <div className="flex items-center gap-3">
-                  <div className="h-px flex-1 bg-white/10" />
+                  <div className="h-px flex-1 bg-white/" />
                   <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">or pick a role</span>
-                  <div className="h-px flex-1 bg-white/10" />
+                  <div className="h-px flex-1 bg-white/" />
                 </div>
 
                 <div className="grid grid-cols-1 gap-2">
@@ -187,11 +187,11 @@ const Onboarding: React.FC<Props> = ({ isDarkMode, onToggleTheme, onLogin, onSup
                       onClick={() => onLogin(user.email)}
                       className={`group relative flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 hover:-translate-y-0.5 ${
                         isDarkMode 
-                        ? 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-blue-500/50' 
-                        : 'bg-white border-slate-200 hover:border-blue-500/50 hover:shadow-xl shadow-blue-500/10'
+                        ? 'bg-white/ border-white/10 hover:bg-white/ hover:border-blue-500/50' 
+                        : 'bg-whiteborder-slate-200 hover:border-blue-500/50 hover:shadow-xl shadow-blue-500/10'
                       }`}
                     >
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${isDarkMode ? 'bg-white/5' : 'bg-slate-50 group-hover:bg-blue-50'}`}>
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${isDarkMode ? 'bg-white/' : 'bg-slate-50group-hover:bg-blue-50'}`}>
                         {user.icon}
                       </div>
                       <div className="text-left">
@@ -220,11 +220,11 @@ const Onboarding: React.FC<Props> = ({ isDarkMode, onToggleTheme, onLogin, onSup
                 </div>
 
                 {/* Login / Signup Toggle */}
-                <div className={`flex rounded-xl p-1 ${isDarkMode ? 'bg-white/5' : 'bg-slate-100'}`}>
+                <div className={`flex rounded-xl p-1 ${isDarkMode ? 'bg-white/' : 'bg-slate-100'}`}>
                   <button
                     onClick={() => { setFormType('login'); setError(null); }}
                     className={`flex-1 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${
-                      formType === 'login' ? (isDarkMode ? 'bg-white/10 text-white' : 'bg-white text-[#1B2559] shadow-sm') : (isDarkMode ? 'text-slate-400' : 'text-slate-500')
+                      formType === 'login' ? (isDarkMode ? 'bg-white/ text-white' : 'bg-whitetext-[#1B2559] shadow-sm') : (isDarkMode ? 'text-slate-400' : 'text-slate-500')
                     }`}
                   >
                     <LogIn size={13} /> Login
@@ -232,7 +232,7 @@ const Onboarding: React.FC<Props> = ({ isDarkMode, onToggleTheme, onLogin, onSup
                   <button
                     onClick={() => { setFormType('signup'); setError(null); }}
                     className={`flex-1 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${
-                      formType === 'signup' ? (isDarkMode ? 'bg-white/10 text-white' : 'bg-white text-[#1B2559] shadow-sm') : (isDarkMode ? 'text-slate-400' : 'text-slate-500')
+                      formType === 'signup' ? (isDarkMode ? 'bg-white/ text-white' : 'bg-whitetext-[#1B2559] shadow-sm') : (isDarkMode ? 'text-slate-400' : 'text-slate-500')
                     }`}
                   >
                     <UserPlus size={13} /> Sign Up
@@ -261,8 +261,8 @@ const Onboarding: React.FC<Props> = ({ isDarkMode, onToggleTheme, onLogin, onSup
                       required
                       className={`w-full pl-11 pr-4 py-4 rounded-2xl border text-sm font-medium transition-all outline-none focus:ring-2 focus:ring-[#3ECF8E]/50 ${
                         isDarkMode
-                          ? 'bg-white/5 border-white/10 text-white placeholder:text-slate-600 focus:border-[#3ECF8E]/50'
-                          : 'bg-white border-slate-200 text-[#1B2559] placeholder:text-slate-400 focus:border-[#3ECF8E]'
+                          ? 'bg-white/ border-white/10 text-white placeholder:text-slate-600 focus:border-[#3ECF8E]/50'
+                          : 'bg-whiteborder-slate-200 text-[#1B2559] placeholder:text-slate-400 focus:border-[#3ECF8E]'
                       }`}
                     />
                   </div>
@@ -280,8 +280,8 @@ const Onboarding: React.FC<Props> = ({ isDarkMode, onToggleTheme, onLogin, onSup
                       minLength={6}
                       className={`w-full pl-11 pr-12 py-4 rounded-2xl border text-sm font-medium transition-all outline-none focus:ring-2 focus:ring-[#3ECF8E]/50 ${
                         isDarkMode
-                          ? 'bg-white/5 border-white/10 text-white placeholder:text-slate-600 focus:border-[#3ECF8E]/50'
-                          : 'bg-white border-slate-200 text-[#1B2559] placeholder:text-slate-400 focus:border-[#3ECF8E]'
+                          ? 'bg-white/ border-white/10 text-white placeholder:text-slate-600 focus:border-[#3ECF8E]/50'
+                          : 'bg-whiteborder-slate-200 text-[#1B2559] placeholder:text-slate-400 focus:border-[#3ECF8E]'
                       }`}
                     />
                     <button

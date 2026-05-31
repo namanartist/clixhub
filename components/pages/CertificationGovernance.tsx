@@ -311,7 +311,7 @@ const CertificationGovernance: React.FC<Props> = ({
                   className={`px-8 py-4 rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.2em] transition-all flex items-center gap-3 active:scale-95 ${
                     activeTab === tab.id 
                     ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20' 
-                    : 'text-slate-500 hover:text-white hover:bg-white/5'
+                    : 'text-slate-500 hover:text-white hover:bg-white/'
                   }`}
               >
                   <tab.icon size={16} /> {tab.label}
@@ -377,7 +377,7 @@ const CertificationGovernance: React.FC<Props> = ({
                           </div>
                           <h3 className="text-3xl font-black text-white tracking-tighter uppercase mb-4">Minting Credentials</h3>
                           <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-10 italic">Assembling cryptographic proof-of-completion...</p>
-                          <div className="w-full max-w-sm h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/5 shadow-inner">
+                          <div className="w-full max-w-sm h-1.5 bg-white/ rounded-full overflow-hidden border border-white/5 shadow-inner">
                             <div className="h-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)] transition-all duration-300" style={{ width: `${mintProgress}%` }} />
                           </div>
                       </div>
@@ -395,7 +395,7 @@ const CertificationGovernance: React.FC<Props> = ({
                       </div>
                       <button 
                           onClick={() => setSelectedRegs(selectedRegs.size === eligible.length ? new Set() : new Set(eligible.map(r => r.id)))}
-                          className="px-10 py-5 rounded-3xl border border-white/5 font-black text-[10px] uppercase tracking-[0.2em] text-white hover:bg-white/5 transition-all shadow-xl active:scale-95 whitespace-nowrap"
+                          className="px-10 py-5 rounded-3xl border border-white/5 font-black text-[10px] uppercase tracking-[0.2em] text-white hover:bg-white/ transition-all shadow-xl active:scale-95 whitespace-nowrap"
                       >
                           {selectedRegs.size === eligible.length && eligible.length > 0 ? 'Wipe Selection' : 'Batch Align'}
                       </button>
@@ -418,7 +418,7 @@ const CertificationGovernance: React.FC<Props> = ({
                                   <div className={`w-14 h-14 rounded-2xl flex items-center justify-center font-black transition-all ${
                                     selectedRegs.has(reg.id) 
                                     ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/40 rotate-12' 
-                                    : 'bg-white/5 text-slate-500 group-hover:scale-110'
+                                    : 'bg-white/ text-slate-500 group-hover:scale-110'
                                   }`}>
                                       {selectedRegs.has(reg.id) ? <Check size={24} strokeWidth={4} /> : reg.studentName[0]}
                                   </div>
@@ -464,7 +464,7 @@ const CertificationGovernance: React.FC<Props> = ({
                           className={`w-full py-6 rounded-[2rem] font-black text-[10px] uppercase tracking-[0.3em] shadow-2xl flex items-center justify-center gap-4 transition-all active:scale-95 ${
                             selectedRegs.size > 0 && !missingSignatures 
                             ? 'bg-emerald-600 text-white hover:bg-emerald-700 hover:scale-[1.02] shadow-emerald-500/20 border border-emerald-400/20' 
-                            : 'bg-white/5 text-slate-600 cursor-not-allowed border border-white/5'
+                            : 'bg-white/ text-slate-600 cursor-not-allowed border border-white/5'
                           }`}
                       >
                           <Award size={20} /> Deploy {selectedRegs.size} Credentials to Pipeline
@@ -556,7 +556,7 @@ const CertificationGovernance: React.FC<Props> = ({
                         <div className={`w-10 h-10 rounded-2xl flex items-center justify-center transition-all ${
                           step.status === 'Approved' ? 'bg-emerald-500/20 text-emerald-500 border border-emerald-500/20' : 
                           step.status === 'Rejected' ? 'bg-rose-500/20 text-rose-500 border border-rose-500/20' : 
-                          'bg-white/5 text-slate-600 border border-white/5 border-dashed animate-pulse'
+                          'bg-white/ text-slate-600 border border-white/5 border-dashed animate-pulse'
                         }`}>
                           {step.status === 'Approved' ? <CheckCircle2 size={18}/> : step.status === 'Rejected' ? <X size={18}/> : <Fingerprint size={18}/>}
                         </div>
@@ -649,7 +649,7 @@ const CertificationGovernance: React.FC<Props> = ({
                     <td className="px-10 py-8 text-right">
                       <button 
                         onClick={() => handlePrint(cert.serialNumber)}
-                        className="w-12 h-12 rounded-2xl bg-white/5 text-slate-500 hover:bg-emerald-600 hover:text-white transition-all shadow-xl active:scale-90 flex items-center justify-center border border-white/5"
+                        className="w-12 h-12 rounded-2xl bg-white/ text-slate-500 hover:bg-emerald-600 hover:text-white transition-all shadow-xl active:scale-90 flex items-center justify-center border border-white/5"
                       >
                         <Download size={20}/>
                       </button>
@@ -719,7 +719,7 @@ const CertificationGovernance: React.FC<Props> = ({
                                   }`}
                                 >
                                     <span className="block text-[9px] font-black uppercase tracking-[0.2em] relative z-10">{t}</span>
-                                    <div className={`absolute -bottom-2 -right-2 w-12 h-12 bg-white/10 blur-xl rounded-full transition-opacity ${designConfig.templateId === t ? 'opacity-100' : 'opacity-0'}`} />
+                                    <div className={`absolute -bottom-2 -right-2 w-12 h-12 bg-white/ blur-xl rounded-full transition-opacity ${designConfig.templateId === t ? 'opacity-100' : 'opacity-0'}`} />
                                 </button>
                             ))}
                         </div>
@@ -742,7 +742,7 @@ const CertificationGovernance: React.FC<Props> = ({
                                 </div>
                             ) : (
                                 <div className="text-center space-y-4">
-                                    <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto group-hover:bg-blue-600/20 group-hover:scale-110 transition-all">
+                                    <div className="w-16 h-16 rounded-full bg-white/ flex items-center justify-center mx-auto group-hover:bg-blue-600/20 group-hover:scale-110 transition-all">
                                        <Plus className="text-slate-500 group-hover:text-blue-500" size={24} />
                                     </div>
                                     <span className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500 block">Inject Spatial Asset</span>

@@ -26,7 +26,7 @@ const GlobalClubs: React.FC<Props> = ({ clubs, isDarkMode, onEnterClub }) => {
         {clubs.map(club => (
           <div 
             key={club.id} 
-            className={`p-10 rounded-[2.5rem] border transition-all hover:scale-[1.02] cursor-default group ${isDarkMode ? 'bg-[#161b2a] border-slate-800 hover:border-blue-500/30' : 'bg-white border-slate-100 shadow-sm'}`}
+            className={`p-10 rounded-[2.5rem] border transition-all hover:scale-[1.02] cursor-default group ${isDarkMode ? 'bg-[#161b2a]border-slate-800 hover:border-blue-500/30' : 'bg-whiteborder-slate-100 shadow-sm'}`}
           >
             <div className="flex justify-between items-start mb-8">
               <div 

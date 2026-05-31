@@ -128,7 +128,7 @@ const GlobalStudentDashboard: React.FC<Props> = ({
                         <div className="absolute bottom-0 left-0 w-full h-32 opacity-[0.08] group-hover:opacity-20 transition-opacity duration-700 pointer-events-none">
                             <div className="w-full h-full min-h-[128px]">
                                 {isMounted && (
-                                    <ResponsiveContainer width="100%" height="110%">
+                                    <ResponsiveContainer width="100%" height="110%" minHeight={1}>
                                         <AreaChart data={sparkData}>
                                             <Area type="monotone" dataKey="val" stroke={`hsl(${metric.hue})`} strokeWidth={4} fill={`hsl(${metric.hue})`} />
                                         </AreaChart>
@@ -171,7 +171,7 @@ const GlobalStudentDashboard: React.FC<Props> = ({
                                 <div className="flex items-center justify-center md:justify-start gap-4">
                                    <div className="flex -space-x-4">
                                       {[1, 2, 3, 4].map(i => (
-                                         <div key={i} className="w-12 h-12 rounded-2xl border-4 border-white dark:border-slate-900 bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                                         <div key={i} className="w-12 h-12 rounded-2xl border-4 border-white dark:border-slate-900 bg-slate-100 dark:bg-slate-800flex items-center justify-center">
                                             <Users size={16} className="text-[var(--text-secondary)]" />
                                          </div>
                                       ))}

@@ -13,8 +13,8 @@ const ThemeToggle: React.FC<Props> = ({ isDarkMode, toggleTheme }) => {
       onClick={toggleTheme}
       className={`fixed bottom-6 left-6 z-[999] p-4 rounded-2xl shadow-2xl transition-all duration-500 flex items-center gap-3 backdrop-blur-xl border border-white/10 group ${
         isDarkMode 
-          ? 'bg-slate-800 text-amber-400 hover:bg-slate-700 hover:scale-110' 
-          : 'bg-white text-slate-900 hover:bg-slate-50 hover:scale-110'
+          ? 'bg-slate-800text-amber-400 hover:bg-slate-700 hover:scale-110' 
+          : 'bg-whitetext-slate-900 hover:bg-slate-50hover:scale-110'
       }`}
       aria-label="Toggle Theme"
     >

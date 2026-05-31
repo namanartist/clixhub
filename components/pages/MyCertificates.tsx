@@ -86,7 +86,7 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
       {/* Header */}
       <div className="relative group">
         <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-[3rem] blur opacity-10" />
-        <div className="relative bg-white dark:bg-[#111C44] rounded-[3rem] p-10 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="relative bg-whitedark:bg-[#111C44] rounded-[3rem] p-10 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-6">
              <div className="w-20 h-20 rounded-[2rem] bg-blue-600 flex items-center justify-center text-white shadow-xl shadow-blue-600/20">
                 <Award size={40} />
@@ -97,7 +97,7 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
              </div>
           </div>
           <div className="flex gap-4">
-             <div className="px-6 py-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-slate-800 flex flex-col items-center">
+             <div className="px-6 py-3 rounded-2xl bg-slate-50dark:bg-white/ border border-slate-200 dark:border-slate-800 flex flex-col items-center">
                 <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Total Issued</span>
                 <span className="text-2xl font-black dark:text-white">{userCertificates.length}</span>
              </div>
@@ -111,7 +111,7 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
 
       {userCertificates.length === 0 ? (
         <div className="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-[4rem] p-20 text-center">
-            <div className="w-24 h-24 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center mb-8">
+            <div className="w-24 h-24 rounded-full bg-slate-100 dark:bg-white/ flex items-center justify-center mb-8">
                 <Award size={48} className="text-slate-300" />
             </div>
             <h2 className="text-2xl font-black dark:text-white">No Credentials Found</h2>
@@ -120,11 +120,11 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
       ) : (
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 pb-20">
           {userCertificates.map(({ cert, batch }) => (
-            <div key={cert.serialNumber} className="group flex flex-col bg-white dark:bg-[#111C44] rounded-[3.5rem] border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:scale-[1.01]">
+            <div key={cert.serialNumber} className="group flex flex-col bg-whitedark:bg-[#111C44] rounded-[3.5rem] border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:scale-[1.01]">
                 
                 <div 
                    id={`cert-preview-${cert.serialNumber}`}
-                   className="p-8 pb-0 flex flex-col items-center bg-slate-50 dark:bg-black/20 group-hover:bg-transparent transition-colors cursor-zoom-in" 
+                   className="p-8 pb-0 flex flex-col items-center bg-slate-50dark:bg-black/20 group-hover:bg-transparent transition-colors cursor-zoom-in" 
                    onClick={() => handlePreview(cert, batch)}>
                     <div className="w-full shadow-2xl rounded-sm overflow-hidden transform scale-95 group-hover:scale-100 transition-transform duration-500">
                       <CertificatePreview 
@@ -165,7 +165,7 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
                         </button>
                         <button 
                             onClick={() => window.open(`/verify-cert?id=${cert.serialNumber}`, '_blank')}
-                            className="flex items-center justify-center gap-3 py-4 bg-slate-100 dark:bg-white/5 dark:text-white rounded-[2rem] font-black text-xs uppercase tracking-widest hover:bg-slate-200 dark:hover:bg-white/10 transition-all"
+                            className="flex items-center justify-center gap-3 py-4 bg-slate-100 dark:bg-white/ dark:text-white rounded-[2rem] font-black text-xs uppercase tracking-widest hover:bg-slate-200 dark:hover:bg-white/ transition-all"
                         >
                             <ExternalLink size={18} /> Public Verification
                         </button>
@@ -183,7 +183,7 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
               <div className="relative w-full max-w-[1240px] flex flex-col items-center gap-8 max-h-screen overflow-y-auto py-10 no-scrollbar">
                   <button 
                     onClick={() => setIsPreviewModalOpen(false)}
-                    className="absolute top-4 right-4 md:top-8 md:right-8 p-4 bg-white/10 hover:bg-rose-500/20 hover:text-rose-500 text-white rounded-2xl border border-white/10 transition-all z-[1100]"
+                    className="absolute top-4 right-4 md:top-8 md:right-8 p-4 bg-white/ hover:bg-rose-500/20 hover:text-rose-500 text-white rounded-2xl border border-white/10 transition-all z-[1100]"
                   >
                     <ChevronRight size={24} className="rotate-180" />
                   </button>
@@ -196,7 +196,7 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
                       <p className="text-slate-400 font-medium italic opacity-60">"Set Destination to 'PDF' or 'Printer', Layout to 'Landscape', and Margins to 'None'"</p>
                   </div>
 
-                  <div className="w-full shadow-[0_0_150px_rgba(37,99,235,0.25)] rounded-sm overflow-hidden border border-white/10 bg-white transition-all transform scale-[1.0] md:scale-[1.05] mt-4 print-preview-container">
+                  <div className="w-full shadow-[0_0_150px_rgba(37,99,235,0.25)] rounded-sm overflow-hidden border border-white/10 bg-whitetransition-all transform scale-[1.0] md:scale-[1.05] mt-4 print-preview-container">
                     <CertificatePreview 
                         studentName={selectedCert.cert.studentName}
                         enrollmentNumber={selectedCert.cert.enrollmentNumber}
@@ -217,7 +217,7 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
                      </button>
                      <button 
                         onClick={() => setIsPreviewModalOpen(false)}
-                        className="px-12 py-7 bg-white/5 text-white rounded-[2rem] font-black text-sm uppercase tracking-[0.3em] border border-white/10 hover:bg-white/10 transition-all flex items-center justify-center gap-4"
+                        className="px-12 py-7 bg-white/ text-white rounded-[2rem] font-black text-sm uppercase tracking-[0.3em] border border-white/10 hover:bg-white/ transition-all flex items-center justify-center gap-4"
                      >
                         Cancel
                      </button>
@@ -243,7 +243,7 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
       )}
 
       {/* Verification Notice */}
-      <div className="bg-slate-900 rounded-[3rem] p-10 flex flex-col md:flex-row items-center gap-8 justify-between relative overflow-hidden">
+      <div className="bg-slate-900rounded-[3rem] p-10 flex flex-col md:flex-row items-center gap-8 justify-between relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[100px]" />
           <div className="flex items-center gap-6 relative z-10">
               <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-500 flex items-center justify-center flex-shrink-0">

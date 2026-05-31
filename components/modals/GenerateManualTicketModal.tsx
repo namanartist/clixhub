@@ -75,7 +75,7 @@ const GenerateManualTicketModal: React.FC<Props> = ({ eventId, isDarkMode, onClo
 
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className={`rounded-3xl w-full max-w-md p-6 md:p-8 ${isDarkMode ? 'bg-[#111C44]' : 'bg-white'} border ${isDarkMode ? 'border-white/10' : 'border-slate-200'} shadow-2xl`}>
+            <div className={`rounded-3xl w-full max-w-md p-6 md:p-8 ${isDarkMode ? 'bg-[#111C44]' : 'bg-white} border ${isDarkMode ? 'border-white/10' : 'border-slate-200'} shadow-2xl`}>
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
                     <div className="space-y-1">
@@ -88,7 +88,7 @@ const GenerateManualTicketModal: React.FC<Props> = ({ eventId, isDarkMode, onClo
                     </div>
                     <button
                         onClick={onClose}
-                        className={`p-2 rounded-lg transition-colors ${isDarkMode ? 'hover:bg-white/10' : 'hover:bg-slate-100'}`}
+                        className={`p-2 rounded-lg transition-colors ${isDarkMode ? 'hover:bg-white/' : 'hover:bg-slate-100'}`}
                     >
                         <X size={20} />
                     </button>
@@ -119,8 +119,8 @@ const GenerateManualTicketModal: React.FC<Props> = ({ eventId, isDarkMode, onClo
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm transition-colors ${isDarkMode
-                            ? 'bg-white/5 border-white/10 text-white placeholder-slate-500 focus:border-blue-500/50'
-                            : 'bg-white border-slate-200 text-[#1B2559] placeholder-slate-400 focus:border-blue-500'
+                            ? 'bg-white/ border-white/10 text-white placeholder-slate-500 focus:border-blue-500/50'
+                            : 'bg-whiteborder-slate-200 text-[#1B2559] placeholder-slate-400 focus:border-blue-500'
                             }`}
                     />
                 </div>
@@ -138,7 +138,7 @@ const GenerateManualTicketModal: React.FC<Props> = ({ eventId, isDarkMode, onClo
                                 onClick={() => setSelectedStudent(candidate)}
                                 className={`w-full p-3 text-left border-b transition-colors ${selectedStudent?.id === candidate.id
                                         ? isDarkMode ? 'bg-blue-600/20' : 'bg-blue-100'
-                                        : isDarkMode ? 'hover:bg-white/5' : 'hover:bg-slate-50'
+                                        : isDarkMode ? 'hover:bg-white/' : 'hover:bg-slate-50
                                     } ${isDarkMode ? 'border-white/5' : 'border-slate-100'} last:border-b-0`}
                             >
                                 <div className="flex items-center justify-between">
@@ -155,7 +155,7 @@ const GenerateManualTicketModal: React.FC<Props> = ({ eventId, isDarkMode, onClo
                                             : isDarkMode ? 'border-white/30' : 'border-slate-300'
                                         }`}>
                                         {selectedStudent?.id === candidate.id && (
-                                            <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                                            <div className="w-1.5 h-1.5 rounded-full bg-white />
                                         )}
                                     </div>
                                 </div>
@@ -166,7 +166,7 @@ const GenerateManualTicketModal: React.FC<Props> = ({ eventId, isDarkMode, onClo
 
                 {/* Student Info */}
                 {selectedStudent && (
-                    <div className={`mb-6 p-3 rounded-xl ${isDarkMode ? 'bg-white/5 border border-white/10' : 'bg-slate-50 border border-slate-200'}`}>
+                    <div className={`mb-6 p-3 rounded-xl ${isDarkMode ? 'bg-white/ border border-white/10' : 'bg-slate-50border border-slate-200'}`}>
                         <p className={`text-xs font-black uppercase tracking-widest ${isDarkMode ? 'text-slate-400' : 'text-slate-600'} mb-2`}>
                             Selected Student
                         </p>
@@ -184,7 +184,7 @@ const GenerateManualTicketModal: React.FC<Props> = ({ eventId, isDarkMode, onClo
                     <button
                         onClick={onClose}
                         className={`flex-1 py-2.5 rounded-xl font-black text-xs uppercase transition-all ${isDarkMode
-                            ? 'bg-white/5 hover:bg-white/10 text-white'
+                            ? 'bg-white/ hover:bg-white/ text-white'
                             : 'bg-slate-100 hover:bg-slate-200 text-[#1B2559]'
                             }`}
                     >

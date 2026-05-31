@@ -161,7 +161,7 @@ const MyApplications: React.FC<Props> = ({ applicants, clubs, userName, isDarkMo
 
       {myApps.length === 0 ? (
         <div className="p-20 border-2 border-dashed border-white/5 rounded-[3rem] text-center space-y-6">
-          <div className="w-20 h-20 rounded-[2rem] bg-white/5 flex items-center justify-center mx-auto">
+          <div className="w-20 h-20 rounded-[2rem] bg-white/ flex items-center justify-center mx-auto">
             <Briefcase size={36} className="text-slate-600" />
           </div>
           <div className="space-y-2">
@@ -187,7 +187,7 @@ const MyApplications: React.FC<Props> = ({ applicants, clubs, userName, isDarkMo
             return (
               <div
                 key={app.id}
-                className="rounded-[2.5rem] border border-white/5 bg-white/2 overflow-hidden transition-all hover:border-white/10 hover:shadow-xl"
+                className="rounded-[2.5rem] border border-white/5 bg-white/ overflow-hidden transition-all hover:border-white/10 hover:shadow-xl"
               >
                 {/* Top color accent */}
                 <div
@@ -221,7 +221,7 @@ const MyApplications: React.FC<Props> = ({ applicants, clubs, userName, isDarkMo
                     {/* Tracking ID */}
                     <div className="flex flex-col items-end gap-2">
                       <p className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-600">Application ID</p>
-                      <div className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl group">
+                      <div className="flex items-center gap-2 px-4 py-2 bg-white/ border border-white/10 rounded-xl group">
                         <Hash size={12} className="text-primary"/>
                         <code className="text-[11px] font-mono font-black text-white">{trackingId}</code>
                         <button
@@ -239,7 +239,7 @@ const MyApplications: React.FC<Props> = ({ applicants, clubs, userName, isDarkMo
                     <div className="space-y-6 mb-8">
                       {/* Stage dots */}
                       <div className="relative">
-                        <div className="absolute top-5 left-0 w-full h-0.5 bg-white/5 rounded-full" />
+                        <div className="absolute top-5 left-0 w-full h-0.5 bg-white/ rounded-full" />
                         <div
                           className="absolute top-5 left-0 h-0.5 rounded-full transition-all duration-1000"
                           style={{ width: `${progress}%`, background: club?.themeColor || '#4318FF' }}
@@ -253,7 +253,7 @@ const MyApplications: React.FC<Props> = ({ applicants, clubs, userName, isDarkMo
                                 <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 z-10 transition-all duration-500 ${
                                   isCompleted ? 'bg-primary border-primary text-white' :
                                   isCurrent ? 'border-primary text-primary bg-primary/10 ring-4 ring-primary/20 scale-110' :
-                                  'bg-white/5 border-white/10 text-white/20'
+                                  'bg-white/ border-white/10 text-white/20'
                                 }`}>
                                   {isCompleted ? <CheckCircle2 size={16}/> : isCurrent ? <Loader2 size={16} className="animate-spin"/> : <span className="text-[10px] font-black">{i+1}</span>}
                                 </div>
@@ -265,7 +265,7 @@ const MyApplications: React.FC<Props> = ({ applicants, clubs, userName, isDarkMo
                       </div>
 
                       {/* Stage hint */}
-                      <div className="p-5 rounded-2xl bg-white/3 border border-white/5 flex flex-col gap-4">
+                      <div className="p-5 rounded-2xl bg-white/ border border-white/5 flex flex-col gap-4">
                         <div className="flex items-start gap-4">
                             <div className="p-2 rounded-xl bg-primary/10 text-primary flex-shrink-0"><Activity size={16}/></div>
                             <div className="space-y-1">
@@ -285,7 +285,7 @@ const MyApplications: React.FC<Props> = ({ applicants, clubs, userName, isDarkMo
                                 </button>
                                 <button 
                                     onClick={() => onUpdateStatus?.(app.id, 'Rejected')}
-                                    className="px-6 h-14 bg-white/5 text-slate-400 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-rose-500/10 hover:text-rose-400 transition-all"
+                                    className="px-6 h-14 bg-white/ text-slate-400 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-rose-500/10 hover:text-rose-400 transition-all"
                                 >
                                     Decline
                                 </button>
@@ -332,7 +332,7 @@ const MyApplications: React.FC<Props> = ({ applicants, clubs, userName, isDarkMo
                   </button>
 
                   {isExpanded && (
-                    <div className="mt-6 p-6 rounded-2xl bg-white/3 border border-white/5 space-y-4 animate-in slide-in-from-top-4 duration-300">
+                    <div className="mt-6 p-6 rounded-2xl bg-white/ border border-white/5 space-y-4 animate-in slide-in-from-top-4 duration-300">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                           <p className="text-[9px] font-black uppercase tracking-widest text-slate-600 mb-1">Domain Applied</p>

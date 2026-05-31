@@ -123,7 +123,7 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
                    <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[var(--text-secondary)] mb-2">{stat.label}</p>
                    <p className="text-3xl font-black tracking-tighter">{stat.value}</p>
                 </div>
-                <div className={`w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center ${stat.color} group-hover:scale-110 transition-transform`}>
+                <div className={`w-12 h-12 rounded-2xl bg-white/ flex items-center justify-center ${stat.color} group-hover:scale-110 transition-transform`}>
                    <stat.icon size={24} />
                 </div>
              </div>
@@ -166,7 +166,7 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
                              <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-30">{project.category}</span>
                           </div>
                        </div>
-                       <button className="p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+                       <button className="p-3 rounded-xl bg-white/ hover:bg-white/ transition-colors">
                           <MoreHorizontal size={20} className="text-[var(--text-secondary)]" />
                        </button>
                     </div>
@@ -176,7 +176,7 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
                           <span className="text-[10px] font-black uppercase tracking-widest text-primary">Synchronized</span>
                           <span className="text-lg font-black">{project.progress}%</span>
                        </div>
-                       <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                       <div className="w-full h-2 bg-white/ rounded-full overflow-hidden">
                           <div
                             className="h-full bg-gradient-to-r from-primary to-accent-cyan transition-all duration-1000"
                             style={{ width: `${project.progress}%` }}
@@ -192,7 +192,7 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
                             </div>
                           ))}
                        </div>
-                       <button className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-white/5 hover:bg-white/10 text-[9px] font-black uppercase tracking-widest transition-all">
+                       <button className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-white/ hover:bg-white/ text-[9px] font-black uppercase tracking-widest transition-all">
                           Sequence Log
                        </button>
                     </div>
@@ -215,7 +215,7 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
                       <p className="text-[8px] font-black uppercase tracking-[0.2em] opacity-30 mb-1">Success Margin</p>
                       <p className="text-sm font-black text-primary">{Math.round((completedTasks/tasks.length)*100)}% Verified</p>
                    </div>
-                   <button className="p-4 rounded-2xl glass hover:bg-white/5 transition-all text-[var(--text-secondary)]">
+                   <button className="p-4 rounded-2xl glass hover:bg-white/ transition-all text-[var(--text-secondary)]">
                       <Plus size={20} />
                    </button>
                 </div>
@@ -223,7 +223,7 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {tasks.map((task) => (
-                  <div key={task.id} className={`p-6 rounded-3xl border transition-all flex items-center gap-6 group/task ${task.completed ? 'bg-emerald-500/5 border-emerald-500/20 opacity-60' : 'bg-white/2 border-white/5 hover:border-primary/30'}`}>
+                  <div key={task.id} className={`p-6 rounded-3xl border transition-all flex items-center gap-6 group/task ${task.completed ? 'bg-emerald-500/5 border-emerald-500/20 opacity-60' : 'bg-white/ border-white/5 hover:border-primary/30'}`}>
                     <div className="flex-shrink-0 relative">
                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center border-2 transition-all ${task.completed ? 'bg-emerald-500 border-emerald-500 text-black' : 'border-white/20 group-hover/task:border-primary cursor-pointer'}`}>
                           {task.completed && <CheckCircle2 size={16} strokeWidth={3} />}
@@ -278,7 +278,7 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
                       className={`h-10 flex items-center justify-center text-xs font-black transition-all rounded-xl ${isVisible
                           ? isToday
                             ? 'bg-primary text-white shadow-2xl shadow-primary/40 scale-110 z-10'
-                            : 'text-white/40 hover:bg-white/5 cursor-pointer hover:text-white'
+                            : 'text-white/40 hover:bg-white/ cursor-pointer hover:text-white'
                           : 'opacity-0'
                         }`}
                     >
@@ -297,13 +297,13 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
               </div>
 
               <div className="space-y-0 relative">
-                <div className="absolute left-[11px] top-2 bottom-6 w-[2px] bg-white/5" />
+                <div className="absolute left-[11px] top-2 bottom-6 w-[2px] bg-white/" />
                 
                 {scheduleItems.map((item, idx) => (
                   <div key={item.id} className="flex gap-8 relative group cursor-pointer pb-10 last:pb-0">
                     <div className="mt-1.5 relative z-10 transition-transform group-hover:scale-125">
                        <div className={`w-6 h-6 rounded-lg ${item.status === 'upcoming' ? 'bg-primary shadow-[0_0_15px_rgba(var(--primary-raw),0.5)]' : 'bg-[#1C1F2E] border border-white/10'} flex items-center justify-center`}>
-                          <div className={`w-2 h-2 rounded-full ${item.status === 'upcoming' ? 'bg-white' : 'bg-white/20'}`} />
+                          <div className={`w-2 h-2 rounded-full ${item.status === 'upcoming' ? 'bg-white : 'bg-white/'}`} />
                        </div>
                     </div>
                     <div className="flex-1 space-y-1">
@@ -319,8 +319,8 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
                 ))}
                 
                 <div className="flex gap-8 items-center pt-8 opacity-20 group cursor-default">
-                  <div className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center">
-                     <div className="w-1.5 h-1.5 rounded-full bg-white/50" />
+                  <div className="w-6 h-6 rounded-lg bg-white/ flex items-center justify-center">
+                     <div className="w-1.5 h-1.5 rounded-full bg-white/" />
                   </div>
                   <p className="text-[10px] font-black uppercase tracking-[0.3em]">End of Daily Sequence</p>
                 </div>
@@ -333,7 +333,7 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
       {/* ─── CREATION OVERLAY ─── */}
       {isNotifyOpen && (
         <div className="fixed inset-0 z-[1000] flex items-center justify-center px-6">
-          <div className="absolute inset-0 bg-black/90 backdrop-blur-2xl animate-in fade-in duration-500" onClick={() => setIsNotifyOpen(false)} />
+          <div className="absolute inset-0 bg-black animate-in fade-in duration-500" onClick={() => setIsNotifyOpen(false)} />
           <div className="relative w-full max-w-xl bento-card p-8 md:p-12 space-y-8 md:space-y-10 animate-in zoom-in-95 duration-500 shadow-4xl border border-white/10">
             <div className="space-y-2">
                <h2 className="text-5xl font-black tracking-tighter uppercase italic italic underline decoration-primary decoration-4 underline-offset-8">New Nexus Item</h2>
@@ -349,7 +349,7 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
                      <input
                        value={notification.title}
                        onChange={e => setNotification({ ...notification, title: e.target.value })}
-                       className="w-full h-20 bg-white/5 border border-white/10 pl-16 pr-8 rounded-[2rem] text-xl font-black outline-none focus:border-primary/50 transition-all placeholder:opacity-10"
+                       className="w-full h-20 bg-white/ border border-white/10 pl-16 pr-8 rounded-[2rem] text-xl font-black outline-none focus:border-primary/50 transition-all placeholder:opacity-10"
                        placeholder="Sequence Title..."
                      />
                   </div>
@@ -359,14 +359,14 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
                   <textarea
                     value={notification.message}
                     onChange={e => setNotification({ ...notification, message: e.target.value })}
-                    className="w-full h-40 bg-white/5 border border-white/10 p-8 rounded-[2rem] text-lg font-medium outline-none focus:border-primary/50 transition-all resize-none placeholder:opacity-10"
+                    className="w-full h-40 bg-white/ border border-white/10 p-8 rounded-[2rem] text-lg font-medium outline-none focus:border-primary/50 transition-all resize-none placeholder:opacity-10"
                     placeholder="Describe the objective parameters..."
                   />
                 </div>
               </div>
               
               <div className="grid grid-cols-2 gap-6 pt-4">
-                <button type="button" onClick={() => setIsNotifyOpen(false)} className="h-20 rounded-[2rem] border border-white/10 font-black text-[11px] uppercase tracking-[0.3em] hover:bg-white/5 transition-all">
+                <button type="button" onClick={() => setIsNotifyOpen(false)} className="h-20 rounded-[2rem] border border-white/10 font-black text-[11px] uppercase tracking-[0.3em] hover:bg-white/ transition-all">
                   Abort
                 </button>
                 <button type="submit" className="h-20 bg-primary text-white rounded-[2rem] font-black text-[11px] uppercase tracking-[0.3em] shadow-3xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">

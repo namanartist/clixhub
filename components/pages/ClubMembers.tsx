@@ -135,7 +135,7 @@ const ClubMembers: React.FC<Props> = ({
                     
                     {isAdmin && (
                       <div className="absolute top-6 right-8 flex gap-2">
-                        <button onClick={() => { setEditingMember(member); setIsEditModalOpen(true); }} className="p-2 rounded-xl bg-white/5 text-slate-400 hover:text-blue-500 hover:bg-white/10 transition-all">
+                        <button onClick={() => { setEditingMember(member); setIsEditModalOpen(true); }} className="p-2 rounded-xl bg-white/ text-slate-400 hover:text-blue-500 hover:bg-white/ transition-all">
                            <Edit3 size={16} />
                         </button>
                       </div>
@@ -177,7 +177,7 @@ const ClubMembers: React.FC<Props> = ({
 
                     <button 
                         onClick={() => setSelectedMember(member)}
-                        className="w-full py-4 rounded-[1.5rem] text-[9px] font-black uppercase tracking-[0.2em] transition-all bg-white/5 text-slate-400 hover:bg-blue-600 hover:text-white hover:shadow-xl hover:shadow-blue-500/20"
+                        className="w-full py-4 rounded-[1.5rem] text-[9px] font-black uppercase tracking-[0.2em] transition-all bg-white/ text-slate-400 hover:bg-blue-600 hover:text-white hover:shadow-xl hover:shadow-blue-500/20"
                     >
                         Access Dossier
                     </button>
@@ -190,7 +190,7 @@ const ClubMembers: React.FC<Props> = ({
       {isAddModalOpen && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 backdrop-blur-3xl bg-black/80 animate-in fade-in duration-500">
            <div className="relative max-w-xl w-full rounded-[4rem] border border-white/10 glass-elevated p-12 space-y-8 animate-in zoom-in-95 duration-500">
-              <button onClick={() => setIsAddModalOpen(false)} className="absolute top-10 right-10 p-4 rounded-3xl bg-white/5 text-white hover:bg-rose-500 transition-all"><X size={18}/></button>
+              <button onClick={() => setIsAddModalOpen(false)} className="absolute top-10 right-10 p-4 rounded-3xl bg-white/ text-white hover:bg-rose-500 transition-all"><X size={18}/></button>
               
               <div className="space-y-2">
                  <h3 className="text-4xl font-black tracking-tighter italic uppercase text-white">Personnel Induction</h3>
@@ -198,7 +198,7 @@ const ClubMembers: React.FC<Props> = ({
               </div>
 
               <div className="space-y-6">
-                 <div className="flex items-center gap-4 px-6 py-4 rounded-3xl bg-white/5 border border-white/5 focus-within:border-blue-500/50 transition-all">
+                 <div className="flex items-center gap-4 px-6 py-4 rounded-3xl bg-white/ border border-white/5 focus-within:border-blue-500/50 transition-all">
                     <Search size={18} className="text-blue-500" />
                     <input 
                       autoFocus
@@ -212,7 +212,7 @@ const ClubMembers: React.FC<Props> = ({
                  <div className="space-y-3">
                     {personnelSearch.length > 2 ? (
                       personnelPool.length > 0 ? personnelPool.map(u => (
-                        <div key={u.id} className="p-5 rounded-3xl bg-white/5 border border-white/5 flex items-center justify-between group hover:bg-white/10 transition-all">
+                        <div key={u.id} className="p-5 rounded-3xl bg-white/ border border-white/5 flex items-center justify-between group hover:bg-white/ transition-all">
                            <div className="flex items-center gap-4">
                               <div className="w-10 h-10 rounded-xl bg-blue-600/20 flex items-center justify-center text-blue-500 font-black">{u.name[0]}</div>
                               <div>
@@ -239,7 +239,7 @@ const ClubMembers: React.FC<Props> = ({
       {isEditModalOpen && editingMember && (
          <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 backdrop-blur-3xl bg-black/80">
             <div className="relative max-w-lg w-full rounded-[4rem] border border-white/10 glass-elevated p-12 space-y-8">
-                <button onClick={() => { setIsEditModalOpen(false); setEditingMember(null); }} className="absolute top-10 right-10 p-4 rounded-3xl bg-white/5 text-white hover:bg-rose-500 transition-all"><X size={18}/></button>
+                <button onClick={() => { setIsEditModalOpen(false); setEditingMember(null); }} className="absolute top-10 right-10 p-4 rounded-3xl bg-white/ text-white hover:bg-rose-500 transition-all"><X size={18}/></button>
                 <div className="text-center space-y-4">
                    <div className="w-20 h-20 rounded-3xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-500 mx-auto shadow-2xl">
                       <Settings size={32} className="animate-spin-slow" />
@@ -261,7 +261,7 @@ const ClubMembers: React.FC<Props> = ({
                               className={`p-4 rounded-2xl text-[9px] font-black uppercase tracking-widest transition-all text-left flex items-center justify-between group ${
                                 editingMember.clubMemberships.find(m => m.clubId === clubId)?.role === r 
                                 ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/20' 
-                                : 'bg-white/5 text-slate-400 hover:bg-white/10'
+                                : 'bg-white/ text-slate-400 hover:bg-white/'
                               }`}
                             >
                               {r}
@@ -280,7 +280,7 @@ const ClubMembers: React.FC<Props> = ({
                               className={`p-4 rounded-2xl text-[9px] font-black uppercase tracking-widest transition-all text-left flex items-center justify-between group ${
                                 editingMember.clubMemberships.find(m => m.clubId === clubId)?.domain === d 
                                 ? 'bg-emerald-600 text-white shadow-xl shadow-emerald-500/20' 
-                                : 'bg-white/5 text-slate-400 hover:bg-white/10'
+                                : 'bg-white/ text-slate-400 hover:bg-white/'
                               }`}
                             >
                               {d}
@@ -308,7 +308,7 @@ const ClubMembers: React.FC<Props> = ({
             
             <button 
                 onClick={() => setSelectedMember(null)}
-                className="absolute top-10 right-10 p-4 rounded-3xl bg-white/5 text-white hover:bg-rose-500 transition-all z-20 group"
+                className="absolute top-10 right-10 p-4 rounded-3xl bg-white/ text-white hover:bg-rose-500 transition-all z-20 group"
             >
                 <X size={20} className="group-hover:rotate-90 transition-transform" />
             </button>
@@ -318,7 +318,7 @@ const ClubMembers: React.FC<Props> = ({
                 <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
                 <div className="absolute -bottom-20 left-12">
                     <div className="w-40 h-40 rounded-[3rem] border-[8px] border-[#0d121d] glass bg-[#111C44] overflow-hidden shadow-2xl p-2 bg-gradient-to-br from-blue-500 to-indigo-600">
-                        <div className="w-full h-full rounded-[2.2rem] overflow-hidden bg-[#0d121d]">
+                        <div className="w-full h-full rounded-[2.2rem] overflow-hidden bg-[#0d121d]>
                             {selectedMember.photoUrl ? (
                                 <img src={selectedMember.photoUrl} alt="" className="w-full h-full object-cover" />
                             ) : (
@@ -357,7 +357,7 @@ const ClubMembers: React.FC<Props> = ({
                         </div>
                         <div className="flex flex-wrap gap-3">
                             {(selectedMember.skills || []).length > 0 ? selectedMember.skills?.map(s => (
-                                <span key={s} className="px-4 py-1.5 bg-white/5 rounded-xl border border-white/5 text-[10px] font-black text-slate-400 uppercase tracking-widest">{s}</span>
+                                <span key={s} className="px-4 py-1.5 bg-white/ rounded-xl border border-white/5 text-[10px] font-black text-slate-400 uppercase tracking-widest">{s}</span>
                             )) : <p className="text-[10px] font-black text-slate-700 uppercase tracking-widest italic">No data indexed.</p>}
                         </div>
                     </div>
@@ -382,7 +382,7 @@ const ClubMembers: React.FC<Props> = ({
                 </div>
 
                 {/* Footer Logistics */}
-                <div className="p-8 rounded-[2.5rem] bg-white/5 border border-white/5 flex items-center justify-between">
+                <div className="p-8 rounded-[2.5rem] bg-white/ border border-white/5 flex items-center justify-between">
                     <div className="flex items-center gap-5">
                         <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 border border-blue-500/20">
                             <ShieldCheck size={28} />

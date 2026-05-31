@@ -61,10 +61,10 @@ const JWTAuthPage: React.FC<Props> = ({ isDarkMode }) => {
 
     /* ── Styled input / select classes (white bg, black text) ── */
     const inputClass =
-        'w-full h-14 bg-white text-gray-900 border border-gray-200 rounded-2xl px-5 font-semibold text-sm ' +
+        'w-full h-14 bg-whitetext-gray-900 border border-gray-200 rounded-2xl px-5 font-semibold text-sm ' +
         'focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none placeholder:text-gray-400';
     const selectClass =
-        'w-full h-14 bg-white text-gray-900 border border-gray-200 rounded-2xl px-5 pr-10 font-semibold text-sm ' +
+        'w-full h-14 bg-whitetext-gray-900 border border-gray-200 rounded-2xl px-5 pr-10 font-semibold text-sm ' +
         'focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none cursor-pointer';
 
     const handleJWTSubmit = async (e: React.FormEvent) => {

@@ -29,7 +29,7 @@ export const PublicLayout: React.FC<LayoutProps> = ({ title, subtitle, icon, onB
     {/* Back Button */}
     <button
       onClick={onBack}
-      className={`fixed top-8 left-8 z-50 p-3 rounded-xl transition-all ${isDarkMode ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'}`}
+      className={`fixed top-8 left-8 z-50 p-3 rounded-xl transition-all ${isDarkMode ? 'text-slate-400 hover:text-white hover:bg-white/' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'}`}
       title="Back"
     >
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,7 +72,7 @@ export const PublicLayout: React.FC<LayoutProps> = ({ title, subtitle, icon, onB
     </section>
 
     {/* Content Section */}
-    <section className={`py-24 px-6 border-t ${isDarkMode ? 'bg-white/[0.015] border-white/[0.06]' : 'bg-slate-50/50 border-slate-200/50'}`}>
+    <section className={`py-24 px-6 border-t ${isDarkMode ? 'bg-white/[0.015] border-white/[0.06]' : 'bg-slate-50/ border-slate-200/50'}`}>
       <div className="max-w-[1200px] mx-auto">
         {children}
       </div>
@@ -239,7 +239,7 @@ export const ReportIssue: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                   onClick={() => setCategory(cat)}
                   className={`py-4 px-4 rounded-2xl font-bold text-sm uppercase tracking-widest transition-all ${category === cat
                     ? 'bg-amber-500 text-white shadow-lg shadow-amber-500/30'
-                    : 'bg-white/5 text-slate-400 hover:bg-white/10 border border-white/10'
+                    : 'bg-white/ text-slate-400 hover:bg-white/ border border-white/10'
                     }`}
                 >
                   {cat === 'bug' && '🐛 Bug'}

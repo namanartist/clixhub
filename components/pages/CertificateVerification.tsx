@@ -98,7 +98,7 @@ const CertificateVerification: React.FC = () => {
                 <div className="max-w-2xl mx-auto mb-20">
                     <form onSubmit={handleSearch} className="relative group">
                         <div className="absolute inset-0 bg-blue-500/20 blur-2xl group-hover:bg-blue-500/30 transition-all opacity-50" />
-                        <div className="relative flex p-2 bg-white/5 border border-white/10 rounded-[2.5rem] backdrop-blur-xl">
+                        <div className="relative flex p-2 bg-white/ border border-white/10 rounded-[2.5rem] backdrop-blur-xl">
                             <div className="flex-1 flex items-center px-6">
                                 <Search className="text-slate-500 mr-4" size={24} />
                                 <input 
@@ -173,14 +173,14 @@ const CertificateVerification: React.FC = () => {
                                     { label: 'Enrollment No.', value: result.cert.enrollmentNumber },
                                 ]
                                 .map((item, i) => (
-                                    <div key={i} className="p-6 rounded-[2rem] bg-white/5 border border-white/5">
+                                    <div key={i} className="p-6 rounded-[2rem] bg-white/ border border-white/5">
                                         <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">{item.label}</p>
                                         <p className="text-lg font-bold">{item.value}</p>
                                     </div>
                                 ))}
                             </div>
 
-                            <div className="p-8 rounded-[3rem] bg-white/5 border border-white/5 space-y-6">
+                            <div className="p-8 rounded-[3rem] bg-white/ border border-white/5 space-y-6">
                                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 flex items-center gap-2">
                                     <History size={14} /> Approval Chain Proof
                                 </p>
@@ -193,7 +193,7 @@ const CertificateVerification: React.FC = () => {
                                             <div>
                                                 <div className="flex items-center gap-2">
                                                     <span className="font-bold text-sm">{step.approverName}</span>
-                                                    <span className="px-2 py-0.5 rounded-md bg-white/10 text-[8px] font-black uppercase text-slate-400">Approved</span>
+                                                    <span className="px-2 py-0.5 rounded-md bg-white/ text-[8px] font-black uppercase text-slate-400">Approved</span>
                                                 </div>
                                                 <p className="text-[10px] text-slate-500 font-medium uppercase tracking-widest">
                                                     {step.role} • {step.approvedAt ? new Date(step.approvedAt).toLocaleString() : 'N/A'}
@@ -223,7 +223,7 @@ const CertificateVerification: React.FC = () => {
                                         const win = window.open('', '_blank', 'width=1100,height=850');
                                         if (win) { win.document.write(html); win.document.close(); }
                                     }}
-                                    className="flex items-center gap-2 px-8 py-4 bg-white/5 hover:bg-white/10 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all border border-white/10 shadow-xl"
+                                    className="flex items-center gap-2 px-8 py-4 bg-white/ hover:bg-white/ text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all border border-white/10 shadow-xl"
                                 >
                                     <Download size={18} /> Download Record
                                 </button>

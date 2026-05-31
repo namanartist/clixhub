@@ -143,7 +143,7 @@ const ClubFinance: React.FC<Props> = ({
          <div className="flex gap-4 w-full md:w-auto">
             <button 
               onClick={handleQrUpload}
-              className="flex-1 md:flex-none glass-elevated border border-white/5 text-white px-8 py-5 rounded-[1.8rem] font-black text-[10px] uppercase tracking-[0.2em] shadow-xl flex items-center justify-center gap-4 hover:bg-white/5 transition-all active:scale-95"
+              className="flex-1 md:flex-none glass-elevated border border-white/5 text-white px-8 py-5 rounded-[1.8rem] font-black text-[10px] uppercase tracking-[0.2em] shadow-xl flex items-center justify-center gap-4 hover:bg-white/ transition-all active:scale-95"
             >
               <QrCode size={18} /> Gateway Assets
             </button>
@@ -164,7 +164,7 @@ const ClubFinance: React.FC<Props> = ({
           { label: 'Procurement Capacity', val: (club.quotations || []).filter(q => q.status === 'Approved').reduce((a, b) => a + b.amount, 0), icon: Briefcase, color: 'blue', sub: 'Approved Capital Budget' }
         ].map((kpi, i) => (
           <div key={i} className="glass-elevated p-10 rounded-[3.5rem] border transition-all duration-700 hover:scale-[1.02] flex flex-col justify-between h-64 group shadow-xl relative overflow-hidden">
-             <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
+             <div className="absolute top-0 right-0 w-40 h-40 bg-white/ blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
              <div className="flex justify-between items-start relative z-10">
                  <div className={`w-16 h-16 rounded-2xl bg-${kpi.color}-500/10 text-${kpi.color}-500 flex items-center justify-center transition-transform duration-700 group-hover:rotate-12`}>
                      <kpi.icon size={28} />
@@ -280,7 +280,7 @@ const ClubFinance: React.FC<Props> = ({
                     <select 
                         value={gatewayConfig.provider} 
                         onChange={(e) => setGatewayConfig({...gatewayConfig, provider: e.target.value as any})}
-                        className="w-full bg-white/5 border border-white/5 rounded-3xl px-6 py-4 text-white font-black text-sm outline-none focus:border-blue-500/40 transition-all appearance-none uppercase tracking-widest"
+                        className="w-full bg-white/ border border-white/5 rounded-3xl px-6 py-4 text-white font-black text-sm outline-none focus:border-blue-500/40 transition-all appearance-none uppercase tracking-widest"
                     >
                         <option value="ManualUPI">Tactical UPI (Default)</option>
                         <option value="Razorpay">Razorpay Nexus</option>
@@ -298,7 +298,7 @@ const ClubFinance: React.FC<Props> = ({
                                 value={gatewayConfig.apiKey || ''}
                                 onChange={(e) => setGatewayConfig({...gatewayConfig, apiKey: e.target.value})}
                                 placeholder="RZP_TEST_ID..."
-                                className="w-full bg-white/5 border border-white/5 rounded-3xl px-6 py-4 text-blue-400 font-mono text-xs outline-none focus:border-blue-500/40 shadow-inner"
+                                className="w-full bg-white/ border border-white/5 rounded-3xl px-6 py-4 text-blue-400 font-mono text-xs outline-none focus:border-blue-500/40 shadow-inner"
                             />
                         </div>
                         <div className="space-y-2">
@@ -312,7 +312,7 @@ const ClubFinance: React.FC<Props> = ({
                                     value={gatewayConfig.secretKey || ''}
                                     onChange={(e) => setGatewayConfig({...gatewayConfig, secretKey: e.target.value})}
                                     placeholder="••••••••••••••••"
-                                    className="w-full bg-white/5 border border-white/5 rounded-3xl px-6 py-4 text-white font-mono text-xs outline-none focus:border-blue-500/40 shadow-inner"
+                                    className="w-full bg-white/ border border-white/5 rounded-3xl px-6 py-4 text-white font-mono text-xs outline-none focus:border-blue-500/40 shadow-inner"
                                 />
                             </div>
                         </div>
@@ -321,8 +321,8 @@ const ClubFinance: React.FC<Props> = ({
 
                 <div className="flex items-center justify-between pt-6 border-t border-white/5">
                     <label className="flex items-center gap-4 cursor-pointer group">
-                        <div className={`w-14 h-8 rounded-full p-1.5 transition-all duration-500 border border-white/5 shadow-inner ${gatewayConfig.isActive ? 'bg-emerald-600' : 'bg-slate-900'}`}>
-                            <div className={`w-5 h-5 rounded-full bg-white shadow-xl transform transition-transform duration-500 ${gatewayConfig.isActive ? 'translate-x-6' : 'translate-x-0'}`} />
+                        <div className={`w-14 h-8 rounded-full p-1.5 transition-all duration-500 border border-white/5 shadow-inner ${gatewayConfig.isActive ? 'bg-emerald-600' : 'bg-slate-900}`}>
+                            <div className={`w-5 h-5 rounded-full bg-whiteshadow-xl transform transition-transform duration-500 ${gatewayConfig.isActive ? 'translate-x-6' : 'translate-x-0'}`} />
                         </div>
                         <input type="checkbox" checked={gatewayConfig.isActive} onChange={(e) => setGatewayConfig({...gatewayConfig, isActive: e.target.checked})} className="hidden" />
                         <div className="flex flex-col">
@@ -418,7 +418,7 @@ const ClubFinance: React.FC<Props> = ({
                 <h2 className="text-4xl font-black tracking-tighter font-display text-white italic uppercase">Draft Quotation</h2>
                 <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-relaxed max-w-sm">Dispatching formal procurement request into the institutional approval stream.</p>
               </div>
-              <button onClick={() => setIsQuoteModalOpen(false)} className="p-4 rounded-3xl bg-white/5 text-slate-500 hover:text-white hover:bg-rose-500 transition-all group">
+              <button onClick={() => setIsQuoteModalOpen(false)} className="p-4 rounded-3xl bg-white/ text-slate-500 hover:text-white hover:bg-rose-500 transition-all group">
                 <X size={24} className="group-hover:rotate-90 transition-transform" />
               </button>
             </div>
@@ -426,21 +426,21 @@ const ClubFinance: React.FC<Props> = ({
             <form onSubmit={handleAddQuotation} className="space-y-8">
                <div className="space-y-3">
                   <label className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-600 ml-8 italic">Operational Intent Nomenclature</label>
-                  <input required value={newQuote.title} onChange={e => setNewQuote({...newQuote, title: e.target.value})} placeholder="E.G. TITAN MISSION LOGISTICS" className="w-full bg-white/5 border border-white/5 px-8 py-5 rounded-[2rem] outline-none focus:border-blue-500/50 text-white font-black uppercase tracking-tighter text-lg shadow-inner" />
+                  <input required value={newQuote.title} onChange={e => setNewQuote({...newQuote, title: e.target.value})} placeholder="E.G. TITAN MISSION LOGISTICS" className="w-full bg-white/ border border-white/5 px-8 py-5 rounded-[2rem] outline-none focus:border-blue-500/50 text-white font-black uppercase tracking-tighter text-lg shadow-inner" />
                </div>
                <div className="grid grid-cols-2 gap-8">
                   <div className="space-y-3">
                     <label className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-600 ml-8 italic">Vendor Identity Node</label>
-                    <input required value={newQuote.vendor} onChange={e => setNewQuote({...newQuote, vendor: e.target.value})} placeholder="NODE-XX" className="w-full bg-white/5 border border-white/5 px-8 py-5 rounded-[2rem] outline-none focus:border-blue-500/50 text-white font-black uppercase tracking-widest text-sm shadow-inner" />
+                    <input required value={newQuote.vendor} onChange={e => setNewQuote({...newQuote, vendor: e.target.value})} placeholder="NODE-XX" className="w-full bg-white/ border border-white/5 px-8 py-5 rounded-[2rem] outline-none focus:border-blue-500/50 text-white font-black uppercase tracking-widest text-sm shadow-inner" />
                   </div>
                   <div className="space-y-3">
                     <label className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-600 ml-8 italic">Fiscal Sum (₹)</label>
-                    <input required type="number" value={newQuote.amount} onChange={e => setNewQuote({...newQuote, amount: Number(e.target.value)})} placeholder="0.00" className="w-full bg-white/5 border border-white/5 px-8 py-5 rounded-[2rem] outline-none focus:border-blue-500/50 text-white font-black text-xl shadow-inner" />
+                    <input required type="number" value={newQuote.amount} onChange={e => setNewQuote({...newQuote, amount: Number(e.target.value)})} placeholder="0.00" className="w-full bg-white/ border border-white/5 px-8 py-5 rounded-[2rem] outline-none focus:border-blue-500/50 text-white font-black text-xl shadow-inner" />
                   </div>
                </div>
                <div className="space-y-3">
                   <label className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-600 ml-8 italic">Operational Narrative & Justification</label>
-                  <textarea required value={newQuote.desc} onChange={e => setNewQuote({...newQuote, desc: e.target.value})} rows={3} placeholder="Strategic justification for credit allocation..." className="w-full bg-white/5 border border-white/5 px-8 py-6 rounded-[2.5rem] outline-none focus:border-blue-500/50 text-white font-medium text-sm leading-relaxed shadow-inner" />
+                  <textarea required value={newQuote.desc} onChange={e => setNewQuote({...newQuote, desc: e.target.value})} rows={3} placeholder="Strategic justification for credit allocation..." className="w-full bg-white/ border border-white/5 px-8 py-6 rounded-[2.5rem] outline-none focus:border-blue-500/50 text-white font-medium text-sm leading-relaxed shadow-inner" />
                </div>
                <button className="w-full py-6 bg-blue-600 text-white rounded-[2rem] font-black text-[10px] uppercase tracking-[0.4em] shadow-[0_20px_50px_rgba(59,130,246,0.3)] hover:scale-[1.02] active:scale-95 transition-all">
                   Initialize Approval Pipeline Module

@@ -68,6 +68,27 @@ body {
   line-height: 1.5;
 }
 
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -999;
+  background-image: 
+    radial-gradient(circle at 15% 50%, hsla(var(--primary-raw), 0.15), transparent 30%),
+    radial-gradient(circle at 85% 30%, hsla(var(--accent-purple), 0.15), transparent 30%);
+  pointer-events: none;
+  transition: background-image 0.5s ease;
+}
+
+html.dark body::before {
+  background-image: 
+    radial-gradient(circle at 15% 50%, hsla(var(--primary-raw), 0.25), transparent 35%),
+    radial-gradient(circle at 85% 30%, hsla(var(--accent-purple), 0.25), transparent 35%);
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Outfit', sans-serif;
   font-weight: 800;
