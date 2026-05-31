@@ -1,6 +1,6 @@
 import { User, Role } from '../types';
 
-const API_BASE = 'http://127.0.0.1:4000/api';
+const API_BASE = import.meta.env.PROD ? '/api' : (import.meta.env.VITE_API_BASE || 'http://127.0.0.1:4000/api');
 const TOKEN_KEY = 'ccms_auth_token';
 const USER_KEY = 'ccms_user';
 
