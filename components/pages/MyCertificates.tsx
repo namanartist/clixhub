@@ -97,7 +97,7 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
              </div>
           </div>
           <div className="flex gap-4">
-             <div className="px-6 py-3 rounded-2xl bg-slate-50dark:bg-white/ border border-slate-200 dark:border-slate-800 flex flex-col items-center">
+             <div className="px-6 py-3 rounded-2xl bg-slate-50dark:bg-white/10 border border-slate-200 dark:border-slate-800 flex flex-col items-center">
                 <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Total Issued</span>
                 <span className="text-2xl font-black dark:text-white">{userCertificates.length}</span>
              </div>
@@ -111,7 +111,7 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
 
       {userCertificates.length === 0 ? (
         <div className="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-[4rem] p-20 text-center">
-            <div className="w-24 h-24 rounded-full bg-slate-100 dark:bg-white/ flex items-center justify-center mb-8">
+            <div className="w-24 h-24 rounded-full bg-slate-100 dark:bg-white/10 flex items-center justify-center mb-8">
                 <Award size={48} className="text-slate-300" />
             </div>
             <h2 className="text-2xl font-black dark:text-white">No Credentials Found</h2>
@@ -165,7 +165,7 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
                         </button>
                         <button 
                             onClick={() => window.open(`/verify-cert?id=${cert.serialNumber}`, '_blank')}
-                            className="flex items-center justify-center gap-3 py-4 bg-slate-100 dark:bg-white/ dark:text-white rounded-[2rem] font-black text-xs uppercase tracking-widest hover:bg-slate-200 dark:hover:bg-white/ transition-all"
+                            className="flex items-center justify-center gap-3 py-4 bg-slate-100 dark:bg-white/10 dark:text-white rounded-[2rem] font-black text-xs uppercase tracking-widest hover:bg-slate-200 dark:hover:bg-white/10 transition-all"
                         >
                             <ExternalLink size={18} /> Public Verification
                         </button>
@@ -183,7 +183,7 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
               <div className="relative w-full max-w-[1240px] flex flex-col items-center gap-8 max-h-screen overflow-y-auto py-10 no-scrollbar">
                   <button 
                     onClick={() => setIsPreviewModalOpen(false)}
-                    className="absolute top-4 right-4 md:top-8 md:right-8 p-4 bg-white/ hover:bg-rose-500/20 hover:text-rose-500 text-white rounded-2xl border border-white/10 transition-all z-[1100]"
+                    className="absolute top-4 right-4 md:top-8 md:right-8 p-4 bg-white/10 hover:bg-rose-500/20 hover:text-rose-500 text-white rounded-2xl border border-white/10 transition-all z-[1100]"
                   >
                     <ChevronRight size={24} className="rotate-180" />
                   </button>
@@ -217,7 +217,7 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
                      </button>
                      <button 
                         onClick={() => setIsPreviewModalOpen(false)}
-                        className="px-12 py-7 bg-white/ text-white rounded-[2rem] font-black text-sm uppercase tracking-[0.3em] border border-white/10 hover:bg-white/ transition-all flex items-center justify-center gap-4"
+                        className="px-12 py-7 bg-white/10 text-white rounded-[2rem] font-black text-sm uppercase tracking-[0.3em] border border-white/10 hover:bg-white/10 transition-all flex items-center justify-center gap-4"
                      >
                         Cancel
                      </button>

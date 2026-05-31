@@ -29,7 +29,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ activeTab, setActiveTab, onToggle
       <div className={`relative px-1.5 py-1.5 rounded-[2.8rem] border backdrop-blur-4xl shadow-4xl flex items-center justify-between transition-all duration-700 ${
         isDarkMode 
           ? 'bg-black/40 border-white/10' 
-          : 'bg-white/ border-white/60'
+          : 'bg-white/10 border-white/60'
       }`}>
         
         {/* Morphing Sliding Indicator */}
@@ -41,7 +41,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ activeTab, setActiveTab, onToggle
           }}
         >
            <div className="absolute inset-x-0 bottom-0 top-0 bg-gradient-to-t from-white/20 to-transparent rounded-[2rem]" />
-           <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-8 h-1 bg-white/ blur-sm rounded-full" />
+           <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-8 h-1 bg-white/10 blur-sm rounded-full" />
         </div>
 
         {tabs.map((tab) => {
@@ -69,7 +69,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ activeTab, setActiveTab, onToggle
         })}
 
         {/* Global Action / Menu Divider */}
-        <div className={`w-px h-8 mx-1 ${isDarkMode ? 'bg-white/' : 'bg-slate-200'}`} />
+        <div className={`w-px h-8 mx-1 ${isDarkMode ? 'bg-white/10' : 'bg-slate-200'}`} />
 
         {/* Menu Button */}
         <button
@@ -78,7 +78,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ activeTab, setActiveTab, onToggle
             isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-400 hover:text-blue-600'
           }`}
         >
-          <div className="relative z-10 p-2 rounded-xl bg-white/ border border-white/5 group-hover:border-blue-500/30 transition-all">
+          <div className="relative z-10 p-2 rounded-xl bg-white/10 border border-white/5 group-hover:border-blue-500/30 transition-all">
             <Menu size={20} className="group-hover:rotate-90 transition-transform duration-500" />
           </div>
           

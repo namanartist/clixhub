@@ -71,7 +71,7 @@ const AddClubMemberModal: React.FC<Props> = ({ clubId, isDarkMode, onClose, onMe
 
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className={`rounded-3xl w-full max-w-md p-6 md:p-8 ${isDarkMode ? 'bg-[#111C44]' : 'bg-white} border ${isDarkMode ? 'border-white/10' : 'border-slate-200'} shadow-2xl`}>
+            <div className={`rounded-3xl w-full max-w-md p-6 md:p-8 ${isDarkMode ? 'bg-[#111C44]' : 'bg-white'} border ${isDarkMode ? 'border-white/10' : 'border-slate-200'} shadow-2xl`}>
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
                     <div className="space-y-1">
@@ -84,7 +84,7 @@ const AddClubMemberModal: React.FC<Props> = ({ clubId, isDarkMode, onClose, onMe
                     </div>
                     <button
                         onClick={onClose}
-                        className={`p-2 rounded-lg transition-colors ${isDarkMode ? 'hover:bg-white/' : 'hover:bg-slate-100'}`}
+                        className={`p-2 rounded-lg transition-colors ${isDarkMode ? 'hover:bg-white/10' : 'hover:bg-slate-100'}`}
                     >
                         <X size={20} />
                     </button>
@@ -115,8 +115,8 @@ const AddClubMemberModal: React.FC<Props> = ({ clubId, isDarkMode, onClose, onMe
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm transition-colors ${isDarkMode
-                            ? 'bg-white/ border-white/10 text-white placeholder-slate-500 focus:border-blue-500/50'
-                            : 'bg-whiteborder-slate-200 text-[#1B2559] placeholder-slate-400 focus:border-blue-500'
+                            ? 'bg-white/10 border-white/10 text-white placeholder-slate-500 focus:border-blue-500/50'
+                            : 'bg-white/40 border-slate-200 text-[#1B2559] placeholder-slate-400 focus:border-blue-500'
                             }`}
                     />
                 </div>
@@ -134,7 +134,7 @@ const AddClubMemberModal: React.FC<Props> = ({ clubId, isDarkMode, onClose, onMe
                                 onClick={() => setSelectedMemberId(member.id)}
                                 className={`w-full p-3 text-left border-b transition-colors ${selectedMemberId === member.id
                                         ? isDarkMode ? 'bg-blue-600/20' : 'bg-blue-100'
-                                        : isDarkMode ? 'hover:bg-white/' : 'hover:bg-slate-50
+                                        : isDarkMode ? 'hover:bg-white/10' : 'hover:bg-slate-50'
                                     } ${isDarkMode ? 'border-white/5' : 'border-slate-100'} last:border-b-0`}
                             >
                                 <div className="flex items-center justify-between">
@@ -151,7 +151,7 @@ const AddClubMemberModal: React.FC<Props> = ({ clubId, isDarkMode, onClose, onMe
                                             : isDarkMode ? 'border-white/30' : 'border-slate-300'
                                         }`}>
                                         {selectedMemberId === member.id && (
-                                            <div className="w-1.5 h-1.5 rounded-full bg-white />
+                                            <div className="w-1.5 h-1.5 rounded-full bg-white" />
                                         )}
                                     </div>
                                 </div>
@@ -170,8 +170,8 @@ const AddClubMemberModal: React.FC<Props> = ({ clubId, isDarkMode, onClose, onMe
                             value={selectedRole}
                             onChange={(e) => setSelectedRole(e.target.value as ClubRole)}
                             className={`w-full px-3 py-2.5 rounded-xl border text-sm transition-colors ${isDarkMode
-                                ? 'bg-white/ border-white/10 text-white focus:border-blue-500/50'
-                                : 'bg-whiteborder-slate-200 text-[#1B2559] focus:border-blue-500'
+                                ? 'bg-white/10 border-white/10 text-white focus:border-blue-500/50'
+                                : 'bg-white/40 border-slate-200 text-[#1B2559] focus:border-blue-500'
                                 }`}
                         >
                             {Object.values(ClubRole).map(role => (
@@ -188,7 +188,7 @@ const AddClubMemberModal: React.FC<Props> = ({ clubId, isDarkMode, onClose, onMe
                     <button
                         onClick={onClose}
                         className={`flex-1 py-2.5 rounded-xl font-black text-xs uppercase transition-all ${isDarkMode
-                            ? 'bg-white/ hover:bg-white/ text-white'
+                            ? 'bg-white/10 hover:bg-white/10 text-white'
                             : 'bg-slate-100 hover:bg-slate-200 text-[#1B2559]'
                             }`}
                     >

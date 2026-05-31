@@ -166,7 +166,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   <p className="text-[8px] font-black uppercase tracking-[0.2em] bg-gradient-to-r from-cyan-400/60 to-blue-500/60 bg-clip-text text-transparent leading-none mt-1">Campus Nexus</p>
                 </div>
               </div>
-              <button onClick={onClose} className="md:hidden p-2 hover:bg-white/ rounded-xl transition-all">
+              <button onClick={onClose} className="md:hidden p-2 hover:bg-white/10 rounded-xl transition-all">
                 <X size={20} className={isDarkMode ? 'text-slate-400' : 'text-slate-500'} />
               </button>
             </div>
@@ -176,8 +176,8 @@ const Sidebar: React.FC<SidebarProps> = ({
               <button
                 onClick={() => setIsSwitcherOpen(!isSwitcherOpen)}
                 className={`w-full p-4 rounded-3xl transition-all flex items-center gap-4 group border ${isDarkMode
-                  ? 'bg-white/ border-white/5 hover:bg-white/ text-white'
-                  : 'bg-white/ hover:bg-white/ hover:shadow-xl border-white/50 text-[#1B2559]'
+                  ? 'bg-white/10 border-white/5 hover:bg-white/10 text-white'
+                  : 'bg-white/10 hover:bg-white/10 hover:shadow-xl border-white/50 text-[#1B2559]'
                   }`}
               >
                 <div className={`w-10 h-10 rounded-2xl flex items-center justify-center text-white font-black text-lg shadow-lg transition-transform group-hover:scale-105 overflow-hidden`}
@@ -196,7 +196,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   <div className="space-y-1 max-h-[250px] overflow-y-auto custom-scrollbar">
                     <button
                       onClick={() => handlePerspectiveSelect('Global')}
-                      className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all hover:bg-white/ text-[var(--text-main)]`}
+                      className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all hover:bg-white/10 text-[var(--text-main)]`}
                     >
                       <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white"><Layers size={16} /></div>
                       <span className="text-xs font-black uppercase tracking-widest">Global Ops</span>
@@ -208,7 +208,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                         <button
                           key={c.id}
                           onClick={() => handlePerspectiveSelect(c.id)}
-                          className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all ${isDarkMode ? 'hover:bg-white/ text-white' : 'hover:bg-blue-500/5 text-[#1B2559]'}`}
+                          className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all ${isDarkMode ? 'hover:bg-white/10 text-white' : 'hover:bg-blue-500/5 text-[#1B2559]'}`}
                         >
                           <div className="w-8 h-8 rounded-xl flex items-center justify-center text-white font-black text-xs shadow-md shadow-black/10" style={{ backgroundColor: c.themeColor }}>{c.name[0]}</div>
                           <span className="text-xs font-black uppercase tracking-widest truncate">{c.name}</span>
@@ -233,7 +233,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   className={`w-full flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-500 group relative ${isActive
                     ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/30'
                     : isDarkMode
-                      ? 'text-slate-500 hover:text-white hover:bg-white/'
+                      ? 'text-slate-500 hover:text-white hover:bg-white/10'
                       : 'text-slate-400 hover:text-[#1B2559] hover:bg-slate-500/5'
                     }`}
                 >
@@ -242,7 +242,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     <span className="text-xs font-black uppercase tracking-[0.15em]">{item.label}</span>
                   </div>
                   {isActive && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-whiteshadow-[0_0_10px_white] animate-pulse" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_10px_white] animate-pulse" />
                   )}
                 </button>
               );
@@ -251,10 +251,10 @@ const Sidebar: React.FC<SidebarProps> = ({
 
           {/* Session Bottom Block */}
           <div className={`p-6 mt-auto border-t transition-all ${isDarkMode ? 'border-white/5' : 'border-white/30'}`}>
-            <div className={`p-6 rounded-[2rem] border transition-all ${isDarkMode ? 'bg-white/ border-white/5' : 'bg-white/ border-white/50 shadow-sm'}`}>
+            <div className={`p-6 rounded-[2rem] border transition-all ${isDarkMode ? 'bg-white/10 border-white/5' : 'bg-white/10 border-white/50 shadow-sm'}`}>
               <div className="flex items-center gap-4 mb-5">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-400 p-[2px] shadow-lg shadow-blue-500/20">
-                  <div className={`w-full h-full rounded-2xl overflow-hidden ${isDarkMode ? 'bg-[#0d121d] : 'bg-white}`}>
+                  <div className={`w-full h-full rounded-2xl overflow-hidden ${isDarkMode ? 'bg-[#0d121d]' : 'bg-white'}`}>
                     {user.photoUrl ? <img src={user.photoUrl} className="w-full h-full object-cover" /> : <div className={`w-full h-full flex items-center justify-center text-xs font-black ${isDarkMode ? 'text-white' : 'text-blue-600'}`}>{user?.name?.[0]}</div>}
                   </div>
                 </div>
@@ -267,7 +267,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 onClick={() => { onContextChange('Global'); setActiveTab('profile'); onClose(); }}
                 className={`w-full group py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${isDarkMode
                   ? 'bg-blue-600 text-white hover:bg-blue-700'
-                  : 'bg-white/ backdrop-blur-md text-blue-600 shadow-xl shadow-blue-500/5 hover:bg-blue-600 hover:text-white border border-white/50'
+                  : 'bg-white/10 backdrop-blur-md text-blue-600 shadow-xl shadow-blue-500/5 hover:bg-blue-600 hover:text-white border border-white/50'
                   }`}
               >
                 <UserCog size={16} className="transition-transform group-hover:rotate-45" /> Profile Settings

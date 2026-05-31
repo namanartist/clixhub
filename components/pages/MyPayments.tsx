@@ -61,7 +61,7 @@ const MyPayments: React.FC<Props> = ({ registrations, applicants, events, clubs,
           <h1 className="text-4xl font-black tracking-tight mb-2">Financial Ledger</h1>
           <p className="text-slate-500 font-medium">Verified transaction history for MITS campus activities.</p>
         </div>
-        <div className={`p-6 rounded-[2rem] border flex items-center gap-6 ${isDarkMode ? 'bg-slate-800/ border-slate-700' : 'bg-whiteborder-slate-100 shadow-sm'}`}>
+        <div className={`p-6 rounded-[2rem] border flex items-center gap-6 ${isDarkMode ? 'bg-slate-800/10 border-slate-700' : 'bg-white/40 border-slate-100 shadow-sm'}`}>
           <div className="w-12 h-12 bg-blue-600/10 text-blue-500 rounded-2xl flex items-center justify-center">
             <CreditCard size={24} />
           </div>
@@ -80,15 +80,15 @@ const MyPayments: React.FC<Props> = ({ registrations, applicants, events, clubs,
               <input 
                 type="text" 
                 placeholder="Search transactions..." 
-                className={`w-full pl-12 pr-6 py-3 rounded-2xl border outline-none focus:border-blue-500 transition-all text-sm ${isDarkMode ? 'bg-slate-800/ border-slate-700' : 'bg-whiteborder-slate-200'}`}
+                className={`w-full pl-12 pr-6 py-3 rounded-2xl border outline-none focus:border-blue-500 transition-all text-sm ${isDarkMode ? 'bg-slate-800/10 border-slate-700' : 'bg-white/40 border-slate-200'}`}
               />
             </div>
-            <button className={`p-3 rounded-2xl border ${isDarkMode ? 'bg-slate-800/ border-slate-700' : 'bg-whiteborder-slate-200'}`}>
+            <button className={`p-3 rounded-2xl border ${isDarkMode ? 'bg-slate-800/10 border-slate-700' : 'bg-white/40 border-slate-200'}`}>
               <Filter size={20} className="text-slate-400" />
             </button>
           </div>
 
-          <div className={`rounded-[2.5rem] border overflow-hidden ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-whiteborder-slate-100'}`}>
+          <div className={`rounded-[2.5rem] border overflow-hidden ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-white/40 border-slate-100'}`}>
             <table className="w-full text-left">
               <thead>
                 <tr className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 border-b border-slate-800/50">
@@ -113,7 +113,7 @@ const MyPayments: React.FC<Props> = ({ registrations, applicants, events, clubs,
                       </div>
                     </td>
                     <td className="px-8 py-6">
-                      <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 bg-slate-800/ rounded-lg border border-slate-700">
+                      <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 bg-slate-800/10 rounded-lg border border-slate-700">
                         UPI Verification
                       </span>
                     </td>
@@ -141,7 +141,7 @@ const MyPayments: React.FC<Props> = ({ registrations, applicants, events, clubs,
         </div>
 
         <div className="space-y-6">
-          <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-whiteborder-slate-100'}`}>
+          <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-white/40 border-slate-100'}`}>
             <h3 className="text-sm font-black uppercase tracking-widest mb-6 opacity-40">Wallet Summary</h3>
             <div className="space-y-6">
               <div className="flex justify-between items-end border-b border-slate-800 pb-4">

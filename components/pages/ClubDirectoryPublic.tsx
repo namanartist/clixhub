@@ -31,7 +31,7 @@ const ClubDirectoryPublic: React.FC<Props> = ({ clubs, onBack, isDarkMode = true
       {/* Back Button */}
       <button
         onClick={onBack}
-        className={`fixed top-8 left-8 z-50 p-3 rounded-xl transition-all ${isDarkMode ? 'text-slate-400 hover:text-white hover:bg-white/' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'}`}
+        className={`fixed top-8 left-8 z-50 p-3 rounded-xl transition-all ${isDarkMode ? 'text-slate-400 hover:text-white hover:bg-white/10' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'}`}
         title="Back"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,7 +68,7 @@ const ClubDirectoryPublic: React.FC<Props> = ({ clubs, onBack, isDarkMode = true
       </section>
 
       {/* Filters & Search */}
-      <section className={`py-8 px-6 border-b sticky top-0 z-40 backdrop-blur-xl ${isDarkMode ? 'bg-[#02040a]/80 border-white/[0.06]' : 'bg-white/ border-slate-200'}`}>
+      <section className={`py-8 px-6 border-b sticky top-0 z-40 backdrop-blur-xl ${isDarkMode ? 'bg-[#02040a]/80 border-white/[0.06]' : 'bg-white/10 border-slate-200'}`}>
         <div className="max-w-[1200px] mx-auto">
           <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
             <div className="relative flex-1 w-full max-w-md">
@@ -78,11 +78,11 @@ const ClubDirectoryPublic: React.FC<Props> = ({ clubs, onBack, isDarkMode = true
                 placeholder="Search clubs..."
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
-                className={`w-full rounded-2xl pl-14 pr-6 py-3.5 text-sm font-bold transition-all outline-none border ${isDarkMode ? 'bg-white/ border-white/10 text-white placeholder:text-slate-600 focus:bg-white/ focus:border-cyan-400/50' : 'bg-whiteborder-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-cyan-400'}`}
+                className={`w-full rounded-2xl pl-14 pr-6 py-3.5 text-sm font-bold transition-all outline-none border ${isDarkMode ? 'bg-white/10 border-white/10 text-white placeholder:text-slate-600 focus:bg-white/10 focus:border-cyan-400/50' : 'bg-white/40 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-cyan-400'}`}
               />
             </div>
 
-            <div className={`flex gap-2 p-2 rounded-2xl border overflow-x-auto ${isDarkMode ? 'bg-white/ border-white/10' : 'bg-whiteborder-slate-200'}`}>
+            <div className={`flex gap-2 p-2 rounded-2xl border overflow-x-auto ${isDarkMode ? 'bg-white/10 border-white/10' : 'bg-white/40 border-slate-200'}`}>
               {categories.map(cat => (
                 <button
                   key={cat}
@@ -90,7 +90,7 @@ const ClubDirectoryPublic: React.FC<Props> = ({ clubs, onBack, isDarkMode = true
                   className={`px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all whitespace-nowrap ${selectedCategory === cat
                     ? 'bg-gradient-to-r from-cyan-400 to-blue-500 text-white shadow-lg shadow-cyan-500/30'
                     : isDarkMode
-                      ? 'text-slate-400 hover:text-white hover:bg-white/'
+                      ? 'text-slate-400 hover:text-white hover:bg-white/10'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                     }`}
                 >
@@ -118,7 +118,7 @@ const ClubDirectoryPublic: React.FC<Props> = ({ clubs, onBack, isDarkMode = true
                 <div
                   key={club.id}
                   onClick={() => handleClubClick(club.id)}
-                  className={`group relative p-8 rounded-3xl border transition-all hover:scale-[1.02] hover:-translate-y-1 cursor-pointer overflow-hidden ${isDarkMode ? 'bg-[#0d121d]border-white/10 hover:border-cyan-400/50 hover:shadow-2xl' : 'bg-whiteborder-slate-200 hover:shadow-xl'}`}
+                  className={`group relative p-8 rounded-3xl border transition-all hover:scale-[1.02] hover:-translate-y-1 cursor-pointer overflow-hidden ${isDarkMode ? 'bg-[#0d121d]border-white/10 hover:border-cyan-400/50 hover:shadow-2xl' : 'bg-white/40 border-slate-200 hover:shadow-xl'}`}
                 >
                   <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/5 to-transparent rounded-bl-3xl -mr-4 -mt-4 group-hover:scale-110 transition-transform opacity-0 group-hover:opacity-100" />
 
@@ -154,7 +154,7 @@ const ClubDirectoryPublic: React.FC<Props> = ({ clubs, onBack, isDarkMode = true
                       </div>
                       <button
                         onClick={(e) => { e.stopPropagation(); handleClubClick(club.id); }}
-                        className={`p-3 rounded-full transition-all active:scale-95 ${isDarkMode ? 'bg-white/ text-cyan-400 hover:bg-cyan-500 hover:text-white' : 'bg-slate-100 text-cyan-600 hover:bg-cyan-500 hover:text-white'}`}
+                        className={`p-3 rounded-full transition-all active:scale-95 ${isDarkMode ? 'bg-white/10 text-cyan-400 hover:bg-cyan-500 hover:text-white' : 'bg-slate-100 text-cyan-600 hover:bg-cyan-500 hover:text-white'}`}
                       >
                         <ArrowUpRight size={20} />
                       </button>
@@ -164,7 +164,7 @@ const ClubDirectoryPublic: React.FC<Props> = ({ clubs, onBack, isDarkMode = true
               ))}
             </div>
           ) : (
-            <div className={`py-20 text-center space-y-4 rounded-3xl border ${isDarkMode ? 'bg-[#0d121d]/50 border-white/5' : 'bg-slate-50border-slate-200'}`}>
+            <div className={`py-20 text-center space-y-4 rounded-3xl border ${isDarkMode ? 'bg-[#0d121d]/50 border-white/5' : 'bg-slate-50 border-slate-200'}`}>
               <Globe size={64} className={isDarkMode ? 'text-slate-700 mx-auto' : 'text-slate-300 mx-auto'} />
               <p className={`text-xl font-bold ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>No clubs found</p>
             </div>

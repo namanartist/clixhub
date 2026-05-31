@@ -105,7 +105,7 @@ const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }
         
         <div className="flex flex-col sm:flex-row gap-4">
             {/* Search */}
-            <div className={`flex items-center px-4 py-3 rounded-2xl border transition-all ${isDarkMode ? 'bg-[#111C44] border-slate-700' : 'bg-whiteborder-slate-200 shadow-sm'}`}>
+            <div className={`flex items-center px-4 py-3 rounded-2xl border transition-all ${isDarkMode ? 'bg-[#111C44] border-slate-700' : 'bg-white/40 border-slate-200 shadow-sm'}`}>
                 <Search size={18} className="text-slate-400" />
                 <input 
                     type="text" 
@@ -117,7 +117,7 @@ const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }
             </div>
 
             {/* Filter Toggle */}
-            <div className={`p-1 rounded-2xl border flex ${isDarkMode ? 'bg-[#111C44] border-slate-700' : 'bg-whiteborder-slate-200 shadow-sm'}`}>
+            <div className={`p-1 rounded-2xl border flex ${isDarkMode ? 'bg-[#111C44] border-slate-700' : 'bg-white/40 border-slate-200 shadow-sm'}`}>
                 <button 
                     onClick={() => setFilter('active')}
                     className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${filter === 'active' ? 'bg-primary text-white shadow-lg' : 'text-slate-400 hover:text-slate-500'}`}
@@ -159,7 +159,7 @@ const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }
             return (
               <div key={reg.id} className="relative group perspective-1000 cursor-pointer" onClick={() => handlePreview(reg)}>
                 {/* Ticket Container */}
-                <div className={`relative overflow-hidden rounded-[2.5rem] border transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 ${isDarkMode ? 'bg-[#111C44] border-slate-800' : 'bg-whiteborder-slate-100 shadow-xl'}`}>
+                <div className={`relative overflow-hidden rounded-[2.5rem] border transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 ${isDarkMode ? 'bg-[#111C44] border-slate-800' : 'bg-white/40 border-slate-100 shadow-xl'}`}>
                     
                     {/* Decorative Top Bar */}
                     <div className="h-3 w-full" style={{ background: `linear-gradient(90deg, ${ticketColor}, #a855f7)` }} />
@@ -228,7 +228,7 @@ const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }
                         </div>
 
                         {/* Right: QR Code & ID */}
-                        <div className={`w-full md:w-64 p-8 flex flex-col items-center justify-center text-center gap-6 ${isDarkMode ? 'bg-[#0B1437]/50' : 'bg-slate-50}`}>
+                        <div className={`w-full md:w-64 p-8 flex flex-col items-center justify-center text-center gap-6 ${isDarkMode ? 'bg-[#0B1437]/50' : 'bg-slate-50'}`}>
                             {isApproved ? (
                                 <>
                                     <div className="bg-whitep-3 rounded-2xl shadow-xl">
@@ -236,7 +236,7 @@ const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }
                                     </div>
                                     <div className="space-y-1 w-full">
                                         <p className="text-[9px] font-black uppercase tracking-widest opacity-40">Ticket ID</p>
-                                        <p className="text-xs font-mono font-bold text-slate-500 break-all bg-slate-200/50 dark:bg-slate-800/ p-2 rounded-lg select-all">
+                                        <p className="text-xs font-mono font-bold text-slate-500 break-all bg-slate-200/50 dark:bg-slate-800/10 p-2 rounded-lg select-all">
                                             {reg.ticketId}
                                         </p>
                                     </div>
@@ -275,7 +275,7 @@ const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }
                      </div>
                   <button 
                     onClick={() => setIsPreviewModalOpen(false)}
-                    className="absolute top-4 right-4 md:top-8 md:right-8 p-4 bg-white/ hover:bg-rose-500/20 hover:text-rose-500 text-white rounded-2xl border border-white/10 transition-all z-[1100]"
+                    className="absolute top-4 right-4 md:top-8 md:right-8 p-4 bg-white/10 hover:bg-rose-500/20 hover:text-rose-500 text-white rounded-2xl border border-white/10 transition-all z-[1100]"
                   >
                     <ArrowRight size={24} className="rotate-180" />
                   </button>
@@ -310,7 +310,7 @@ const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }
                                           </div>
                                           <h1 className="text-5xl md:text-7xl font-[1000] tracking-tighter leading-[0.85] uppercase italic">PASS</h1>
                                       </div>
-                                      <div className="p-4 border-4 border-black rounded-[2.5rem] inline-block bg-whiteshadow-2xl">
+                                      <div className="p-4 border-4 border-black rounded-[2.5rem] inline-block bg-white shadow-2xl">
                                           <img src={qrUrl} alt="QR" className="w-32 h-32 md:w-44 md:h-44" />
                                       </div>
                                   </div>
@@ -356,7 +356,7 @@ const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }
                      </button>
                      <button 
                         onClick={() => setIsPreviewModalOpen(false)}
-                        className="h-16 md:h-20 px-8 md:px-12 bg-white/ text-white rounded-[1.5rem] md:rounded-[2rem] font-black text-xs md:text-sm uppercase tracking-[0.3em] border border-white/10 hover:bg-white/ transition-all flex items-center justify-center gap-4"
+                        className="h-16 md:h-20 px-8 md:px-12 bg-white/10 text-white rounded-[1.5rem] md:rounded-[2rem] font-black text-xs md:text-sm uppercase tracking-[0.3em] border border-white/10 hover:bg-white/10 transition-all flex items-center justify-center gap-4"
                      >
                         Secure Exit
                      </button>
@@ -390,7 +390,7 @@ const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }
                                         </div>
                                         <h1 className="text-8xl font-[1000] tracking-tighter leading-[0.8] uppercase italic mt-12">ENTRY <br/><span className="text-transparent" style={{ WebkitTextStroke: '2px black' }}>PASS</span></h1>
                                     </div>
-                                    <div className="p-6 border-4 border-black rounded-[2.5rem] bg-whiteshadow-2xl">
+                                    <div className="p-6 border-4 border-black rounded-[2.5rem] bg-white shadow-2xl">
                                         <img src={qrUrl} alt="QR" className="w-56 h-56" />
                                     </div>
                                 </div>

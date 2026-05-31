@@ -89,7 +89,7 @@ const GlobalAnalytics: React.FC<Props> = ({ clubs, users, events, registrations,
           <p className="text-slate-500 font-medium">Real-time institutional metrics and data visualization.</p>
         </div>
         <div className={`px-6 py-3 rounded-2xl border font-black text-xs uppercase tracking-widest flex items-center gap-3 ${
-          isDarkMode ? 'bg-slate-800/ border-slate-700 text-slate-300' : 'bg-whiteborder-slate-200 text-slate-500'
+          isDarkMode ? 'bg-slate-800/10 border-slate-700 text-slate-300' : 'bg-white/40 border-slate-200 text-slate-500'
         }`}>
           <Activity size={16} className="text-emerald-500" /> System Healthy
         </div>
@@ -97,7 +97,7 @@ const GlobalAnalytics: React.FC<Props> = ({ clubs, users, events, registrations,
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-whiteborder-slate-100 shadow-sm'}`}>
+        <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-white/40 border-slate-100 shadow-sm'}`}>
           <div className="flex items-center gap-4 mb-4">
             <div className="p-3 bg-blue-500/10 text-blue-500 rounded-2xl">
               <Users size={24} />
@@ -110,7 +110,7 @@ const GlobalAnalytics: React.FC<Props> = ({ clubs, users, events, registrations,
           </div>
         </div>
 
-        <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-whiteborder-slate-100 shadow-sm'}`}>
+        <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-white/40 border-slate-100 shadow-sm'}`}>
           <div className="flex items-center gap-4 mb-4">
             <div className="p-3 bg-purple-500/10 text-purple-500 rounded-2xl">
               <PieIcon size={24} />
@@ -123,7 +123,7 @@ const GlobalAnalytics: React.FC<Props> = ({ clubs, users, events, registrations,
           </div>
         </div>
 
-        <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-whiteborder-slate-100 shadow-sm'}`}>
+        <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-white/40 border-slate-100 shadow-sm'}`}>
           <div className="flex items-center gap-4 mb-4">
             <div className="p-3 bg-emerald-500/10 text-emerald-500 rounded-2xl">
               <Wallet size={24} />
@@ -136,7 +136,7 @@ const GlobalAnalytics: React.FC<Props> = ({ clubs, users, events, registrations,
           </div>
         </div>
 
-        <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-whiteborder-slate-100 shadow-sm'}`}>
+        <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-white/40 border-slate-100 shadow-sm'}`}>
           <div className="flex items-center gap-4 mb-4">
             <div className="p-3 bg-rose-500/10 text-rose-500 rounded-2xl">
               <TrendingUp size={24} />
@@ -152,7 +152,7 @@ const GlobalAnalytics: React.FC<Props> = ({ clubs, users, events, registrations,
 
       {/* Charts Row 1 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className={`p-10 rounded-[3rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-whiteborder-slate-100 shadow-sm'}`}>
+        <div className={`p-10 rounded-[3rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-white/40 border-slate-100 shadow-sm'}`}>
           <h3 className="text-lg font-black tracking-tight mb-8">Recruitment Funnel</h3>
           <div className="h-[300px] w-full min-w-0">
             <ResponsiveContainer width="100%" height="100%">
@@ -176,7 +176,7 @@ const GlobalAnalytics: React.FC<Props> = ({ clubs, users, events, registrations,
           </div>
         </div>
 
-        <div className={`p-10 rounded-[3rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-whiteborder-slate-100 shadow-sm'}`}>
+        <div className={`p-10 rounded-[3rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-white/40 border-slate-100 shadow-sm'}`}>
           <h3 className="text-lg font-black tracking-tight mb-8">Club Ecosystem Distribution</h3>
           <div className="h-[300px] w-full min-w-0">
             <ResponsiveContainer width="100%" height="100%">
@@ -207,7 +207,7 @@ const GlobalAnalytics: React.FC<Props> = ({ clubs, users, events, registrations,
       </div>
 
       {/* Charts Row 2 */}
-      <div className={`p-10 rounded-[3rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-whiteborder-slate-100 shadow-sm'}`}>
+      <div className={`p-10 rounded-[3rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-white/40 border-slate-100 shadow-sm'}`}>
         <h3 className="text-lg font-black tracking-tight mb-8">Top Events by Participation</h3>
         <div className="h-[300px] w-full min-w-0">
           <ResponsiveContainer width="100%" height="100%">

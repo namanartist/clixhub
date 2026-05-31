@@ -92,14 +92,14 @@ const FacultyRegistry: React.FC<Props> = ({ allUsers, onAddUser, onUpdateUser, o
                value={searchTerm}
                onChange={(e) => setSearchTerm(e.target.value)}
                className={`w-full pl-12 pr-6 py-4 rounded-3xl border outline-none focus:border-blue-500 transition-all text-sm font-bold ${
-                 isDarkMode ? 'bg-slate-800/ border-slate-700 text-white' : 'bg-whiteborder-slate-200'
+                 isDarkMode ? 'bg-slate-800/10 border-slate-700 text-white' : 'bg-white/40 border-slate-200'
                }`}
              />
         </div>
 
-        <div className={`rounded-[3rem] border overflow-hidden ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-whiteborder-slate-100 shadow-sm'}`}>
+        <div className={`rounded-[3rem] border overflow-hidden ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-white/40 border-slate-100 shadow-sm'}`}>
             <table className="w-full text-left">
-              <thead className={isDarkMode ? 'bg-slate-900/' : 'bg-slate-50}>
+              <thead className={isDarkMode ? 'bg-slate-900/10' : 'bg-slate-50'}>
                 <tr className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
                   <th className="px-10 py-8">Faculty Identity</th>
                   <th className="px-10 py-8">Department</th>
@@ -122,7 +122,7 @@ const FacultyRegistry: React.FC<Props> = ({ allUsers, onAddUser, onUpdateUser, o
                         </div>
                      </td>
                      <td className="px-10 py-8">
-                        <span className="px-4 py-1.5 rounded-full bg-slate-800/ border border-slate-700 text-[10px] font-black uppercase tracking-widest text-slate-300">
+                        <span className="px-4 py-1.5 rounded-full bg-slate-800/10 border border-slate-700 text-[10px] font-black uppercase tracking-widest text-slate-300">
                             {f.branch || 'General Administration'}
                         </span>
                      </td>
@@ -166,16 +166,16 @@ const FacultyRegistry: React.FC<Props> = ({ allUsers, onAddUser, onUpdateUser, o
 
       {/* Add Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-[100] bg-slate-950/ backdrop-blur-xl flex items-center justify-center p-6">
+        <div className="fixed inset-0 z-[100] bg-slate-950/10 backdrop-blur-xl flex items-center justify-center p-6">
           <div className={`max-w-xl w-full p-12 rounded-[4rem] border shadow-2xl space-y-8 animate-in zoom-in-95 duration-500 ${
-            isDarkMode ? 'bg-[#0f172a] border-slate-800' : 'bg-white
+            isDarkMode ? 'bg-[#0f172a] border-slate-800' : 'bg-white'
           }`}>
              <div className="flex justify-between items-center">
               <div>
                 <h2 className="text-3xl font-black tracking-tight">Register Faculty</h2>
                 <p className="text-slate-500 text-sm mt-1">Onboard a new faculty coordinator.</p>
               </div>
-              <button onClick={() => setIsAddModalOpen(false)} className="p-4 bg-slate-800/ rounded-2xl text-white hover:bg-rose-500 transition-all">
+              <button onClick={() => setIsAddModalOpen(false)} className="p-4 bg-slate-800/10 rounded-2xl text-white hover:bg-rose-500 transition-all">
                 <X size={24} />
               </button>
             </div>
@@ -190,7 +190,7 @@ const FacultyRegistry: React.FC<Props> = ({ allUsers, onAddUser, onUpdateUser, o
                       onChange={(e) => setNewFaculty({...newFaculty, name: e.target.value})}
                       placeholder="Dr. Name Surname"
                       className={`w-full px-8 py-5 rounded-[2rem] border outline-none font-bold ${
-                        isDarkMode ? 'bg-slate-900border-slate-800 text-white' : 'bg-slate-50border-slate-200'
+                        isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-slate-50 border-slate-200'
                       }`}
                     />
                 </div>
@@ -203,7 +203,7 @@ const FacultyRegistry: React.FC<Props> = ({ allUsers, onAddUser, onUpdateUser, o
                       onChange={(e) => setNewFaculty({...newFaculty, email: e.target.value})}
                       placeholder="faculty@mitsgwl.ac.in"
                       className={`w-full px-8 py-5 rounded-[2rem] border outline-none font-bold ${
-                        isDarkMode ? 'bg-slate-900border-slate-800 text-white' : 'bg-slate-50border-slate-200'
+                        isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-slate-50 border-slate-200'
                       }`}
                     />
                 </div>
@@ -216,7 +216,7 @@ const FacultyRegistry: React.FC<Props> = ({ allUsers, onAddUser, onUpdateUser, o
                       onChange={(e) => setNewFaculty({...newFaculty, department: e.target.value})}
                       placeholder="CSE / IT / MAC"
                       className={`w-full px-8 py-5 rounded-[2rem] border outline-none font-bold ${
-                        isDarkMode ? 'bg-slate-900border-slate-800 text-white' : 'bg-slate-50border-slate-200'
+                        isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-slate-50 border-slate-200'
                       }`}
                     />
                 </div>

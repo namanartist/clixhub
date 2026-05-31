@@ -12,7 +12,6 @@ interface NavbarProps {
   onToggleMobileMenu: () => void;
   onGoHome?: () => void;
   onOpenProfile?: () => void;
-  onOpenProfile?: () => void;
   onOpenDeveloper?: () => void;
   onToggleTheme?: () => void;
 }
@@ -54,7 +53,7 @@ const Navbar: React.FC<NavbarProps> = ({
     <div className="sticky top-0 z-50 pt-4 px-4 md:pt-6 md:px-8 max-w-7xl mx-auto w-full">
       <nav className={`h-16 md:h-20 rounded-[2rem] px-4 md:px-6 flex items-center justify-between backdrop-blur-3xl border transition-all duration-500 shadow-[0_32px_64px_rgba(0,0,0,0.1)] ${isDarkMode
         ? 'bg-black/60 border-white/10 shadow-black/50'
-        : 'bg-white/ border-white/80 shadow-slate-200/50'
+        : 'bg-white/10 border-white/80 shadow-slate-200/50'
         }`}>
         
         {/* LEFT: Branding & Back Button */}
@@ -62,7 +61,7 @@ const Navbar: React.FC<NavbarProps> = ({
           {activeContext !== 'Global' ? (
             <button
               onClick={onGoHome}
-              className={`p-2.5 md:p-3 rounded-xl md:rounded-2xl border transition-all hover:scale-105 active:scale-95 group shadow-lg ${isDarkMode ? 'bg-white/ border-white/10 text-white hover:bg-white/' : 'bg-whiteborder-slate-200 text-slate-800 hover:bg-slate-50}`}
+              className={`p-2.5 md:p-3 rounded-xl md:rounded-2xl border transition-all hover:scale-105 active:scale-95 group shadow-lg ${isDarkMode ? 'bg-white/10 border-white/10 text-white hover:bg-white/10' : 'bg-white/40 border-slate-200 text-slate-800 hover:bg-slate-50'}`}
             >
               <ArrowLeft size={16} className="md:size-[18px] group-hover:-translate-x-1 transition-transform" />
             </button>
@@ -95,8 +94,8 @@ const Navbar: React.FC<NavbarProps> = ({
           <button
             onClick={onToggleTheme}
             className={`p-2.5 md:p-3 rounded-xl md:rounded-2xl transition-all border hover:scale-105 active:scale-95 shadow-md ${isDarkMode
-              ? 'bg-white/ border-white/5 text-slate-400 hover:text-amber-400 hover:border-amber-400/30'
-              : 'bg-whiteborder-slate-200 text-slate-600 hover:text-indigo-600 hover:border-indigo-600/30'
+              ? 'bg-white/10 border-white/5 text-slate-400 hover:text-amber-400 hover:border-amber-400/30'
+              : 'bg-white/40 border-slate-200 text-slate-600 hover:text-indigo-600 hover:border-indigo-600/30'
               }`}
           >
             {isDarkMode ? <Sun size={18} className="md:size-[20px]" /> : <Moon size={18} className="md:size-[20px]" />}
@@ -105,8 +104,8 @@ const Navbar: React.FC<NavbarProps> = ({
           <button
             onClick={() => setIsNotifOpen(!isNotifOpen)}
             className={`p-2.5 md:p-3 rounded-xl md:rounded-2xl transition-all border relative hover:scale-105 active:scale-95 shadow-md ${isDarkMode
-              ? 'bg-white/ border-white/5 text-slate-400 hover:text-white hover:border-white/20'
-              : 'bg-whiteborder-slate-200 text-slate-600 hover:text-primary hover:border-primary/30'
+              ? 'bg-white/10 border-white/5 text-slate-400 hover:text-white hover:border-white/20'
+              : 'bg-white/40 border-slate-200 text-slate-600 hover:text-primary hover:border-primary/30'
               }`}
           >
             <Bell size={18} className="md:size-[20px]" />
@@ -118,8 +117,8 @@ const Navbar: React.FC<NavbarProps> = ({
           <div className="relative" ref={profileRef}>
             <button
               className={`flex items-center gap-3 pl-2 pr-3 md:pr-4 py-1.5 md:py-2 rounded-2xl border transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg ${isDarkMode
-                ? 'bg-white/ border-white/10 hover:bg-white/ hover:border-primary/50'
-                : 'bg-whiteborder-slate-200 hover:border-primary/40 hover:shadow-primary/10'
+                ? 'bg-white/10 border-white/10 hover:bg-white/10 hover:border-primary/50'
+                : 'bg-white/40 border-slate-200 hover:border-primary/40 hover:shadow-primary/10'
                 }`}
               onClick={() => setIsProfileOpen(!isProfileOpen)}
             >
@@ -136,7 +135,7 @@ const Navbar: React.FC<NavbarProps> = ({
             {isProfileOpen && (
               <div className={`absolute right-0 top-full mt-4 w-64 md:w-72 rounded-[2rem] shadow-2xl p-2 z-[100] animate-in zoom-in-95 duration-200 border backdrop-blur-3xl ${isDarkMode
                 ? 'bg-[#111]/95 border-white/10 shadow-black'
-                : 'bg-white/ border-slate-200 shadow-slate-300/50'
+                : 'bg-white/10 border-slate-200 shadow-slate-300/50'
                 }`}>
                 <div className={`p-6 border-b ${isDarkMode ? 'border-white/5' : 'border-slate-100'} space-y-2`}>
                   <div className="flex items-center gap-3">
@@ -152,7 +151,7 @@ const Navbar: React.FC<NavbarProps> = ({
                   <button
                     onClick={() => { onOpenProfile?.(); setIsProfileOpen(false); }}
                     className={`w-full flex items-center justify-between p-3.5 rounded-2xl transition-all text-[10px] font-black uppercase tracking-widest ${isDarkMode
-                      ? 'text-slate-400 hover:text-white hover:bg-white/'
+                      ? 'text-slate-400 hover:text-white hover:bg-white/10'
                       : 'text-slate-600 hover:text-primary hover:bg-primary/5'
                       }`}
                   >

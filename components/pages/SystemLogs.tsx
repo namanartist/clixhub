@@ -32,7 +32,7 @@ const SystemLogs: React.FC<Props> = ({ logs, isDarkMode }) => {
           <p className="text-slate-500 font-medium">Immutable institutional record of all administrative actions.</p>
         </div>
         <div className={`px-6 py-3 rounded-2xl border font-black text-xs uppercase tracking-widest flex items-center gap-3 ${
-          isDarkMode ? 'bg-slate-800/ border-slate-700 text-slate-300' : 'bg-whiteborder-slate-200 text-slate-500'
+          isDarkMode ? 'bg-slate-800/10 border-slate-700 text-slate-300' : 'bg-white/40 border-slate-200 text-slate-500'
         }`}>
           <ShieldCheck size={16} className="text-blue-500" /> Ledger Integrity Verified
         </div>
@@ -47,24 +47,24 @@ const SystemLogs: React.FC<Props> = ({ logs, isDarkMode }) => {
              value={searchTerm}
              onChange={(e) => setSearchTerm(e.target.value)}
              className={`w-full pl-12 pr-6 py-4 rounded-3xl border outline-none focus:border-blue-500 transition-all text-sm font-bold ${
-               isDarkMode ? 'bg-slate-800/ border-slate-700 text-white' : 'bg-whiteborder-slate-200'
+               isDarkMode ? 'bg-slate-800/10 border-slate-700 text-white' : 'bg-white/40 border-slate-200'
              }`}
            />
         </div>
         <button 
           onClick={() => setSortOrder(prev => prev === 'desc' ? 'asc' : 'desc')}
           className={`px-6 py-4 rounded-2xl border flex items-center gap-2 font-black text-xs uppercase tracking-widest transition-all ${
-            isDarkMode ? 'bg-slate-800/ border-slate-800 hover:text-white' : 'bg-slate-50border-slate-100 hover:bg-white
+            isDarkMode ? 'bg-slate-800/10 border-slate-800 hover:text-white' : 'bg-slate-50 border-slate-100 hover:bg-white'
           }`}
         >
           <Clock size={16} /> {sortOrder === 'desc' ? 'Newest First' : 'Oldest First'}
         </button>
       </div>
 
-      <div className={`rounded-[3rem] border overflow-hidden ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-whiteborder-slate-100 shadow-sm'}`}>
+      <div className={`rounded-[3rem] border overflow-hidden ${isDarkMode ? 'bg-[#161b2a] border-slate-800' : 'bg-white/40 border-slate-100 shadow-sm'}`}>
         <div className="max-h-[800px] overflow-y-auto scrollbar-thin">
           <table className="w-full text-left">
-            <thead className={`sticky top-0 z-10 ${isDarkMode ? 'bg-slate-900/ backdrop-blur' : 'bg-slate-50/ backdrop-blur'}`}>
+            <thead className={`sticky top-0 z-10 ${isDarkMode ? 'bg-slate-900/10 backdrop-blur' : 'bg-slate-50/10 backdrop-blur'}`}>
               <tr className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
                 <th className="px-10 py-6">Timestamp</th>
                 <th className="px-10 py-6">Actor</th>
@@ -84,7 +84,7 @@ const SystemLogs: React.FC<Props> = ({ logs, isDarkMode }) => {
                     <td className="px-10 py-6">
                        <div className="flex items-center gap-3">
                           <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-black text-xs ${
-                            isDarkMode ? 'bg-slate-800text-slate-300' : 'bg-slate-100 text-slate-600'
+                            isDarkMode ? 'bg-slate-800 text-slate-300' : 'bg-slate-100 text-slate-600'
                           }`}>
                             {log.user[0]}
                           </div>
@@ -99,7 +99,7 @@ const SystemLogs: React.FC<Props> = ({ logs, isDarkMode }) => {
                     </td>
                     <td className="px-10 py-6 text-right">
                        {log.clubId ? (
-                         <span className="inline-block px-3 py-1 rounded-lg bg-slate-800/ border border-slate-700 text-[9px] font-black uppercase tracking-widest text-slate-400">
+                         <span className="inline-block px-3 py-1 rounded-lg bg-slate-800/10 border border-slate-700 text-[9px] font-black uppercase tracking-widest text-slate-400">
                            {log.clubId}
                          </span>
                        ) : (

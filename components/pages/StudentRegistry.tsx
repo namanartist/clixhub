@@ -158,20 +158,20 @@ const StudentRegistry: React.FC<Props> = ({ allUsers, onAddUser, onUpdateUser, o
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={`w-full pl-12 pr-6 py-4 rounded-3xl border outline-none focus:border-blue-500 transition-all text-sm font-bold ${
-              isDarkMode ? 'bg-slate-800/ border-slate-700 text-white placeholder-slate-500' : 'bg-whiteborder-slate-200 text-[#1B2559] placeholder-slate-400'
+              isDarkMode ? 'bg-slate-800/10 border-slate-700 text-white placeholder-slate-500' : 'bg-white/40 border-slate-200 text-[#1B2559] placeholder-slate-400'
             }`}
           />
         </div>
         <div className={`px-6 py-4 rounded-2xl border font-black text-xs uppercase tracking-widest opacity-60 flex items-center gap-3 ${
-          isDarkMode ? 'bg-slate-800/ border-slate-800 text-white' : 'bg-slate-50border-slate-100 text-[#1B2559]'
+          isDarkMode ? 'bg-slate-800/10 border-slate-800 text-white' : 'bg-slate-50 border-slate-100 text-[#1B2559]'
         }`}>
           <Fingerprint size={16} className="text-blue-500" /> {filteredStudents.length} Identities
         </div>
       </div>
 
-      <div className={`rounded-[3rem] border overflow-hidden ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-whiteborder-slate-100 shadow-sm'}`}>
+      <div className={`rounded-[3rem] border overflow-hidden ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-white/40 border-slate-100 shadow-sm'}`}>
         <table className="w-full text-left">
-          <thead className={isDarkMode ? 'bg-slate-900/' : 'bg-slate-50}>
+          <thead className={isDarkMode ? 'bg-slate-900/10' : 'bg-slate-50'}>
             <tr className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
               <th className="px-10 py-8">Institutional Identity</th>
               <th className="px-10 py-8">Security Key</th>
@@ -196,7 +196,7 @@ const StudentRegistry: React.FC<Props> = ({ allUsers, onAddUser, onUpdateUser, o
                 <td className="px-10 py-8">
                   <div className="flex items-center gap-3">
                     <div className={`px-4 py-2 rounded-xl border font-mono text-xs font-bold ${
-                      isDarkMode ? 'bg-slate-950border-slate-800 text-blue-400' : 'bg-slate-50border-slate-200 text-blue-600'
+                      isDarkMode ? 'bg-slate-950 border-slate-800 text-blue-400' : 'bg-slate-50 border-slate-200 text-blue-600'
                     }`}>
                       {s.password || 'NOT-SET'}
                     </div>
@@ -210,7 +210,7 @@ const StudentRegistry: React.FC<Props> = ({ allUsers, onAddUser, onUpdateUser, o
                   </div>
                 </td>
                 <td className="px-10 py-8">
-                  <span className="px-4 py-1.5 rounded-full bg-slate-800/ border border-slate-700 text-[10px] font-black uppercase tracking-widest text-slate-300">
+                  <span className="px-4 py-1.5 rounded-full bg-slate-800/10 border border-slate-700 text-[10px] font-black uppercase tracking-widest text-slate-300">
                     {s.branch || 'General'}
                   </span>
                 </td>
@@ -239,14 +239,14 @@ const StudentRegistry: React.FC<Props> = ({ allUsers, onAddUser, onUpdateUser, o
 
       {/* Single Entry Modal */}
       {isSingleModalOpen && (
-        <div className="fixed inset-0 z-[100] bg-slate-950/ backdrop-blur-md flex items-center justify-center p-6">
-          <div className={`max-w-xl w-full p-10 rounded-[3rem] border shadow-2xl space-y-8 animate-in fade-in zoom-in-95 ${isDarkMode ? 'bg-slate-900border-slate-800' : 'bg-whiteborder-slate-100'}`}>
+        <div className="fixed inset-0 z-[100] bg-slate-950/10 backdrop-blur-md flex items-center justify-center p-6">
+          <div className={`max-w-xl w-full p-10 rounded-[3rem] border shadow-2xl space-y-8 animate-in fade-in zoom-in-95 ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white/40 border-slate-100'}`}>
             <div className="flex justify-between items-center">
               <div>
                 <h2 className={`text-3xl font-black tracking-tight ${isDarkMode ? 'text-white' : 'text-[#1B2559]'}`}>Single Identity Entry</h2>
                 <p className="text-slate-500 text-sm font-medium">Add a single student to the institutional ledger.</p>
               </div>
-              <button onClick={() => setIsSingleModalOpen(false)} className="p-3 rounded-2xl hover:bg-slate-800/ transition-colors">
+              <button onClick={() => setIsSingleModalOpen(false)} className="p-3 rounded-2xl hover:bg-slate-800/10 transition-colors">
                 <X size={24} className="text-slate-400" />
               </button>
             </div>
@@ -260,7 +260,7 @@ const StudentRegistry: React.FC<Props> = ({ allUsers, onAddUser, onUpdateUser, o
                     type="text" 
                     value={newStudent.name}
                     onChange={(e) => setNewStudent({...newStudent, name: e.target.value})}
-                    className={`w-full px-6 py-4 rounded-2xl border outline-none focus:border-blue-500 transition-all font-bold ${isDarkMode ? 'bg-slate-800border-slate-700 text-white' : 'bg-slate-50border-slate-200 text-[#1B2559]'}`}
+                    className={`w-full px-6 py-4 rounded-2xl border outline-none focus:border-blue-500 transition-all font-bold ${isDarkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-[#1B2559]'}`}
                   />
                 </div>
                 <div className="space-y-2">
@@ -270,7 +270,7 @@ const StudentRegistry: React.FC<Props> = ({ allUsers, onAddUser, onUpdateUser, o
                     type="text" 
                     value={newStudent.enrollment}
                     onChange={(e) => setNewStudent({...newStudent, enrollment: e.target.value})}
-                    className={`w-full px-6 py-4 rounded-2xl border outline-none focus:border-blue-500 transition-all font-bold ${isDarkMode ? 'bg-slate-800border-slate-700 text-white' : 'bg-slate-50border-slate-200 text-[#1B2559]'}`}
+                    className={`w-full px-6 py-4 rounded-2xl border outline-none focus:border-blue-500 transition-all font-bold ${isDarkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-[#1B2559]'}`}
                   />
                 </div>
               </div>
@@ -282,7 +282,7 @@ const StudentRegistry: React.FC<Props> = ({ allUsers, onAddUser, onUpdateUser, o
                   type="email" 
                   value={newStudent.email}
                   onChange={(e) => setNewStudent({...newStudent, email: e.target.value})}
-                  className={`w-full px-6 py-4 rounded-2xl border outline-none focus:border-blue-500 transition-all font-bold ${isDarkMode ? 'bg-slate-800border-slate-700 text-white' : 'bg-slate-50border-slate-200 text-[#1B2559]'}`}
+                  className={`w-full px-6 py-4 rounded-2xl border outline-none focus:border-blue-500 transition-all font-bold ${isDarkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-[#1B2559]'}`}
                 />
               </div>
 
@@ -293,7 +293,7 @@ const StudentRegistry: React.FC<Props> = ({ allUsers, onAddUser, onUpdateUser, o
                   type="text" 
                   value={newStudent.branch}
                   onChange={(e) => setNewStudent({...newStudent, branch: e.target.value})}
-                  className={`w-full px-6 py-4 rounded-2xl border outline-none focus:border-blue-500 transition-all font-bold ${isDarkMode ? 'bg-slate-800border-slate-700 text-white' : 'bg-slate-50border-slate-200 text-[#1B2559]'}`}
+                  className={`w-full px-6 py-4 rounded-2xl border outline-none focus:border-blue-500 transition-all font-bold ${isDarkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-[#1B2559]'}`}
                 />
               </div>
 
@@ -307,14 +307,14 @@ const StudentRegistry: React.FC<Props> = ({ allUsers, onAddUser, onUpdateUser, o
 
       {/* Bulk Import Modal */}
       {isBulkModalOpen && (
-        <div className="fixed inset-0 z-[100] bg-slate-950/ backdrop-blur-md flex items-center justify-center p-6">
-          <div className={`max-w-2xl w-full p-10 rounded-[3rem] border shadow-2xl space-y-8 animate-in fade-in zoom-in-95 ${isDarkMode ? 'bg-slate-900border-slate-800' : 'bg-whiteborder-slate-100'}`}>
+        <div className="fixed inset-0 z-[100] bg-slate-950/10 backdrop-blur-md flex items-center justify-center p-6">
+          <div className={`max-w-2xl w-full p-10 rounded-[3rem] border shadow-2xl space-y-8 animate-in fade-in zoom-in-95 ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white/40 border-slate-100'}`}>
             <div className="flex justify-between items-center">
               <div>
                 <h2 className={`text-3xl font-black tracking-tight ${isDarkMode ? 'text-white' : 'text-[#1B2559]'}`}>Institutional Bulk Import</h2>
                 <p className="text-slate-500 text-sm font-medium">Batch process student identities via the CSV protocol.</p>
               </div>
-              <button onClick={() => setIsBulkModalOpen(false)} className="p-3 rounded-2xl hover:bg-slate-800/ transition-colors">
+              <button onClick={() => setIsBulkModalOpen(false)} className="p-3 rounded-2xl hover:bg-slate-800/10 transition-colors">
                 <X size={24} className="text-slate-400" />
               </button>
             </div>
@@ -323,7 +323,7 @@ const StudentRegistry: React.FC<Props> = ({ allUsers, onAddUser, onUpdateUser, o
               <AlertCircle size={24} className="shrink-0" />
               <div className="space-y-1">
                 <p className="text-[10px] font-black uppercase tracking-widest">Protocol Instructions</p>
-                <p className="text-xs font-medium opacity-80 leading-relaxed">Paste records in CSV format: <code className="bg-slate-950/ px-1 rounded">Name, Email, RollNumber, Branch</code>. Each record must occupy a new line.</p>
+                <p className="text-xs font-medium opacity-80 leading-relaxed">Paste records in CSV format: <code className="bg-slate-950/10 px-1 rounded">Name, Email, RollNumber, Branch</code>. Each record must occupy a new line.</p>
               </div>
             </div>
 
@@ -333,14 +333,14 @@ const StudentRegistry: React.FC<Props> = ({ allUsers, onAddUser, onUpdateUser, o
               onChange={(e) => setBulkText(e.target.value)}
               placeholder="Aman Gupta, aman@mitsgwl.ac.in, CSE21001, CSE&#10;Sneha Jain, sneha@mitsgwl.ac.in, IT21045, IT"
               className={`w-full px-8 py-6 rounded-[2rem] border outline-none focus:border-blue-500 transition-all text-sm font-mono leading-relaxed ${
-                isDarkMode ? 'bg-slate-950border-slate-800 text-white' : 'bg-slate-50border-slate-100 text-[#1B2559]'
+                isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-slate-50 border-slate-100 text-[#1B2559]'
               }`}
             />
 
             <div className="flex justify-end gap-4">
               <button 
                 onClick={() => setIsBulkModalOpen(false)}
-                className="px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest text-slate-500 hover:bg-slate-800/ transition-all"
+                className="px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest text-slate-500 hover:bg-slate-800/10 transition-all"
               >
                 Cancel
               </button>

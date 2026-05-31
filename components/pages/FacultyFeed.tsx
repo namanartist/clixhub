@@ -74,7 +74,7 @@ const FacultyFeed: React.FC<Props> = ({ user, clubs, onManageClub }) => {
                             >
                                 <Settings size={16} /> Enter Control Panel
                             </button>
-                            <button className="p-4 bg-white/ text-[#A3AED0] rounded-2xl hover:bg-white/ transition-all">
+                            <button className="p-4 bg-white/10 text-[#A3AED0] rounded-2xl hover:bg-white/10 transition-all">
                                 <ArrowRight size={20} />
                             </button>
                         </div>

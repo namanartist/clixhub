@@ -224,7 +224,7 @@ const EventOperations: React.FC<Props> = ({
                     placeholder="Locate Entry by Name/ID..." 
                     value={participantSearch}
                     onChange={e => setParticipantSearch(e.target.value)}
-                    className="w-full pl-14 pr-8 py-4 rounded-3xl bg-white/ border border-white/5 outline-none font-bold text-sm text-white focus:border-blue-500/50 transition-all placeholder-slate-600" 
+                    className="w-full pl-14 pr-8 py-4 rounded-3xl bg-white/10 border border-white/5 outline-none font-bold text-sm text-white focus:border-blue-500/50 transition-all placeholder-slate-600" 
                  />
               </div>
            </div>
@@ -240,7 +240,7 @@ const EventOperations: React.FC<Props> = ({
                  </thead>
                  <tbody className="divide-y divide-white/5 font-sans">
                     {filteredRegs.map(reg => (
-                       <tr key={reg.id} className="group hover:bg-white/[0.02] transition-colors">
+                       <tr key={reg.id} className="group hover:bg-white/10[0.02] transition-colors">
                           <td className="px-10 py-6">
                              <p className="font-black text-white text-base tracking-tight">{reg.studentName}</p>
                              <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mt-1">{reg.studentRoll}</p>
@@ -310,23 +310,23 @@ const EventOperations: React.FC<Props> = ({
                        <h3 className="text-3xl font-black tracking-tighter font-display text-white">MANUAL ENTRY</h3>
                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Inserting unauthorized personnel record into ledger.</p>
                     </div>
-                    <button onClick={() => setIsAddParticipantOpen(false)} className="p-4 rounded-3xl bg-white/ text-slate-500 hover:text-white hover:bg-rose-500 transition-all group">
+                    <button onClick={() => setIsAddParticipantOpen(false)} className="p-4 rounded-3xl bg-white/10 text-slate-500 hover:text-white hover:bg-rose-500 transition-all group">
                        <X size={20} className="group-hover:rotate-90 transition-transform" />
                     </button>
                  </div>
                  <form onSubmit={handleAddParticipant} className="space-y-6">
                     <div className="space-y-2">
                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-600 ml-6">FULL NAME</label>
-                       <input required placeholder="E.g. ALAN TURING" value={newParticipant.name} onChange={e => setNewParticipant({...newParticipant, name: e.target.value})} className="w-full px-8 py-5 rounded-3xl bg-white/ border border-white/5 outline-none font-bold text-white placeholder-slate-700 focus:border-blue-500/50 transition-all shadow-inner" />
+                       <input required placeholder="E.g. ALAN TURING" value={newParticipant.name} onChange={e => setNewParticipant({...newParticipant, name: e.target.value})} className="w-full px-8 py-5 rounded-3xl bg-white/10 border border-white/5 outline-none font-bold text-white placeholder-slate-700 focus:border-blue-500/50 transition-all shadow-inner" />
                     </div>
                     <div className="grid grid-cols-2 gap-6">
                        <div className="space-y-2">
                           <label className="text-[10px] font-black uppercase tracking-widest text-slate-600 ml-6">ENROLLMENT ID</label>
-                          <input required placeholder="0187CS..." value={newParticipant.roll} onChange={e => setNewParticipant({...newParticipant, roll: e.target.value})} className="w-full px-8 py-5 rounded-3xl bg-white/ border border-white/5 outline-none font-bold text-white placeholder-slate-700 focus:border-blue-500/50 transition-all shadow-inner" />
+                          <input required placeholder="0187CS..." value={newParticipant.roll} onChange={e => setNewParticipant({...newParticipant, roll: e.target.value})} className="w-full px-8 py-5 rounded-3xl bg-white/10 border border-white/5 outline-none font-bold text-white placeholder-slate-700 focus:border-blue-500/50 transition-all shadow-inner" />
                        </div>
                        <div className="space-y-2">
                           <label className="text-[10px] font-black uppercase tracking-widest text-slate-600 ml-6">DIVISION</label>
-                          <input required placeholder="COMPUTING" value={newParticipant.branch} onChange={e => setNewParticipant({...newParticipant, branch: e.target.value})} className="w-full px-8 py-5 rounded-3xl bg-white/ border border-white/5 outline-none font-bold text-white placeholder-slate-700 focus:border-blue-500/50 transition-all shadow-inner" />
+                          <input required placeholder="COMPUTING" value={newParticipant.branch} onChange={e => setNewParticipant({...newParticipant, branch: e.target.value})} className="w-full px-8 py-5 rounded-3xl bg-white/10 border border-white/5 outline-none font-bold text-white placeholder-slate-700 focus:border-blue-500/50 transition-all shadow-inner" />
                        </div>
                     </div>
                     <button className="w-full py-6 bg-blue-600 text-white rounded-[2rem] font-black text-[10px] uppercase tracking-[0.3em] shadow-[0_20px_50px_rgba(59,130,246,0.3)] hover:scale-[1.02] active:scale-95 transition-all">
@@ -395,7 +395,7 @@ const EventOperations: React.FC<Props> = ({
                            const win = window.open('', '_blank', 'width=1100,height=850');
                            if (win) { win.document.write(html); win.document.close(); }
                         }} 
-                        className="flex-[2] py-5 bg-whitetext-slate-950 rounded-[2rem] font-black text-[10px] uppercase tracking-[0.3em] shadow-2xl hover:bg-white/ hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-4"
+                        className="flex-[2] py-5 bg-whitetext-slate-950 rounded-[2rem] font-black text-[10px] uppercase tracking-[0.3em] shadow-2xl hover:bg-white/10 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-4"
                      >
                         <Printer size={18} /> Print Dossier
                      </button>
@@ -450,7 +450,7 @@ const EventOperations: React.FC<Props> = ({
                 {isDirectApprovalEnabled && onDeleteEvent && (
                   <button 
                     onClick={(e) => handleDelete(e, event.id)}
-                    className="absolute top-6 left-6 z-20 p-4 rounded-2xl bg-white/ text-slate-500 opacity-60 hover:opacity-100 hover:bg-rose-500 hover:text-white transition-all hover:scale-110 active:scale-90"
+                    className="absolute top-6 left-6 z-20 p-4 rounded-2xl bg-white/10 text-slate-500 opacity-60 hover:opacity-100 hover:bg-rose-500 hover:text-white transition-all hover:scale-110 active:scale-90"
                     title="Terminate Op"
                   >
                     <Trash2 size={16} />
@@ -534,7 +534,7 @@ const EventOperations: React.FC<Props> = ({
                         : 'Institutional protocol mandatory: Sent to High Command for tactical verification and clearance.'}
                     </p>
                   </div>
-                  <button onClick={() => setIsModalOpen(false)} className="p-4 rounded-3xl bg-white/ text-slate-500 hover:text-white hover:bg-rose-500 transition-all group">
+                  <button onClick={() => setIsModalOpen(false)} className="p-4 rounded-3xl bg-white/10 text-slate-500 hover:text-white hover:bg-rose-500 transition-all group">
                      <X size={20} className="group-hover:rotate-90 transition-transform" />
                   </button>
                 </div>
@@ -542,12 +542,12 @@ const EventOperations: React.FC<Props> = ({
                 <form onSubmit={handleCreateSubmit} className="space-y-8">
                     <div className="space-y-3">
                         <label className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-600 ml-8 italic">Operation Nomenclature</label>
-                        <input required type="text" value={newEvent.title} onChange={e => setNewEvent({...newEvent, title: e.target.value})} className="w-full px-8 py-5 rounded-[2rem] bg-white/ border border-white/5 outline-none font-black text-white placeholder-slate-800 focus:border-blue-500/50 transition-all shadow-inner text-lg tracking-tight" placeholder="E.G. TITAN PROTOCOL" />
+                        <input required type="text" value={newEvent.title} onChange={e => setNewEvent({...newEvent, title: e.target.value})} className="w-full px-8 py-5 rounded-[2rem] bg-white/10 border border-white/5 outline-none font-black text-white placeholder-slate-800 focus:border-blue-500/50 transition-all shadow-inner text-lg tracking-tight" placeholder="E.G. TITAN PROTOCOL" />
                     </div>
                     
                     <div className="space-y-3">
                         <label className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-600 ml-8 italic">Strategic Narrative</label>
-                        <textarea required value={newEvent.description} onChange={e => setNewEvent({...newEvent, description: e.target.value})} className="w-full px-8 py-6 rounded-[2.5rem] bg-white/ border border-white/5 outline-none font-medium h-40 text-white placeholder-slate-800 focus:border-blue-500/50 transition-all shadow-inner leading-relaxed" placeholder="Detailed objective agenda and tactical requirements..." />
+                        <textarea required value={newEvent.description} onChange={e => setNewEvent({...newEvent, description: e.target.value})} className="w-full px-8 py-6 rounded-[2.5rem] bg-white/10 border border-white/5 outline-none font-medium h-40 text-white placeholder-slate-800 focus:border-blue-500/50 transition-all shadow-inner leading-relaxed" placeholder="Detailed objective agenda and tactical requirements..." />
                     </div>
 
                     <div className="space-y-4">
@@ -560,9 +560,9 @@ const EventOperations: React.FC<Props> = ({
                             </button>
                         </div>
                         <input type="file" ref={fileInputRef} onChange={handleFileUpload} className="hidden" accept="image/*" />
-                        <input type="text" value={newEvent.bannerUrl} onChange={e => setNewEvent({...newEvent, bannerUrl: e.target.value})} className="w-full px-8 py-5 rounded-[2rem] bg-white/ border border-white/5 outline-none font-mono text-[10px] text-blue-400 placeholder-slate-800 focus:border-blue-500/50 transition-all shadow-inner uppercase tracking-widest" placeholder="HTTPS://SECURE-STORAGE.NODE/IMG.JPG" />
+                        <input type="text" value={newEvent.bannerUrl} onChange={e => setNewEvent({...newEvent, bannerUrl: e.target.value})} className="w-full px-8 py-5 rounded-[2rem] bg-white/10 border border-white/5 outline-none font-mono text-[10px] text-blue-400 placeholder-slate-800 focus:border-blue-500/50 transition-all shadow-inner uppercase tracking-widest" placeholder="HTTPS://SECURE-STORAGE.NODE/IMG.JPG" />
                         {newEvent.bannerUrl && (
-                            <div className="h-40 w-full rounded-[2.5rem] overflow-hidden border border-white/5 relative group p-1 bg-white/ shadow-2xl">
+                            <div className="h-40 w-full rounded-[2.5rem] overflow-hidden border border-white/5 relative group p-1 bg-white/10 shadow-2xl">
                                 <img src={newEvent.bannerUrl} alt="Tactical Preview" className="w-full h-full object-cover rounded-[2.2rem] opacity-80 group-hover:opacity-100 transition-opacity" />
                             </div>
                         )}
@@ -571,11 +571,11 @@ const EventOperations: React.FC<Props> = ({
                     <div className="grid grid-cols-2 gap-8">
                         <div className="space-y-3">
                             <label className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-600 ml-8 italic">Tactical Date</label>
-                            <input required type="date" value={newEvent.date} onChange={e => setNewEvent({...newEvent, date: e.target.value})} className="w-full px-8 py-5 rounded-3xl bg-white/ border border-white/5 outline-none font-black text-white focus:border-blue-500/50 transition-all shadow-inner uppercase tracking-widest" />
+                            <input required type="date" value={newEvent.date} onChange={e => setNewEvent({...newEvent, date: e.target.value})} className="w-full px-8 py-5 rounded-3xl bg-white/10 border border-white/5 outline-none font-black text-white focus:border-blue-500/50 transition-all shadow-inner uppercase tracking-widest" />
                         </div>
                         <div className="space-y-3">
                             <label className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-600 ml-8 italic">Classification Type</label>
-                            <select value={newEvent.type} onChange={e => setNewEvent({...newEvent, type: e.target.value as any})} className="w-full px-8 py-5 rounded-3xl bg-white/ border border-white/5 outline-none font-black text-white focus:border-blue-500/50 transition-all shadow-inner uppercase tracking-widest appearance-none">
+                            <select value={newEvent.type} onChange={e => setNewEvent({...newEvent, type: e.target.value as any})} className="w-full px-8 py-5 rounded-3xl bg-white/10 border border-white/5 outline-none font-black text-white focus:border-blue-500/50 transition-all shadow-inner uppercase tracking-widest appearance-none">
                                 <option value="Free">UNRESTRICTED (FREE)</option>
                                 <option value="Paid">RESTRICTED (PAID)</option>
                             </select>
@@ -606,7 +606,7 @@ const EventOperations: React.FC<Props> = ({
                             <Activity size={24} className={isDirectApprovalEnabled ? 'text-emerald-500' : 'text-amber-400'} />
                         </div>
                         <div className="flex gap-6">
-                            <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-5 rounded-[2rem] font-black text-[10px] uppercase tracking-[0.3em] text-slate-600 hover:text-white hover:bg-white/ transition-all active:scale-95 shadow-lg border border-transparent hover:border-white/5">CANCEL MISSION</button>
+                            <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-5 rounded-[2rem] font-black text-[10px] uppercase tracking-[0.3em] text-slate-600 hover:text-white hover:bg-white/10 transition-all active:scale-95 shadow-lg border border-transparent hover:border-white/5">CANCEL MISSION</button>
                             <button 
                             type="submit" 
                             className={`flex-1 py-5 text-white rounded-[2rem] font-black text-[10px] uppercase tracking-[0.3em] shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-4 ${

@@ -298,7 +298,7 @@ const CertificationGovernance: React.FC<Props> = ({
           </p>
          </div>
 
-         <nav className="flex items-center p-2 rounded-[2rem] bg-white/[0.02] border border-white/5 backdrop-blur-md shadow-2xl">
+         <nav className="flex items-center p-2 rounded-[2rem] bg-white/10[0.02] border border-white/5 backdrop-blur-md shadow-2xl">
             {[
               { id: 'issuance', label: 'Issuance', icon: Plus },
               { id: 'approval', label: 'Workflows', icon: Activity },
@@ -311,7 +311,7 @@ const CertificationGovernance: React.FC<Props> = ({
                   className={`px-8 py-4 rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.2em] transition-all flex items-center gap-3 active:scale-95 ${
                     activeTab === tab.id 
                     ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20' 
-                    : 'text-slate-500 hover:text-white hover:bg-white/'
+                    : 'text-slate-500 hover:text-white hover:bg-white/10'
                   }`}
               >
                   <tab.icon size={16} /> {tab.label}
@@ -377,25 +377,25 @@ const CertificationGovernance: React.FC<Props> = ({
                           </div>
                           <h3 className="text-3xl font-black text-white tracking-tighter uppercase mb-4">Minting Credentials</h3>
                           <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-10 italic">Assembling cryptographic proof-of-completion...</p>
-                          <div className="w-full max-w-sm h-1.5 bg-white/ rounded-full overflow-hidden border border-white/5 shadow-inner">
+                          <div className="w-full max-w-sm h-1.5 bg-white/10 rounded-full overflow-hidden border border-white/5 shadow-inner">
                             <div className="h-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)] transition-all duration-300" style={{ width: `${mintProgress}%` }} />
                           </div>
                       </div>
                   )}
 
-                  <div className="p-10 border-b border-white/5 flex flex-col md:flex-row items-center justify-between gap-6 bg-white/[0.01]">
+                  <div className="p-10 border-b border-white/5 flex flex-col md:flex-row items-center justify-between gap-6 bg-white/10[0.01]">
                       <div className="relative flex-1 w-full">
                           <SearchCode className="absolute left-6 top-1/2 -translate-y-1/2 text-emerald-500/40" size={20} />
                           <input 
                               value={searchTerm}
                               onChange={(e) => setSearchTerm(e.target.value)}
                               placeholder="SEARCH CADET IDENTITIES..."
-                              className="w-full pl-16 pr-8 py-5 rounded-3xl bg-white/[0.02] border border-white/5 outline-none font-black text-sm text-white tracking-widest placeholder:text-slate-700 focus:border-emerald-500/30 transition-all shadow-inner"
+                              className="w-full pl-16 pr-8 py-5 rounded-3xl bg-white/10[0.02] border border-white/5 outline-none font-black text-sm text-white tracking-widest placeholder:text-slate-700 focus:border-emerald-500/30 transition-all shadow-inner"
                           />
                       </div>
                       <button 
                           onClick={() => setSelectedRegs(selectedRegs.size === eligible.length ? new Set() : new Set(eligible.map(r => r.id)))}
-                          className="px-10 py-5 rounded-3xl border border-white/5 font-black text-[10px] uppercase tracking-[0.2em] text-white hover:bg-white/ transition-all shadow-xl active:scale-95 whitespace-nowrap"
+                          className="px-10 py-5 rounded-3xl border border-white/5 font-black text-[10px] uppercase tracking-[0.2em] text-white hover:bg-white/10 transition-all shadow-xl active:scale-95 whitespace-nowrap"
                       >
                           {selectedRegs.size === eligible.length && eligible.length > 0 ? 'Wipe Selection' : 'Batch Align'}
                       </button>
@@ -411,14 +411,14 @@ const CertificationGovernance: React.FC<Props> = ({
                               className={`p-6 rounded-[2.2rem] border transition-all cursor-pointer group flex items-center justify-between ${
                                   selectedRegs.has(reg.id) 
                                   ? 'bg-emerald-500/10 border-emerald-500/30 shadow-xl shadow-emerald-500/5' 
-                                  : 'bg-white/[0.01] border-white/5 hover:bg-white/[0.03] hover:border-white/10'
+                                  : 'bg-white/10[0.01] border-white/5 hover:bg-white/10[0.03] hover:border-white/10'
                               } ${reg.certificateId ? 'opacity-30 pointer-events-none filter grayscale' : ''}`}
                           >
                               <div className="flex items-center gap-6">
                                   <div className={`w-14 h-14 rounded-2xl flex items-center justify-center font-black transition-all ${
                                     selectedRegs.has(reg.id) 
                                     ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/40 rotate-12' 
-                                    : 'bg-white/ text-slate-500 group-hover:scale-110'
+                                    : 'bg-white/10 text-slate-500 group-hover:scale-110'
                                   }`}>
                                       {selectedRegs.has(reg.id) ? <Check size={24} strokeWidth={4} /> : reg.studentName[0]}
                                   </div>
@@ -457,14 +457,14 @@ const CertificationGovernance: React.FC<Props> = ({
                       )}
                   </div>
 
-                  <div className="p-10 border-t border-white/5 bg-white/[0.01]">
+                  <div className="p-10 border-t border-white/5 bg-white/10[0.01]">
                       <button 
                           onClick={handleCreateBatch}
                           disabled={selectedRegs.size === 0 || missingSignatures}
                           className={`w-full py-6 rounded-[2rem] font-black text-[10px] uppercase tracking-[0.3em] shadow-2xl flex items-center justify-center gap-4 transition-all active:scale-95 ${
                             selectedRegs.size > 0 && !missingSignatures 
                             ? 'bg-emerald-600 text-white hover:bg-emerald-700 hover:scale-[1.02] shadow-emerald-500/20 border border-emerald-400/20' 
-                            : 'bg-white/ text-slate-600 cursor-not-allowed border border-white/5'
+                            : 'bg-white/10 text-slate-600 cursor-not-allowed border border-white/5'
                           }`}
                       >
                           <Award size={20} /> Deploy {selectedRegs.size} Credentials to Pipeline
@@ -524,7 +524,7 @@ const CertificationGovernance: React.FC<Props> = ({
               </div>
             )}
             {clubBatches.map(batch => (
-              <div key={batch.id} className="glass-elevated bg-white/[0.01] rounded-[3.5rem] p-10 border border-white/5 flex flex-col gap-10 group hover:bg-white/[0.03] transition-all relative overflow-hidden shadow-2xl">
+              <div key={batch.id} className="glass-elevated bg-white/10[0.01] rounded-[3.5rem] p-10 border border-white/5 flex flex-col gap-10 group hover:bg-white/10[0.03] transition-all relative overflow-hidden shadow-2xl">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 
                 <div className="flex justify-between items-start relative z-10">
@@ -556,7 +556,7 @@ const CertificationGovernance: React.FC<Props> = ({
                         <div className={`w-10 h-10 rounded-2xl flex items-center justify-center transition-all ${
                           step.status === 'Approved' ? 'bg-emerald-500/20 text-emerald-500 border border-emerald-500/20' : 
                           step.status === 'Rejected' ? 'bg-rose-500/20 text-rose-500 border border-rose-500/20' : 
-                          'bg-white/ text-slate-600 border border-white/5 border-dashed animate-pulse'
+                          'bg-white/10 text-slate-600 border border-white/5 border-dashed animate-pulse'
                         }`}>
                           {step.status === 'Approved' ? <CheckCircle2 size={18}/> : step.status === 'Rejected' ? <X size={18}/> : <Fingerprint size={18}/>}
                         </div>
@@ -590,7 +590,7 @@ const CertificationGovernance: React.FC<Props> = ({
                       </button>
                     </>
                   ) : (
-                    <div className="w-full py-4 bg-white/[0.02] border border-white/5 text-slate-600 rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.3em] flex items-center justify-center gap-3 italic">
+                    <div className="w-full py-4 bg-white/10[0.02] border border-white/5 text-slate-600 rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.3em] flex items-center justify-center gap-3 italic">
                       <Clock size={14} className="animate-spin-slow" /> Protocol Execution Continuous
                     </div>
                   )}
@@ -602,7 +602,7 @@ const CertificationGovernance: React.FC<Props> = ({
 
       {activeTab === 'issued' && (
         <div className="glass-elevated rounded-[4rem] border border-white/5 overflow-hidden shadow-2xl animate-in slide-in-from-bottom-6 duration-700">
-          <div className="p-10 border-b border-white/5 flex flex-col md:flex-row items-center justify-between gap-6 bg-white/[0.01]">
+          <div className="p-10 border-b border-white/5 flex flex-col md:flex-row items-center justify-between gap-6 bg-white/10[0.01]">
             <div>
               <h2 className="text-2xl font-black text-white tracking-tighter uppercase font-display leading-[0.9]">Institutional Ledger</h2>
               <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mt-2 italic">Cryptographically verified and immutable record entries.</p>
@@ -624,7 +624,7 @@ const CertificationGovernance: React.FC<Props> = ({
               </thead>
               <tbody className="divide-y divide-white/5 font-sans">
                 {clubBatches.filter(b => b.status === 'Approved').flatMap(b => b.certificates).map(cert => (
-                  <tr key={cert.serialNumber} className="hover:bg-white/[0.02] transition-colors group">
+                  <tr key={cert.serialNumber} className="hover:bg-white/10[0.02] transition-colors group">
                     <td className="px-10 py-8">
                       <div className="flex items-center gap-5">
                         <div className="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center font-black group-hover:rotate-12 transition-transform shadow-lg border border-blue-500/20">
@@ -649,7 +649,7 @@ const CertificationGovernance: React.FC<Props> = ({
                     <td className="px-10 py-8 text-right">
                       <button 
                         onClick={() => handlePrint(cert.serialNumber)}
-                        className="w-12 h-12 rounded-2xl bg-white/ text-slate-500 hover:bg-emerald-600 hover:text-white transition-all shadow-xl active:scale-90 flex items-center justify-center border border-white/5"
+                        className="w-12 h-12 rounded-2xl bg-white/10 text-slate-500 hover:bg-emerald-600 hover:text-white transition-all shadow-xl active:scale-90 flex items-center justify-center border border-white/5"
                       >
                         <Download size={20}/>
                       </button>
@@ -694,7 +694,7 @@ const CertificationGovernance: React.FC<Props> = ({
       {activeTab === 'design' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-14 animate-in slide-in-from-bottom-6 duration-700">
               <div className="lg:col-span-4 space-y-10">
-                  <div className="glass-elevated bg-white/[0.01] rounded-[3.5rem] p-10 border border-white/5 space-y-10 shadow-2xl">
+                  <div className="glass-elevated bg-white/10[0.01] rounded-[3.5rem] p-10 border border-white/5 space-y-10 shadow-2xl">
                     <div className="flex items-center gap-4 border-b border-white/5 pb-8">
                        <div className="w-12 h-12 rounded-2xl bg-blue-600/10 flex items-center justify-center text-blue-500 shadow-xl border border-blue-500/20">
                          <Palette size={20} />
@@ -715,11 +715,11 @@ const CertificationGovernance: React.FC<Props> = ({
                                   className={`p-6 rounded-[1.8rem] border text-left transition-all relative overflow-hidden group ${
                                       designConfig.templateId === t 
                                       ? 'bg-blue-600 text-white border-blue-400 shadow-[0_15px_30px_rgba(59,130,246,0.3)]' 
-                                      : 'bg-white/[0.02] border-white/10 hover:border-blue-500/50 hover:bg-white/[0.04]'
+                                      : 'bg-white/10[0.02] border-white/10 hover:border-blue-500/50 hover:bg-white/10[0.04]'
                                   }`}
                                 >
                                     <span className="block text-[9px] font-black uppercase tracking-[0.2em] relative z-10">{t}</span>
-                                    <div className={`absolute -bottom-2 -right-2 w-12 h-12 bg-white/ blur-xl rounded-full transition-opacity ${designConfig.templateId === t ? 'opacity-100' : 'opacity-0'}`} />
+                                    <div className={`absolute -bottom-2 -right-2 w-12 h-12 bg-white/10 blur-xl rounded-full transition-opacity ${designConfig.templateId === t ? 'opacity-100' : 'opacity-0'}`} />
                                 </button>
                             ))}
                         </div>
@@ -731,7 +731,7 @@ const CertificationGovernance: React.FC<Props> = ({
                         </label>
                         <div 
                           onClick={() => bgInputRef.current?.click()}
-                          className="h-44 border-2 border-dashed border-white/5 bg-white/[0.01] rounded-[2.5rem] flex flex-col items-center justify-center cursor-pointer hover:bg-white/[0.03] hover:border-blue-500/50 transition-all overflow-hidden group shadow-inner"
+                          className="h-44 border-2 border-dashed border-white/5 bg-white/10[0.01] rounded-[2.5rem] flex flex-col items-center justify-center cursor-pointer hover:bg-white/10[0.03] hover:border-blue-500/50 transition-all overflow-hidden group shadow-inner"
                         >
                             {designConfig.customBackgroundUrl ? (
                                 <div className="relative w-full h-full">
@@ -742,7 +742,7 @@ const CertificationGovernance: React.FC<Props> = ({
                                 </div>
                             ) : (
                                 <div className="text-center space-y-4">
-                                    <div className="w-16 h-16 rounded-full bg-white/ flex items-center justify-center mx-auto group-hover:bg-blue-600/20 group-hover:scale-110 transition-all">
+                                    <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mx-auto group-hover:bg-blue-600/20 group-hover:scale-110 transition-all">
                                        <Plus className="text-slate-500 group-hover:text-blue-500" size={24} />
                                     </div>
                                     <span className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500 block">Inject Spatial Asset</span>

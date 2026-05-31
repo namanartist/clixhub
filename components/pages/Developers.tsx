@@ -76,7 +76,7 @@ const Developers: React.FC<Props> = ({ onBack, isDarkMode }) => {
          {/* Floating Back Button */}
          <button
             onClick={onBack}
-            className={`fixed top-8 left-8 z-50 p-4 rounded-2xl border backdrop-blur-3xl transition-all duration-500 group ${isDarkMode ? 'bg-white/ border-white/10 hover:border-white/20' : 'bg-white/ border-slate-200'
+            className={`fixed top-8 left-8 z-50 p-4 rounded-2xl border backdrop-blur-3xl transition-all duration-500 group ${isDarkMode ? 'bg-white/10 border-white/10 hover:border-white/20' : 'bg-white/10 border-slate-200'
                }`}
          >
             <ArrowLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
@@ -99,7 +99,7 @@ const Developers: React.FC<Props> = ({ onBack, isDarkMode }) => {
             </div>
 
             {/* Primary Developer Card */}
-            <div className={`reveal rounded-[3rem] border p-8 md:p-12 transition-all duration-700 shadow-4xl ${isDarkMode ? 'bg-white/ border-white/10' : 'bg-whiteborder-slate-200'
+            <div className={`reveal rounded-[3rem] border p-8 md:p-12 transition-all duration-700 shadow-4xl ${isDarkMode ? 'bg-white/10 border-white/10' : 'bg-white/40 border-slate-200'
                }`}>
                <div className="flex flex-col md:flex-row items-center gap-12">
                   <div className="relative group">
@@ -122,7 +122,7 @@ const Developers: React.FC<Props> = ({ onBack, isDarkMode }) => {
                         </p>
                      </div>
                      <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
-                        <a href="https://github.com/namanartist" target="_blank" className="flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-100 dark:bg-white/ text-xs font-black uppercase tracking-widest hover:scale-105 transition-all">
+                        <a href="https://github.com/namanartist" target="_blank" className="flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-100 dark:bg-white/10 text-xs font-black uppercase tracking-widest hover:scale-105 transition-all">
                            <Github size={14} /> GitHub
                         </a>
                         <a href="https://www.linkedin.com/in/naman-lahariya" target="_blank" className="flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 text-white text-xs font-black uppercase tracking-widest hover:scale-105 transition-all">
@@ -138,7 +138,7 @@ const Developers: React.FC<Props> = ({ onBack, isDarkMode }) => {
 
             {/* Info Grid: Education & Achievements */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-               <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-white/ border-white/10' : 'bg-whiteborder-slate-200 shadow-xl'}`}>
+               <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-white/10 border-white/10' : 'bg-white/40 border-slate-200 shadow-xl'}`}>
                   <div className="flex items-center gap-4 mb-8">
                      <div className="p-3 rounded-xl bg-primary/10 text-primary"><GraduationCap size={24} /></div>
                      <h3 className="text-xl font-black tracking-tight italic">Education</h3>
@@ -154,11 +154,11 @@ const Developers: React.FC<Props> = ({ onBack, isDarkMode }) => {
                         </div>
                      </div>
                      <div className="grid grid-cols-2 gap-4">
-                        <div className="p-4 rounded-2xl bg-slate-100 dark:bg-white/ space-y-1">
+                        <div className="p-4 rounded-2xl bg-slate-100 dark:bg-white/10 space-y-1">
                            <p className="text-[8px] font-black uppercase tracking-widest opacity-40 text-primary">Degree</p>
                            <p className="text-xs font-black ">B.Tech in Mathematics and Computing</p>
                         </div>
-                        <div className="p-4 rounded-2xl bg-slate-100 dark:bg-white/ space-y-1">
+                        <div className="p-4 rounded-2xl bg-slate-100 dark:bg-white/10 space-y-1">
                            <p className="text-[8px] font-black uppercase tracking-widest opacity-40 text-primary">Timeline</p>
                            <p className="text-xs font-black">2025 - 2029</p>
                         </div>
@@ -166,7 +166,7 @@ const Developers: React.FC<Props> = ({ onBack, isDarkMode }) => {
                   </div>
                </div>
 
-               <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-white/ border-white/10' : 'bg-whiteborder-slate-200 shadow-xl'}`}>
+               <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-white/10 border-white/10' : 'bg-white/40 border-slate-200 shadow-xl'}`}>
                   <div className="flex items-center gap-4 mb-8">
                      <div className="p-3 rounded-xl bg-primary/10 text-primary"><Award size={24} /></div>
                      <h3 className="text-xl font-black tracking-tight italic">Key Achievements 🏆</h3>
@@ -198,7 +198,7 @@ const Developers: React.FC<Props> = ({ onBack, isDarkMode }) => {
                </div>
                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                   {skills.map((s, i) => (
-                     <div key={i} className={`p-6 rounded-3xl border ${isDarkMode ? 'bg-white/ border-white/10 hover:border-primary/30' : 'bg-whiteborder-slate-200 hover:border-primary/30 shadow-xl'} transition-all group`}>
+                     <div key={i} className={`p-6 rounded-3xl border ${isDarkMode ? 'bg-white/10 border-white/10 hover:border-primary/30' : 'bg-white/40 border-slate-200 hover:border-primary/30 shadow-xl'} transition-all group`}>
                         <p className="text-[10px] font-black text-primary uppercase tracking-widest mb-3 opacity-50">{s.category}</p>
                         <div className="space-y-2">
                            {s.items.map(item => (
@@ -224,10 +224,10 @@ const Developers: React.FC<Props> = ({ onBack, isDarkMode }) => {
 
                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {projects.map((p, i) => (
-                     <a key={i} href={p.link} target="_blank" className={`p-8 rounded-[2.5rem] border transition-all duration-500 hover:-translate-y-2 group flex flex-col justify-between ${isDarkMode ? 'bg-white/ border-white/10' : 'bg-whiteborder-slate-200 shadow-xl'}`}>
+                     <a key={i} href={p.link} target="_blank" className={`p-8 rounded-[2.5rem] border transition-all duration-500 hover:-translate-y-2 group flex flex-col justify-between ${isDarkMode ? 'bg-white/10 border-white/10' : 'bg-white/40 border-slate-200 shadow-xl'}`}>
                         <div className="space-y-6">
                            <div className="flex items-center justify-between">
-                              <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-white/ flex items-center justify-center">{p.icon}</div>
+                              <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-white/10 flex items-center justify-center">{p.icon}</div>
                               <div className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest bg-emerald-500/10 text-emerald-500`}>{p.status}</div>
                            </div>
                            <div className="space-y-3">
@@ -239,7 +239,7 @@ const Developers: React.FC<Props> = ({ onBack, isDarkMode }) => {
                         <div className="pt-6 space-y-4">
                            <div className="flex flex-wrap gap-2">
                               {p.tech.map(t => (
-                                 <span key={t} className="px-2 py-1 rounded-md bg-slate-100 dark:bg-white/ text-[8px] font-black uppercase tracking-widest">{t}</span>
+                                 <span key={t} className="px-2 py-1 rounded-md bg-slate-100 dark:bg-white/10 text-[8px] font-black uppercase tracking-widest">{t}</span>
                               ))}
                            </div>
                            <div className="flex items-center gap-2 text-primary font-black text-[9px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
@@ -252,7 +252,7 @@ const Developers: React.FC<Props> = ({ onBack, isDarkMode }) => {
             </div>
 
             {/* Portfolio CTA */}
-            <div className={`p-12 rounded-[3.5rem] text-center space-y-8 relative overflow-hidden group ${isDarkMode ? 'bg-white/' : 'bg-whiteborder border-slate-200 shadow-3xl'}`}>
+            <div className={`p-12 rounded-[3.5rem] text-center space-y-8 relative overflow-hidden group ${isDarkMode ? 'bg-white/10' : 'bg-white/40 border border-slate-200 shadow-3xl'}`}>
                <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
                <Globe size={48} className="mx-auto text-primary animate-spin-slow opacity-30" />
                <div className="space-y-4 relative z-10">
@@ -272,7 +272,7 @@ const Developers: React.FC<Props> = ({ onBack, isDarkMode }) => {
                      <div className="w-10 h-10 rounded-xl bg-blue-600/10 text-blue-600 flex items-center justify-center"><Users size={20} /></div>
                      <h3 className="text-xl font-black tracking-tight italic">Supporting Partner</h3>
                   </div>
-                  <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-white/ border-white/10' : 'bg-whiteborder-slate-200'}`}>
+                  <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-white/10 border-white/10' : 'bg-white/40 border-slate-200'}`}>
                      <div className="flex flex-col md:flex-row items-center gap-8">
                         <div className="w-24 h-24 rounded-2xl bg-slate-800overflow-hidden shrink-0 border-2 border-primary/20">
                            <img src="/naitik.jpg" alt="Naitik Goyal" className="w-full h-full object-cover" />
@@ -304,7 +304,7 @@ const Developers: React.FC<Props> = ({ onBack, isDarkMode }) => {
                      <div className="w-10 h-10 rounded-xl bg-purple-600/10 text-purple-600 flex items-center justify-center"><GraduationCap size={20} /></div>
                      <h3 className="text-xl font-black tracking-tight italic">Institutional Guidance</h3>
                   </div>
-                  <div className={`p-12 rounded-[3.5rem] border text-center space-y-8 ${isDarkMode ? 'bg-gradient-to-b from-white/5 to-transparent border-white/5' : 'bg-whiteborder-slate-200'}`}>
+                  <div className={`p-12 rounded-[3.5rem] border text-center space-y-8 ${isDarkMode ? 'bg-gradient-to-b from-white/5 to-transparent border-white/5' : 'bg-white/40 border-slate-200'}`}>
                      <div className="w-32 h-32 rounded-full mx-auto p-1.5 bg-gradient-to-br from-primary to-purple-600">
                         <div className="w-full h-full rounded-full bg-slate-200 dark:bg-slate-800border-4 border-white dark:border-slate-900 overflow-hidden flex items-center justify-center">
                            <img src="/minakshi.jpg" alt="Dr. Minakshi Dahiya" className="w-full h-full object-cover" />

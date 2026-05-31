@@ -137,7 +137,7 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave }) => {
 
   const removePost = (id: string) => setFormData(prev => ({ ...prev, customSections: (prev.customSections || []).filter(s => s.id !== id) }));
 
-  const inputCls = 'w-full bg-white/ border border-white/10 px-4 py-3 rounded-xl outline-none focus:border-primary/60 text-white font-medium text-sm transition-all placeholder:text-white/25';
+  const inputCls = 'w-full bg-white/10 border border-white/10 px-4 py-3 rounded-xl outline-none focus:border-primary/60 text-white font-medium text-sm transition-all placeholder:text-white/25';
   const areaCls  = `${inputCls} leading-relaxed resize-none`;
 
   const tabs = [
@@ -190,7 +190,7 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave }) => {
                   const active = formData.themeColor === theme.color;
                   return (
                     <button key={theme.id} onClick={() => applyTheme(theme.color)}
-                            className={`text-left p-4 rounded-2xl border transition-all hover:scale-[1.02] active:scale-95 ${active ? 'border-2 scale-[1.02]' : 'border-white/5 hover:border-white/15 bg-white/[0.025]'}`}
+                            className={`text-left p-4 rounded-2xl border transition-all hover:scale-[1.02] active:scale-95 ${active ? 'border-2 scale-[1.02]' : 'border-white/5 hover:border-white/15 bg-white/10[0.025]'}`}
                             style={active ? { borderColor: theme.color, background: `${theme.color}18` } : {}}>
                       <div className="flex items-center justify-between mb-2.5">
                         <div className="w-7 h-7 rounded-lg shadow-lg" style={{ background: theme.color }} />
@@ -216,7 +216,7 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave }) => {
                   <input value={aiThemePrompt} onChange={e => setAiThemePrompt(e.target.value)}
                          onKeyDown={e => e.key === 'Enter' && handleGenerateAITheme()}
                          placeholder="e.g. futuristic robotics, coding warriors..."
-                         className="flex-1 bg-white/ border border-white/10 px-3 py-2 rounded-xl text-xs text-white placeholder:text-white/25 outline-none focus:border-primary/50 transition-all" />
+                         className="flex-1 bg-white/10 border border-white/10 px-3 py-2 rounded-xl text-xs text-white placeholder:text-white/25 outline-none focus:border-primary/50 transition-all" />
                   <button onClick={handleGenerateAITheme} disabled={isGeneratingTheme || !aiThemePrompt.trim()}
                           className="px-3 py-2 rounded-xl bg-primary/15 text-primary border border-primary/20 hover:bg-primary/25 transition-all disabled:opacity-40 flex items-center gap-1.5">
                     {isGeneratingTheme ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
@@ -239,7 +239,7 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave }) => {
               </div>
 
               {/* Active color chip */}
-              <div className="flex items-center gap-3 p-3 rounded-xl border border-white/5 bg-white/[0.02]">
+              <div className="flex items-center gap-3 p-3 rounded-xl border border-white/5 bg-white/10[0.02]">
                 <div className="w-8 h-8 rounded-lg border border-white/10" style={{ background: formData.themeColor }} />
                 <div>
                   <p className="text-[8px] font-black uppercase tracking-widest text-white/25">Active Color</p>
@@ -298,7 +298,7 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave }) => {
                   </button>
                 </div>
                 {sections.map(sec => (
-                  <div key={sec.id} className="p-3.5 rounded-xl border border-white/5 bg-white/[0.02] space-y-2 group relative">
+                  <div key={sec.id} className="p-3.5 rounded-xl border border-white/5 bg-white/10[0.02] space-y-2 group relative">
                     <button onClick={() => removeSection(sec.id)}
                             className="absolute top-2.5 right-2.5 p-1.5 rounded-lg text-rose-500 hover:bg-rose-500/10 opacity-0 group-hover:opacity-100 transition-all">
                       <Trash2 size={12} />
@@ -340,7 +340,7 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave }) => {
                       Publish
                     </button>
                     <button onClick={() => { setIsAddingPost(false); setNewPost({ title: '', content: '' }); }}
-                            className="px-4 py-2.5 rounded-xl bg-white/ text-white/50 text-[9px] font-black uppercase hover:bg-white/ transition-all">
+                            className="px-4 py-2.5 rounded-xl bg-white/10 text-white/50 text-[9px] font-black uppercase hover:bg-white/10 transition-all">
                       Cancel
                     </button>
                   </div>
@@ -355,7 +355,7 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave }) => {
               )}
 
               {posts.map((post, i) => (
-                <div key={post.id} className="p-4 rounded-2xl border border-white/5 bg-white/[0.02] group space-y-1.5 hover:border-white/10 transition-all">
+                <div key={post.id} className="p-4 rounded-2xl border border-white/5 bg-white/10[0.02] group space-y-1.5 hover:border-white/10 transition-all">
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
                       <p className="text-[7px] font-black uppercase tracking-widest mb-0.5" style={{ color: formData.themeColor }}>Post #{i + 1}</p>
@@ -375,7 +375,7 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave }) => {
           {/* ── PREVIEW INFO TAB ── */}
           {activeTab === 'preview' && (
             <div className="space-y-4">
-              <div className="p-4 rounded-2xl border border-white/5 bg-white/[0.02] space-y-3">
+              <div className="p-4 rounded-2xl border border-white/5 bg-white/10[0.02] space-y-3">
                 <p className="text-[8px] font-black uppercase tracking-widest text-white/30">Current Config</p>
                 {[
                   ['Theme Color', <span className="flex items-center gap-1.5"><span className="w-4 h-4 rounded-md inline-block" style={{ background: formData.themeColor }} /><code className="text-[10px]">{formData.themeColor}</code></span>],
@@ -393,7 +393,7 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave }) => {
               <div className="flex gap-2">
                 {(['desktop', 'mobile'] as const).map(m => (
                   <button key={m} onClick={() => setPreviewMode(m)}
-                          className={`flex-1 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-1.5 ${previewMode === m ? 'bg-primary text-white' : 'bg-white/ text-white/40 hover:bg-white/'}`}>
+                          className={`flex-1 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-1.5 ${previewMode === m ? 'bg-primary text-white' : 'bg-white/10 text-white/40 hover:bg-white/10'}`}>
                     {m === 'desktop' ? <Monitor size={13} /> : <Smartphone size={13} />} {m}
                   </button>
                 ))}
@@ -426,10 +426,10 @@ const ClubSiteEditor: React.FC<Props> = ({ club, events, onSave }) => {
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-[9px] font-black uppercase tracking-widest text-white/40">Live Preview</span>
           </div>
-          <div className="flex p-1 bg-white/ rounded-xl border border-white/5">
+          <div className="flex p-1 bg-white/10 rounded-xl border border-white/5">
             {(['desktop', 'mobile'] as const).map(m => (
               <button key={m} onClick={() => setPreviewMode(m)}
-                      className={`px-3 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-widest transition-all flex items-center gap-1 ${previewMode === m ? 'bg-white/ text-white' : 'text-white/25'}`}>
+                      className={`px-3 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-widest transition-all flex items-center gap-1 ${previewMode === m ? 'bg-white/10 text-white' : 'text-white/25'}`}>
                 {m === 'desktop' ? <Monitor size={11} /> : <Smartphone size={11} />}{m}
               </button>
             ))}

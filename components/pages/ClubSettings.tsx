@@ -83,7 +83,7 @@ const ClubSettings: React.FC<Props> = ({ club, onSave, isDarkMode }) => {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
         <div className="lg:col-span-8 space-y-8">
-          <section className={`p-10 rounded-[3rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-whiteborder-slate-100 shadow-sm'} space-y-8`}>
+          <section className={`p-10 rounded-[3rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-white/40 border-slate-100 shadow-sm'} space-y-8`}>
             <div className="flex items-center gap-3 border-b border-slate-800/10 pb-6">
               <ShieldCheck className="text-blue-500" size={24} />
               <h2 className="text-xl font-black uppercase tracking-widest opacity-60">Core Registry Details</h2>
@@ -96,7 +96,7 @@ const ClubSettings: React.FC<Props> = ({ club, onSave, isDarkMode }) => {
                   type="text" 
                   value={formData.name} 
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className={`w-full px-6 py-4 rounded-2xl border outline-none focus:border-blue-500 transition-all text-sm font-bold ${isDarkMode ? 'bg-slate-900border-slate-800 text-white' : 'bg-slate-50border-slate-200'}`}
+                  className={`w-full px-6 py-4 rounded-2xl border outline-none focus:border-blue-500 transition-all text-sm font-bold ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-slate-50 border-slate-200'}`}
                 />
               </div>
               <div className="space-y-4">
@@ -104,7 +104,7 @@ const ClubSettings: React.FC<Props> = ({ club, onSave, isDarkMode }) => {
                 <select 
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value as any })}
-                  className={`w-full px-6 py-4 rounded-2xl border outline-none focus:border-blue-500 transition-all text-sm font-bold ${isDarkMode ? 'bg-slate-900border-slate-800 text-white' : 'bg-slate-50border-slate-200'}`}
+                  className={`w-full px-6 py-4 rounded-2xl border outline-none focus:border-blue-500 transition-all text-sm font-bold ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-slate-50 border-slate-200'}`}
                 >
                   <option value="Technical">Technical Wing</option>
                   <option value="Cultural">Cultural Wing</option>
@@ -126,7 +126,7 @@ const ClubSettings: React.FC<Props> = ({ club, onSave, isDarkMode }) => {
                   value={formData.logoUrl || ''} 
                   onChange={(e) => setFormData({ ...formData, logoUrl: e.target.value })}
                   placeholder="Asset URL"
-                  className={`w-full px-6 py-4 rounded-2xl border outline-none focus:border-blue-500 transition-all text-sm font-bold ${isDarkMode ? 'bg-slate-900border-slate-800 text-white' : 'bg-slate-50border-slate-200'}`}
+                  className={`w-full px-6 py-4 rounded-2xl border outline-none focus:border-blue-500 transition-all text-sm font-bold ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-slate-50 border-slate-200'}`}
                 />
               </div>
               <div className="space-y-4">
@@ -142,14 +142,14 @@ const ClubSettings: React.FC<Props> = ({ club, onSave, isDarkMode }) => {
                     type="text" 
                     value={formData.themeColor} 
                     onChange={(e) => setFormData({ ...formData, themeColor: e.target.value })}
-                    className={`flex-1 px-6 py-4 rounded-2xl border outline-none focus:border-blue-500 transition-all text-sm font-mono ${isDarkMode ? 'bg-slate-900border-slate-800 text-white' : 'bg-slate-50border-slate-200'}`}
+                    className={`flex-1 px-6 py-4 rounded-2xl border outline-none focus:border-blue-500 transition-all text-sm font-mono ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-slate-50 border-slate-200'}`}
                   />
                 </div>
               </div>
             </div>
           </section>
 
-          <section className={`p-10 rounded-[3rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-whiteborder-slate-100 shadow-sm'} space-y-8`}>
+          <section className={`p-10 rounded-[3rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-white/40 border-slate-100 shadow-sm'} space-y-8`}>
             <div className="flex items-center gap-3 border-b border-slate-800/10 pb-6">
               <UserCheck className="text-blue-500" size={24} />
               <h2 className="text-xl font-black uppercase tracking-widest opacity-60">Council Leadership Roster</h2>
@@ -166,7 +166,7 @@ const ClubSettings: React.FC<Props> = ({ club, onSave, isDarkMode }) => {
                       const newLeadership = { ...formData.leadership, [role]: e.target.value };
                       setFormData({ ...formData, leadership: newLeadership });
                     }}
-                    className={`w-full px-5 py-3 rounded-xl border outline-none focus:border-blue-500 text-xs font-bold ${isDarkMode ? 'bg-slate-900border-slate-800 text-white' : 'bg-slate-50border-slate-200'}`}
+                    className={`w-full px-5 py-3 rounded-xl border outline-none focus:border-blue-500 text-xs font-bold ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-slate-50 border-slate-200'}`}
                   />
                 </div>
               ))}
@@ -176,7 +176,7 @@ const ClubSettings: React.FC<Props> = ({ club, onSave, isDarkMode }) => {
 
         <div className="lg:col-span-4">
           <div className="sticky top-24 space-y-6">
-            <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-whiteborder-slate-100'}`}>
+            <div className={`p-8 rounded-[2.5rem] border ${isDarkMode ? 'bg-[#161b2a]border-slate-800' : 'bg-white/40 border-slate-100'}`}>
               <h3 className="text-[10px] font-black uppercase tracking-widest mb-6 opacity-40">Identity Snapshot</h3>
               <div className="flex flex-col items-center text-center gap-6">
                  <div className="w-24 h-24 rounded-3xl flex items-center justify-center text-white font-black text-4xl shadow-2xl overflow-hidden" style={{ backgroundColor: formData.themeColor }}>

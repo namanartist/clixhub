@@ -18,11 +18,11 @@ const EventCard: React.FC<EventCardProps> = ({ event, club, onViewDetails, isSav
       {/* Image / Header Area */}
       <div className="h-32 w-full rounded-[15px] bg-gradient-to-r from-blue-400 to-indigo-500 relative mb-4 overflow-hidden cursor-pointer" onClick={() => onViewDetails?.(event.id)}>
         {event.bannerUrl && <img src={event.bannerUrl} alt="" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />}
-        <div className="absolute top-3 right-3 bg-white/ backdrop-blur-md p-1.5 rounded-full cursor-pointer hover:bg-white/ transition-colors z-10"
+        <div className="absolute top-3 right-3 bg-white/10 backdrop-blur-md p-1.5 rounded-full cursor-pointer hover:bg-white/10 transition-colors z-10"
              onClick={(e) => { e.stopPropagation(); onToggleSave?.(event.id); }}>
             <Heart size={16} className={isSaved ? "fill-white text-white" : "text-white"} />
         </div>
-        <div className="absolute bottom-3 left-3 bg-white/ dark:bg-[#111C44]/90 px-2 py-1 rounded-[8px] text-[10px] font-bold text-[#2B3674] dark:text-white flex items-center gap-1">
+        <div className="absolute bottom-3 left-3 bg-white/10 dark:bg-[#111C44]/90 px-2 py-1 rounded-[8px] text-[10px] font-bold text-[#2B3674] dark:text-white flex items-center gap-1">
             <Calendar size={10} /> {event.date}
         </div>
       </div>

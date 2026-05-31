@@ -274,7 +274,7 @@ const AttendanceControl: React.FC<Props> = ({ registrations, events = [], onMark
 
           {/* Info tip */}
           {!isScanning && (
-            <div className="p-5 rounded-2xl border border-white/5 bg-white/[0.02] space-y-2">
+            <div className="p-5 rounded-2xl border border-white/5 bg-white/10[0.02] space-y-2">
               <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-slate-500">
                 <ScanLine size={14} /> QR Scan Mode
               </div>

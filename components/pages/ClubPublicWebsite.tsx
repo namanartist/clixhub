@@ -201,7 +201,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
 
             <div className="flex items-center gap-3 md:gap-4">
                {showAdminControls && (
-                   <button onClick={onSwitchToDashboard} className="p-2.5 md:p-3 bg-white/ hover:bg-white/ rounded-xl md:rounded-2xl border border-white/10 transition-all active:scale-95">
+                   <button onClick={onSwitchToDashboard} className="p-2.5 md:p-3 bg-white/10 hover:bg-white/10 rounded-xl md:rounded-2xl border border-white/10 transition-all active:scale-95">
                        <LayoutDashboard size={18} className="md:size-[20px]" />
                    </button>
                )}
@@ -211,7 +211,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
 
                {/* Mobile Menu Button */}
                <button 
-                  className="lg:hidden p-2.5 bg-white/ rounded-xl border border-white/10 transition-all active:scale-90"
+                  className="lg:hidden p-2.5 bg-white/10 rounded-xl border border-white/10 transition-all active:scale-90"
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                >
                   {isMobileMenuOpen ? <X size={20} /> : <div className="w-5 h-5 flex flex-col justify-center gap-1.5"><div className="w-full h-0.5 bg-current rounded-full"/><div className="w-2/3 h-0.5 bg-current rounded-full"/></div>}
@@ -228,7 +228,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
                       <button 
                           key={item}
                           onClick={() => { document.getElementById(item.toLowerCase())?.scrollIntoView({ behavior: 'smooth' }); setIsMobileMenuOpen(false); }}
-                          className="w-full flex items-center justify-between p-6 rounded-[2rem] border border-white/5 bg-white/ hover:bg-primary/10 transition-all animate-slide-up"
+                          className="w-full flex items-center justify-between p-6 rounded-[2rem] border border-white/5 bg-white/10 hover:bg-primary/10 transition-all animate-slide-up"
                           style={{ animationDelay: `${idx * 100}ms` }}
                       >
                           <span className="text-sm font-black uppercase tracking-[0.2em]">{item}</span>
@@ -255,7 +255,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
          
          <div className="relative z-10 max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div className="space-y-12 reveal">
-                <div className={`inline-flex items-center gap-3 px-5 py-2 rounded-2xl bg-white/ border border-white/10 backdrop-blur-xl`}>
+                <div className={`inline-flex items-center gap-3 px-5 py-2 rounded-2xl bg-white/10 border border-white/10 backdrop-blur-xl`}>
                     <div className="flex h-2 w-2 relative">
                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -280,7 +280,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
                    </button>
                    {showAdminControls && (
                        <button onClick={() => setIsEditMode(!isEditMode)}
-                               className="h-16 px-10 bg-white/ border border-white/10 rounded-2xl font-black text-[10px] uppercase tracking-[0.4em] flex items-center gap-4 hover:bg-white/ transition-all">
+                               className="h-16 px-10 bg-white/10 border border-white/10 rounded-2xl font-black text-[10px] uppercase tracking-[0.4em] flex items-center gap-4 hover:bg-white/10 transition-all">
                           <Edit3 size={20} /> Studio Mode
                        </button>
                    )}
@@ -300,7 +300,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
       </section>
 
       {/* ─ MISSION PANEL ─ */}
-      <section id="genesis" className="py-24 border-y border-white/5 relative bg-white/">
+      <section id="genesis" className="py-24 border-y border-white/5 relative bg-white/10">
          <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             <div className="lg:col-span-4 space-y-6">
                <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-primary">Core Objective</h3>
@@ -351,13 +351,13 @@ const ClubPublicWebsite: React.FC<Props> = ({
                          <h4 className="text-2xl font-black tracking-tighter group-hover:text-primary transition-colors">{event.title}</h4>
                          <p className="text-xs font-medium opacity-50 line-clamp-2 leading-relaxed">{event.description}</p>
                          <button onClick={() => setSelectedEvent(event)}
-                                 className="mt-6 h-14 bg-white/ border border-white/10 rounded-xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-primary hover:text-white transition-all">
+                                 className="mt-6 h-14 bg-white/10 border border-white/10 rounded-xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-primary hover:text-white transition-all">
                              Deep Link
                          </button>
                       </div>
                    </div>
                )) : (
-                   <div className="col-span-full py-20 bg-white/ border-2 border-dashed border-white/5 rounded-[3rem] text-center opacity-30">
+                   <div className="col-span-full py-20 bg-white/10 border-2 border-dashed border-white/5 rounded-[3rem] text-center opacity-30">
                       <p className="text-[10px] font-black uppercase tracking-[1em]">No operations queued</p>
                    </div>
                )}
@@ -366,7 +366,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
       </section>
 
       {/* ─ COUNCIL ─ */}
-      <section id="council" className="py-32 bg-white/ border-y border-white/5">
+      <section id="council" className="py-32 bg-white/10 border-y border-white/5">
          <div className="max-w-7xl mx-auto px-6 space-y-20">
             <div className="text-center space-y-4">
                <h3 className="text-6xl font-black tracking-tighter uppercase italic">The Council</h3>
@@ -375,7 +375,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10">
                {members.filter(m => m.clubMemberships.some(cm => cm.clubId === club.id && cm.role !== 'Member')).map((leader, i) => (
                    <div key={leader.id} className="group text-center space-y-6 reveal" style={{ animationDelay: `${i * 0.1}s` }}>
-                      <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-white/ border border-white/10">
+                      <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-white/10 border border-white/10">
                          <img src={leader.photoUrl || `https://i.pravatar.cc/300?u=${leader.id}`} 
                               className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 hover:scale-105" />
                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-8 gap-4">
@@ -430,14 +430,14 @@ const ClubPublicWebsite: React.FC<Props> = ({
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-                        <div className="p-4 md:p-6 bg-white/ rounded-2xl md:rounded-3xl border border-white/5 flex items-center gap-4 md:gap-5">
+                        <div className="p-4 md:p-6 bg-white/10 rounded-2xl md:rounded-3xl border border-white/5 flex items-center gap-4 md:gap-5">
                             <Calendar className="text-primary" size={20} />
                             <div>
                                 <p className="text-[8px] md:text-[9px] uppercase tracking-widest font-black opacity-30">Timestamp</p>
                                 <p className="text-sm md:text-md font-black">{selectedEvent.date}</p>
                             </div>
                         </div>
-                        <div className="p-4 md:p-6 bg-white/ rounded-2xl md:rounded-3xl border border-white/5 flex items-center gap-4 md:gap-5">
+                        <div className="p-4 md:p-6 bg-white/10 rounded-2xl md:rounded-3xl border border-white/5 flex items-center gap-4 md:gap-5">
                             <MapPin className="text-primary" size={20} />
                             <div>
                                 <p className="text-[8px] md:text-[9px] uppercase tracking-widest font-black opacity-30">Node Location</p>
@@ -468,7 +468,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
           <div className="relative w-full max-w-3xl bg-[#050505] border border-white/10 rounded-[2.5rem] md:rounded-[3rem] p-8 md:p-16 space-y-8 md:space-y-12 my-auto animate-in zoom-in-95 duration-500 shadow-[0_0_100px_rgba(var(--primary-rgb),0.2)]" onClick={e => e.stopPropagation()}>
             <button 
               onClick={() => setIsRecruitModalOpen(false)}
-              className="absolute top-6 md:top-10 right-6 md:right-10 p-3 md:p-4 bg-white/ hover:bg-rose-500/20 hover:text-rose-500 rounded-xl md:rounded-2xl transition-all border border-white/10"
+              className="absolute top-6 md:top-10 right-6 md:right-10 p-3 md:p-4 bg-white/10 hover:bg-rose-500/20 hover:text-rose-500 rounded-xl md:rounded-2xl transition-all border border-white/10"
             >
               <X size={20} />
             </button>
@@ -491,7 +491,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
                   value={recruitFormData.name}
                   onChange={(e) => setRecruitFormData({...recruitFormData, name: e.target.value})}
                   placeholder="Legal Name"
-                  className="w-full h-16 bg-white/ border border-white/10 rounded-2xl px-6 font-black text-sm focus:border-primary focus:bg-white/ outline-none transition-all"
+                  className="w-full h-16 bg-white/10 border border-white/10 rounded-2xl px-6 font-black text-sm focus:border-primary focus:bg-white/10 outline-none transition-all"
                 />
               </div>
               <div className="space-y-3">
@@ -501,7 +501,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
                   value={recruitFormData.rollNumber}
                   onChange={(e) => setRecruitFormData({...recruitFormData, rollNumber: e.target.value})}
                   placeholder="Enrolment (e.g. 0901CS...)"
-                  className="w-full h-16 bg-white/ border border-white/10 rounded-2xl px-6 font-black text-sm focus:border-primary focus:bg-white/ outline-none transition-all uppercase"
+                  className="w-full h-16 bg-white/10 border border-white/10 rounded-2xl px-6 font-black text-sm focus:border-primary focus:bg-white/10 outline-none transition-all uppercase"
                 />
               </div>
             </div>
@@ -516,7 +516,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
                     className={`h-14 rounded-xl border font-black text-[10px] uppercase tracking-widest transition-all ${
                       recruitFormData.domain === domain 
                       ? 'bg-primary border-primary text-white shadow-lg' 
-                      : 'bg-white/ border-white/10 text-white/40 hover:bg-white/ hover:border-white/20'
+                      : 'bg-white/10 border-white/10 text-white/40 hover:bg-white/10 hover:border-white/20'
                     }`}
                   >
                     {domain}
@@ -532,7 +532,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
                 value={recruitFormData.whyJoin}
                 onChange={(e) => setRecruitFormData({...recruitFormData, whyJoin: e.target.value})}
                 placeholder="Why do you wish to join the legacy of this protocol?"
-                className="w-full bg-white/ border border-white/10 rounded-2xl p-6 font-medium text-sm focus:border-primary focus:bg-white/ outline-none transition-all resize-none leading-relaxed italic"
+                className="w-full bg-white/10 border border-white/10 rounded-2xl p-6 font-medium text-sm focus:border-primary focus:bg-white/10 outline-none transition-all resize-none leading-relaxed italic"
               />
             </div>
 
@@ -578,7 +578,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
                 <p className="text-slate-500 text-xs md:text-sm">Sequence logged for <strong className="text-white">{club.name}</strong>. Access recorded via institutional tracking ID.</p>
               </div>
               {/* Tracking ID box */}
-              <div className="p-4 md:p-5 rounded-2xl bg-white/ border border-white/10 space-y-3">
+              <div className="p-4 md:p-5 rounded-2xl bg-white/10 border border-white/10 space-y-3">
                 <p className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.4em] text-emerald-400">Tracking Reference</p>
                 <div className="flex items-center justify-center gap-3">
                   <code className="text-md md:text-lg font-mono font-black text-white">{submittedTrackingId}</code>
@@ -588,7 +588,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
                       setTrackingCopied(true);
                       setTimeout(() => setTrackingCopied(false), 2000);
                     }}
-                    className={`p-2 rounded-lg transition-all ${trackingCopied ? 'bg-emerald-500 text-white' : 'bg-white/ text-slate-400 hover:text-white'}`}
+                    className={`p-2 rounded-lg transition-all ${trackingCopied ? 'bg-emerald-500 text-white' : 'bg-white/10 text-slate-400 hover:text-white'}`}
                   >
                     {trackingCopied ? <CheckCircle2 size={14}/> : <Copy size={14}/>}
                   </button>
@@ -603,7 +603,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
                 </button>
                 <button
                   onClick={() => setSubmittedTrackingId(null)}
-                  className="w-full h-12 bg-white/ border border-white/10 text-slate-500 rounded-2xl font-black text-[9px] uppercase tracking-widest hover:bg-white/ transition-all"
+                  className="w-full h-12 bg-white/10 border border-white/10 text-slate-500 rounded-2xl font-black text-[9px] uppercase tracking-widest hover:bg-white/10 transition-all"
                 >
                   Resume Observation
                 </button>
