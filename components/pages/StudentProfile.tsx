@@ -136,7 +136,7 @@ const StudentProfile: React.FC<Props> = ({ user, onSave, isDarkMode, registratio
   } ${!isEditing ? 'opacity-60 cursor-default' : ''}`;
 
   return (
-    <div className="p-8 md:p-14 max-w-[1700px] mx-auto space-y-20 relative reveal">
+    <div className="p-5 md:p-14 max-w-[1700px] mx-auto space-y-12 md:space-y-20 relative reveal">
       
       {/* Toast */}
       {showSuccessToast && (
@@ -151,7 +151,7 @@ const StudentProfile: React.FC<Props> = ({ user, onSave, isDarkMode, registratio
       <div className="flex flex-col lg:flex-row gap-12">
           {/* Avatar Card */}
           <div className="lg:w-[400px] shrink-0">
-             <div className="bento-card p-10 flex flex-col items-center text-center gap-8 group">
+             <div className="bento-card p-6 md:p-10 flex flex-col items-center text-center gap-8 group">
                 <div className="relative">
                    <div className="w-48 h-48 rounded-[3rem] bg-primary-soft border-4 border-primary/20 shadow-3xl overflow-hidden relative">
                       {formData.photoUrl ? (
@@ -186,8 +186,8 @@ const StudentProfile: React.FC<Props> = ({ user, onSave, isDarkMode, registratio
           </div>
 
           {/* Core Info & Tabs */}
-          <div className="flex-1 space-y-12">
-             <div className="bento-card p-12 space-y-12">
+          <div className="flex-1 space-y-8 md:space-y-12">
+             <div className="bento-card p-6 md:p-12 space-y-8 md:space-y-12">
                 <div className="flex items-center gap-6 border-b border-[var(--border-color)] pb-8">
                    <div className="p-4 rounded-2xl bg-primary/10 text-primary transition-transform group-hover:rotate-12">
                       <ShieldCheck size={28} />
@@ -241,7 +241,7 @@ const StudentProfile: React.FC<Props> = ({ user, onSave, isDarkMode, registratio
           <div className="lg:col-span-4 space-y-12">
              {/* Authority */}
              {isAuthority && (
-                <div className="bento-card p-10 space-y-8 border-l-4 border-l-purple-500">
+                <div className="bento-card p-6 md:p-10 space-y-6 md:space-y-8 border-l-4 border-l-purple-500">
                    <div className="flex items-center gap-4">
                       <div className="p-3 rounded-xl bg-purple-500/10 text-purple-500"><PenTool size={20} /></div>
                       <h4 className="text-[10px] font-black uppercase tracking-[0.3em]">Institutional Seal</h4>
@@ -264,7 +264,7 @@ const StudentProfile: React.FC<Props> = ({ user, onSave, isDarkMode, registratio
              )}
 
              {/* Skills */}
-             <div className="bento-card p-10 space-y-8">
+             <div className="bento-card p-6 md:p-10 space-y-6 md:space-y-8">
                 <div className="flex items-center justify-between">
                    <div className="flex items-center gap-4">
                       <div className="p-3 rounded-xl bg-emerald-500/10 text-emerald-500"><Code size={20} /></div>
@@ -295,7 +295,7 @@ const StudentProfile: React.FC<Props> = ({ user, onSave, isDarkMode, registratio
           <div className="lg:col-span-8 space-y-12">
              
              {/* Club Memberships (Active Commissions) */}
-             <div className="bento-card p-10 space-y-10">
+             <div className="bento-card p-6 md:p-10 space-y-8 md:space-y-10">
                 <div className="flex items-center gap-4">
                    <div className="p-3 bg-amber-500/10 text-amber-500 rounded-xl"><Briefcase size={20} /></div>
                    <h4 className="text-[10px] font-black uppercase tracking-[0.3em]">Active Commissions</h4>
@@ -359,8 +359,8 @@ const StudentProfile: React.FC<Props> = ({ user, onSave, isDarkMode, registratio
              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 
                 {/* Mission logs */}
-                <div className="bento-card p-10 flex flex-col min-h-[400px]">
-                   <div className="flex items-center justify-between mb-10">
+                <div className="bento-card p-6 md:p-10 flex flex-col min-h-[400px]">
+                   <div className="flex items-center justify-between mb-8 md:mb-10">
                       <div className="flex items-center gap-4">
                          <div className="p-3 bg-blue-500/10 text-blue-500 rounded-xl"><Calendar size={20} /></div>
                          <h4 className="text-[10px] font-black uppercase tracking-[0.3em]">Mission logs</h4>
@@ -384,8 +384,8 @@ const StudentProfile: React.FC<Props> = ({ user, onSave, isDarkMode, registratio
                 </div>
 
                 {/* Applications */}
-                <div className="bento-card p-10 flex flex-col min-h-[400px]">
-                   <div className="flex items-center justify-between mb-10">
+                <div className="bento-card p-6 md:p-10 flex flex-col min-h-[400px]">
+                   <div className="flex items-center justify-between mb-8 md:mb-10">
                       <div className="flex items-center gap-4">
                          <div className="p-3 bg-indigo-500/10 text-indigo-500 rounded-xl"><Layers size={20} /></div>
                          <h4 className="text-[10px] font-black uppercase tracking-[0.3em]">Fleet Deployment</h4>

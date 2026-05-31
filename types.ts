@@ -15,6 +15,7 @@ export enum ClubRole {
   CONTENT_HEAD = 'Content Head',
   MANAGEMENT_HEAD = 'Management Head',
   SOCIAL_MEDIA_HEAD = 'Social Media Head',
+  DOMAIN_HEAD = 'Domain Head',
   MEMBER = 'Member'
 }
 
@@ -31,6 +32,7 @@ export interface User {
   github?: string;
   phoneNumber?: string;
   enrollmentNumber?: string;
+  rollNumber?: string;
   address?: string;
   branch?: string;
   department?: string;  // New: For students and faculty
@@ -47,6 +49,7 @@ export interface ClubMembership {
   clubId: string;
   role: ClubRole;
   domain?: string;
+  joinedAt?: string;
 }
 
 export interface Achievement {
@@ -344,4 +347,18 @@ export interface DevConfig {
   developedUnderUrl: string;
   developedUnderLogo?: string;
   authorizedEmails: string[];
+}
+export interface Proposal {
+  id: string;
+  type: 'Club' | 'Team';
+  title: string;
+  category: string;
+  proposerName: string;
+  proposerRoll: string;
+  proposerEmail: string;
+  missionStatement: string;
+  estimatedMembers: number;
+  status: 'Pending' | 'Approved' | 'Rejected';
+  timestamp: string;
+  deanResponse?: string;
 }

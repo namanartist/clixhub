@@ -8,6 +8,9 @@ import {
 interface Props {
    onBack: () => void;
    isDarkMode: boolean;
+   currentUser?: any;
+   allUsers?: any[];
+   mode?: 'console' | 'public';
 }
 
 const Developers: React.FC<Props> = ({ onBack, isDarkMode }) => {

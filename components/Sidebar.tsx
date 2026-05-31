@@ -177,7 +177,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 onClick={() => setIsSwitcherOpen(!isSwitcherOpen)}
                 className={`w-full p-4 rounded-3xl transition-all flex items-center gap-4 group border ${isDarkMode
                   ? 'bg-white/5 border-white/5 hover:bg-white/10 text-white'
-                  : 'bg-slate-500/5 hover:bg-white hover:shadow-xl border-transparent text-[#1B2559]'
+                  : 'bg-white/40 hover:bg-white/60 hover:shadow-xl border-white/50 text-[#1B2559]'
                   }`}
               >
                 <div className={`w-10 h-10 rounded-2xl flex items-center justify-center text-white font-black text-lg shadow-lg transition-transform group-hover:scale-105 overflow-hidden`}
@@ -250,8 +250,8 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
 
           {/* Session Bottom Block */}
-          <div className={`p-6 mt-auto border-t transition-all ${isDarkMode ? 'border-white/5' : 'border-slate-100'}`}>
-            <div className={`p-6 rounded-[2rem] border transition-all ${isDarkMode ? 'bg-white/5 border-white/5' : 'bg-slate-500/5 border-transparent'}`}>
+          <div className={`p-6 mt-auto border-t transition-all ${isDarkMode ? 'border-white/5' : 'border-white/30'}`}>
+            <div className={`p-6 rounded-[2rem] border transition-all ${isDarkMode ? 'bg-white/5 border-white/5' : 'bg-white/40 border-white/50 shadow-sm'}`}>
               <div className="flex items-center gap-4 mb-5">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-400 p-[2px] shadow-lg shadow-blue-500/20">
                   <div className={`w-full h-full rounded-2xl overflow-hidden ${isDarkMode ? 'bg-[#0d121d]' : 'bg-white'}`}>
@@ -267,7 +267,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 onClick={() => { onContextChange('Global'); setActiveTab('profile'); onClose(); }}
                 className={`w-full group py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${isDarkMode
                   ? 'bg-blue-600 text-white hover:bg-blue-700'
-                  : 'bg-white text-blue-600 shadow-xl shadow-blue-500/5 hover:bg-blue-600 hover:text-white border border-blue-500/10'
+                  : 'bg-white/80 backdrop-blur-md text-blue-600 shadow-xl shadow-blue-500/5 hover:bg-blue-600 hover:text-white border border-white/50'
                   }`}
               >
                 <UserCog size={16} className="transition-transform group-hover:rotate-45" /> Profile Settings

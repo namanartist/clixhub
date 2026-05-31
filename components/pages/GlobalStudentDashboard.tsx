@@ -18,7 +18,8 @@ import {
     Shield,
     Layers,
     Hexagon,
-    Terminal
+    Terminal,
+    QrCode
 } from 'lucide-react';
 
 interface Props {
@@ -37,8 +38,10 @@ const GlobalStudentDashboard: React.FC<Props> = ({
     user, events, clubs, certCount, onRegister, isDarkMode, logs, registrations, applicants
 }) => {
     const [savedEventIds, setSavedEventIds] = useState<string[]>([]);
+    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
+        setIsMounted(true);
         const fetchSaved = async () => {
             if (!user?.id) return;
             const saved = await db.getSavedEvents(user.id);
@@ -51,11 +54,11 @@ const GlobalStudentDashboard: React.FC<Props> = ({
         { val: 10 }, { val: 25 }, { val: 20 }, { val: 40 }, { val: 35 }, { val: 50 }, { val: 45 }, { val: 70 }
     ], []);
 
-    const upcomingEvent = useMemo(() => 
-        events.filter(e => new Date(e.date) > new Date())
-             .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())[0],
-        [events]
-    );
+    const upcomingEvent = useMemo(() => {
+        if (!events || events.length === 0) return null;
+        return events.filter(e => new Date(e.date) > new Date())
+                     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())[0];
+    }, [events]);
 
     const getGreeting = () => {
         const hour = new Date().getHours();
@@ -64,8 +67,10 @@ const GlobalStudentDashboard: React.FC<Props> = ({
         return 'Good Evening';
     };
 
+    if (!user) return <div className="p-20 text-center font-black animate-pulse uppercase tracking-[0.5em] opacity-20">Initializing Secure Session...</div>;
+
     return (
-        <div className="p-8 md:p-14 space-y-12 md:space-y-20 max-w-[1800px] mx-auto relative reveal">
+        <div className="p-5 md:p-14 space-y-12 md:space-y-20 max-w-[1800px] mx-auto relative reveal">
             
             {/* ─── INSTITUTIONAL HEADER ─── */}
             <div className="flex flex-col lg:row-start-1 lg:flex-row lg:items-end justify-between gap-10">
@@ -85,13 +90,13 @@ const GlobalStudentDashboard: React.FC<Props> = ({
                     <div className="space-y-2">
                         <h1 className="text-5xl md:text-8xl font-[950] tracking-[-0.06em] leading-[0.85] text-[var(--text-main)]">
                             {getGreeting()}, <br/>
-                            <span className="text-gradient animate-gradient italic">{user.name.split(' ')[0]}</span>
+                            <span className="text-gradient animate-gradient italic">{user?.name?.split(' ')[0] || 'Agent'}</span>
                         </h1>
                     </div>
                 </div>
 
                 <div className="flex items-center gap-6">
-                    <div className="bento-card py-4 px-8 flex items-center gap-6 group hover:translate-y-0 hover:scale-100">
+                    <div className="bento-card py-3 px-6 md:py-4 md:px-8 flex items-center gap-4 md:gap-6 group hover:translate-y-0 hover:scale-100">
                         <div className="text-right">
                            <p className="text-[8px] font-black uppercase text-[var(--text-secondary)] tracking-[0.3em] mb-1">Global Tier</p>
                            <p className="text-lg font-black tracking-tight text-primary">S-Tier Member</p>
@@ -105,11 +110,11 @@ const GlobalStudentDashboard: React.FC<Props> = ({
             {/* ─── LIVE METRIC GRID ─── */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
                 {[
-                    { label: 'Active Sessions', val: registrations.length, icon: Ticket, hue: 'var(--p-h)' },
-                    { label: 'Verified Assets', val: certCount, icon: Zap, hue: 'var(--accent-purple)' },
-                    { label: 'Fleet Applications', val: applicants.length, icon: Layers, hue: 'var(--accent-cyan)' }
+                    { label: 'Active Sessions', val: registrations?.length || 0, icon: Ticket, hue: 'var(--p-h)' },
+                    { label: 'Verified Assets', val: certCount || 0, icon: Zap, hue: 'var(--accent-purple)' },
+                    { label: 'Fleet Applications', val: applicants?.length || 0, icon: Layers, hue: 'var(--accent-cyan)' }
                 ].map((metric, i) => (
-                    <div key={i} className="bento-card group p-10 relative overflow-hidden">
+                    <div key={i} className="bento-card group p-6 md:p-10 relative overflow-hidden">
                         <div className="flex justify-between items-start relative z-10">
                             <div>
                                 <p className="text-[9px] font-black text-[var(--text-secondary)] uppercase tracking-[0.4em] mb-4">{metric.label}</p>
@@ -122,11 +127,13 @@ const GlobalStudentDashboard: React.FC<Props> = ({
                         </div>
                         <div className="absolute bottom-0 left-0 w-full h-32 opacity-[0.08] group-hover:opacity-20 transition-opacity duration-700 pointer-events-none">
                             <div className="w-full h-full min-h-[128px]">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <AreaChart data={sparkData}>
-                                        <Area type="monotone" dataKey="val" stroke={`hsl(${metric.hue})`} strokeWidth={4} fill={`hsl(${metric.hue})`} />
-                                    </AreaChart>
-                                </ResponsiveContainer>
+                                {isMounted && (
+                                    <ResponsiveContainer width="100%" height="110%">
+                                        <AreaChart data={sparkData}>
+                                            <Area type="monotone" dataKey="val" stroke={`hsl(${metric.hue})`} strokeWidth={4} fill={`hsl(${metric.hue})`} />
+                                        </AreaChart>
+                                    </ResponsiveContainer>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -143,7 +150,7 @@ const GlobalStudentDashboard: React.FC<Props> = ({
                     </div>
 
                     {upcomingEvent ? (
-                        <div className="bento-card p-12 md:p-16 flex flex-col md:flex-row gap-16 items-center relative overflow-hidden group">
+                        <div className="bento-card p-6 md:p-16 flex flex-col md:flex-row gap-8 md:gap-16 items-center relative overflow-hidden group">
                             <div className="absolute top-[-10%] right-[-5%] opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-1000 rotate-[-15deg]">
                                 <Calendar size={400} />
                             </div>
@@ -158,9 +165,9 @@ const GlobalStudentDashboard: React.FC<Props> = ({
                                    <div className="inline-flex items-center gap-3 px-4 py-2 rounded-xl bg-primary-soft text-primary border border-primary/20 text-[9px] font-black uppercase tracking-[0.3em]">
                                       <Activity size={12} className="animate-pulse" /> High Priority Milestone
                                    </div>
-                                   <h3 className="text-4xl md:text-6xl font-[900] tracking-tight leading-[0.95]">{upcomingEvent.title}</h3>
+                                   <h3 className="text-4xl md:text-6xl font-[900] tracking-tight leading-[0.95] line-clamp-2">{upcomingEvent.title}</h3>
                                 </div>
-                                <p className="text-xl font-medium text-[var(--text-secondary)] leading-relaxed max-w-2xl">{upcomingEvent.description}</p>
+                                <p className="text-xl font-medium text-[var(--text-secondary)] leading-relaxed max-w-2xl line-clamp-3">{upcomingEvent.description}</p>
                                 <div className="flex items-center justify-center md:justify-start gap-4">
                                    <div className="flex -space-x-4">
                                       {[1, 2, 3, 4].map(i => (
@@ -169,12 +176,12 @@ const GlobalStudentDashboard: React.FC<Props> = ({
                                          </div>
                                       ))}
                                    </div>
-                                   <p className="text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] underline decoration-primary underline-offset-8 decoration-2">1,240 Nodes Active</p>
+                                   <p className="text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] underline decoration-primary underline-offset-8 decoration-2">Nodes Active</p>
                                 </div>
                             </div>
                             <button onClick={() => onRegister(upcomingEvent.id)} 
-                                    className="w-24 h-24 rounded-full bg-primary text-white flex items-center justify-center shadow-3xl shadow-primary/30 hover:scale-[1.15] active:scale-95 transition-all group-hover:translate-x-4">
-                                <ArrowRight size={40} />
+                                    className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-primary text-white flex items-center justify-center shadow-3xl shadow-primary/30 hover:scale-[1.15] active:scale-95 transition-all group-hover:translate-x-4 shrink-0">
+                                <ArrowRight size={32} className="md:w-10 md:h-10" />
                             </button>
                         </div>
                     ) : (
@@ -192,8 +199,8 @@ const GlobalStudentDashboard: React.FC<Props> = ({
                             { icon: Wallet, label: 'Financial Hub', hue: 'var(--accent-purple)' },
                             { icon: Terminal, label: 'Dev Console', hue: 'var(--accent-rose)' }
                         ].map((action, i) => (
-                            <button key={i} className="bento-card flex flex-col items-center justify-center gap-6 group hover:translate-y-[-10px] p-10">
-                                <div className="w-16 h-16 rounded-[1.5rem] flex items-center justify-center shadow-xl transition-all group-hover:scale-110"
+                            <button key={i} className="bento-card flex flex-col items-center justify-center gap-4 md:gap-6 group hover:translate-y-[-10px] p-6 md:p-10">
+                                <div className="w-14 h-14 md:w-16 md:h-16 rounded-[1.5rem] flex items-center justify-center shadow-xl transition-all group-hover:scale-110"
                                      style={{ background: `hsla(${action.hue}, 0.1)`, color: `hsl(${action.hue})` }}>
                                     <action.icon size={26} strokeWidth={2.5} />
                                 </div>
@@ -204,8 +211,8 @@ const GlobalStudentDashboard: React.FC<Props> = ({
                 </div>
 
                 {/* ─── LIVE DATA STREAM ─── */}
-                <div className="lg:col-span-4 h-full hidden md:block">
-                    <div className="bento-card h-full min-h-[700px] flex flex-col p-12 overflow-hidden relative">
+                <div className="lg:col-span-4 h-full hidden lg:block">
+                    <div className="bento-card h-full min-h-[700px] flex flex-col p-6 md:p-12 overflow-hidden relative">
                         <div className="absolute top-0 right-0 p-16 opacity-[0.02] rotate-12"><Activity size={300} /></div>
                         
                         <div className="flex items-center justify-between mb-16 relative z-10">
@@ -217,24 +224,24 @@ const GlobalStudentDashboard: React.FC<Props> = ({
                         </div>
 
                         <div className="flex-1 overflow-y-auto space-y-10 pr-4 relative z-10 custom-scrollbar">
-                           {logs.length > 0 ? logs.slice(0, 15).map((log, i) => (
-                               <div key={i} className="flex gap-6 group/log">
-                                   <div className="flex flex-col items-center pt-2">
-                                       <div className={`w-3 h-3 rounded-full transition-all duration-700 ${i === 0 ? 'bg-primary shadow-[0_0_20px_var(--primary)] scale-125' : 'bg-slate-700'}`} />
-                                       <div className="w-px h-full bg-[var(--border-color)] my-3 group-last/log:hidden" />
-                                   </div>
-                                   <div className="pb-4">
-                                       <p className="text-[10px] font-black text-primary uppercase tracking-widest mb-1.5">{log.user}</p>
-                                       <p className="text-xs font-semibold leading-relaxed tracking-tight text-[var(--text-secondary)] group-hover/log:text-[var(--text-main)] transition-colors">{log.action}</p>
-                                       <p className="text-[8px] font-black opacity-30 mt-3 uppercase tracking-widest">{log.timestamp}</p>
-                                   </div>
-                               </div>
-                           )) : (
-                               <div className="h-full flex flex-col items-center justify-center opacity-20 text-center gap-6">
-                                  <Shield size={60} />
-                                  <p className="text-xs font-black uppercase tracking-[0.5em]">Encryption Integrity Stable</p>
-                               </div>
-                           )}
+                            {logs && logs.length > 0 ? logs.slice(0, 15).map((log, i) => (
+                                <div key={i} className="flex gap-6 group/log">
+                                    <div className="flex flex-col items-center pt-2">
+                                        <div className={`w-3 h-3 rounded-full transition-all duration-700 ${i === 0 ? 'bg-primary shadow-[0_0_20px_var(--primary)] scale-125' : 'bg-slate-700'}`} />
+                                        <div className="w-px h-full bg-[var(--border-color)] my-3 group-last/log:hidden" />
+                                    </div>
+                                    <div className="pb-4">
+                                        <p className="text-[10px] font-black text-primary uppercase tracking-widest mb-1.5">{log.user}</p>
+                                        <p className="text-xs font-semibold leading-relaxed tracking-tight text-[var(--text-secondary)] group-hover/log:text-[var(--text-main)] transition-colors">{log.action}</p>
+                                        <p className="text-[8px] font-black opacity-30 mt-3 uppercase tracking-widest">{log.timestamp}</p>
+                                    </div>
+                                </div>
+                            )) : (
+                                <div className="h-full flex flex-col items-center justify-center opacity-20 text-center gap-6">
+                                   <Shield size={60} />
+                                   <p className="text-xs font-black uppercase tracking-[0.5em]">Encryption Integrity Stable</p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

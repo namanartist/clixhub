@@ -28,7 +28,8 @@ import {
     Hexagon,
     Fingerprint,
     Cpu,
-    Globe2
+    Globe2,
+    Loader2
 } from 'lucide-react';
 
 interface Props {
@@ -60,10 +61,9 @@ const ChatSystem: React.FC<Props> = ({ user, clubs, allUsers, activeContext, isD
     }, []);
 
     const allowedClubs = useMemo(() => {
-        if (user.globalRole !== Role.STUDENT) return clubs;
-        const myClubIds = user.clubMemberships.map(m => m.clubId);
-        return clubs.filter(c => myClubIds.includes(c.id));
-    }, [clubs, user]);
+        // Institutional access protocol: Show all club channels to every authenticated member
+        return clubs;
+    }, [clubs]);
 
     const allowedUsers = useMemo(() => {
         if (user.globalRole !== Role.STUDENT) return allUsers.filter(u => u.id !== user.id);
@@ -123,11 +123,12 @@ const ChatSystem: React.FC<Props> = ({ user, clubs, allUsers, activeContext, isD
 
     const handleSend = async (type: Message['type'] = 'text', content?: string, extraData?: any) => {
         if (!activeChannel || (type === 'text' && !input.trim())) return;
+        const msgContent = type === 'text' ? input : content;
         const newMsg: Message = {
             id: `msg-${Date.now()}`,
             senderId: user.id,
             senderName: user.name,
-            content: type === 'text' ? input : content,
+            content: msgContent,
             timestamp: new Date().toISOString(),
             type: type,
             status: 'sent',
@@ -141,6 +142,49 @@ const ChatSystem: React.FC<Props> = ({ user, clubs, allUsers, activeContext, isD
         setShowPollModal(false);
         if (socket) socket.emit('send_message', newMsg);
         await db.sendMessage(newMsg);
+
+        // DEMO: Auto-reply effect
+        if (activeChannel.type === 'dm') {
+          setTimeout(() => {
+            setTypingUsers(prev => ({ ...prev, [activeChannel.id]: true }));
+            setTimeout(async () => {
+              setTypingUsers(prev => ({ ...prev, [activeChannel.id]: false }));
+              const reply: Message = {
+                id: `msg-${Date.now() + 1}`,
+                senderId: activeChannel.id,
+                senderName: activeChannel.name,
+                content: `Copy that! I am reviewing the data package regarding "${msgContent?.slice(0, 20)}". Synchronizing node status...`,
+                timestamp: new Date().toISOString(),
+                type: 'text',
+                status: 'read',
+                recipientId: user.id
+              };
+              setMessages(prev => [...prev, reply]);
+              db.sendMessage(reply);
+            }, 2500);
+          }, 800);
+        } else if (activeChannel.type === 'club') {
+          // Club reply simulation
+          const admin = allUsers.find(u => u.clubMemberships.some(m => m.clubId === activeChannel.id && m.role === 'President')) || allUsers[0];
+          setTimeout(() => {
+            setTypingUsers(prev => ({ ...prev, [admin.id]: true }));
+            setTimeout(async () => {
+              setTypingUsers(prev => ({ ...prev, [admin.id]: false }));
+              const reply: Message = {
+                id: `msg-${Date.now() + 1}`,
+                senderId: admin.id,
+                senderName: admin.name,
+                content: `Acknowledged, ${user.name.split(' ')[0]}. Institutional uplink remains active.`,
+                timestamp: new Date().toISOString(),
+                type: 'text',
+                status: 'read',
+                clubId: activeChannel.id
+              };
+              setMessages(prev => [...prev, reply]);
+              db.sendMessage(reply);
+            }, 3000);
+          }, 1200);
+        }
     };
 
     const filteredClubs = allowedClubs.filter(c => c.name.toLowerCase().includes(search.toLowerCase()));
@@ -151,7 +195,7 @@ const ChatSystem: React.FC<Props> = ({ user, clubs, allUsers, activeContext, isD
             
             {/* ─ SIDEBAR ─ */}
             <div className={`w-full md:w-[450px] flex flex-col border-r border-white/5 bg-white/2 absolute md:relative inset-0 z-50 transition-all duration-500 ${activeChannel ? '-translate-x-full md:translate-x-0' : 'translate-x-0'}`}>
-                <div className="p-8 space-y-8">
+                <div className="p-6 md:p-8 space-y-6 md:space-y-8">
                     <div className="flex justify-between items-center">
                         <h1 className="text-4xl font-[1000] tracking-tighter uppercase italic leading-none">Channels</h1>
                         <div className="flex gap-4">
@@ -169,7 +213,7 @@ const ChatSystem: React.FC<Props> = ({ user, clubs, allUsers, activeContext, isD
                     <div className="px-4 py-2 text-[10px] font-black uppercase tracking-[0.5em] opacity-30">Active Units</div>
                     {filteredClubs.map(club => (
                         <div key={club.id} onClick={() => setActiveChannel({ type: 'club', id: club.id, name: club.name, color: club.themeColor, subtitle: `${club.category} Council` })}
-                             className={`p-6 rounded-[2rem] border transition-all cursor-pointer flex items-center gap-5 group 
+                             className={`p-5 md:p-6 rounded-[2rem] border transition-all cursor-pointer flex items-center gap-5 group 
                                 ${activeChannel?.id === club.id ? 'bg-primary/10 border-primary/40' : 'bg-white/2 border-white/5 hover:bg-white/5'}`}>
                             <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-2xl" style={{ backgroundColor: club.themeColor }}>{club.name[0]}</div>
                             <div className="flex-1 min-w-0">
@@ -185,7 +229,7 @@ const ChatSystem: React.FC<Props> = ({ user, clubs, allUsers, activeContext, isD
                     <div className="px-4 py-2 text-[10px] font-black uppercase tracking-[0.5em] opacity-30 mt-8">Personnel</div>
                     {filteredUsers.map(u => (
                         <div key={u.id} onClick={() => setActiveChannel({ type: 'dm', id: u.id, name: u.name, image: u.photoUrl, subtitle: u.globalRole, isOnline: u.isOnline, lastSeen: u.lastSeen })}
-                             className={`p-6 rounded-[2rem] border transition-all cursor-pointer flex items-center gap-5 group 
+                             className={`p-5 md:p-6 rounded-[2rem] border transition-all cursor-pointer flex items-center gap-5 group 
                                 ${activeChannel?.id === u.id ? 'bg-primary/10 border-primary/40' : 'bg-white/2 border-white/5 hover:bg-white/5'}`}>
                             <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center relative overflow-hidden">
                                 {u.photoUrl ? <img src={u.photoUrl} className="w-full h-full object-cover" /> : <div className="text-primary font-black text-xl">{u.name[0]}</div>}
@@ -208,7 +252,7 @@ const ChatSystem: React.FC<Props> = ({ user, clubs, allUsers, activeContext, isD
                 {activeChannel ? (
                     <>
                         {/* Header */}
-                        <div className="h-24 px-8 border-b border-white/5 flex items-center justify-between bg-white/2 backdrop-blur-3xl z-40">
+                        <div className="h-24 px-5 md:px-8 border-b border-white/5 flex items-center justify-between bg-white/2 backdrop-blur-3xl z-40">
                             <div className="flex items-center gap-6">
                                 <button onClick={() => setActiveChannel(null)} className="md:hidden p-3 bg-white/5 border border-white/10 rounded-2xl text-white"><ArrowLeft size={20}/></button>
                                 <div className="flex items-center gap-5">
@@ -222,7 +266,15 @@ const ChatSystem: React.FC<Props> = ({ user, clubs, allUsers, activeContext, isD
                                     <div>
                                         <h2 className="text-xl font-black uppercase italic tracking-tighter leading-none">{activeChannel.name}</h2>
                                         <p className="text-[10px] font-black uppercase tracking-widest text-primary mt-1 flex items-center gap-2">
-                                            <Signal size={12} className={activeChannel.isOnline ? 'animate-pulse' : ''}/> {activeChannel.isOnline ? 'Signal Active' : 'Relay Passive'}
+                                            {Object.values(typingUsers).some(v => v) ? (
+                                                <span className="flex items-center gap-2 animate-pulse">
+                                                    <Loader2 size={12} className="animate-spin" /> Synchronizing Uplink...
+                                                </span>
+                                            ) : (
+                                                <>
+                                                    <Signal size={12} className={activeChannel.isOnline ? 'animate-pulse' : ''}/> {activeChannel.isOnline ? 'Signal Active' : 'Relay Passive'}
+                                                </>
+                                            )}
                                         </p>
                                     </div>
                                 </div>
@@ -235,7 +287,7 @@ const ChatSystem: React.FC<Props> = ({ user, clubs, allUsers, activeContext, isD
                         </div>
 
                         {/* Body */}
-                        <div className="flex-1 overflow-y-auto p-8 space-y-6 custom-scrollbar bg-dots" ref={scrollRef}>
+                        <div className="flex-1 overflow-y-auto p-5 md:p-8 space-y-6 custom-scrollbar bg-dots" ref={scrollRef}>
                            <div className="flex justify-center mb-10">
                               <div className="px-6 py-2 bg-white/5 border border-white/5 rounded-full text-[10px] font-black uppercase tracking-[0.4em] opacity-30 flex items-center gap-3">
                                  <Lock size={12}/> Encrypted Node Terminal
@@ -273,7 +325,7 @@ const ChatSystem: React.FC<Props> = ({ user, clubs, allUsers, activeContext, isD
                         </div>
 
                         {/* Input Area */}
-                        <div className="p-8 bg-white/2 border-t border-white/5 relative z-50">
+                        <div className="p-5 md:p-8 bg-white/2 border-t border-white/5 relative z-50">
                            {showAttachMenu && (
                                <div className="absolute bottom-28 left-8 p-6 bento-card flex gap-6 animate-in slide-in-from-bottom-6 duration-300">
                                   <button onClick={() => { fileInputRef.current?.click(); }} className="flex flex-col items-center gap-2 group">

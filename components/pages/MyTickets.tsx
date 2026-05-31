@@ -1,7 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Registration, Event, Club } from '../../types';
-import { Ticket, QrCode, Calendar, MapPin, Download, ShieldCheck, Clock, AlertCircle, Filter, Search, ArrowRight } from 'lucide-react';
+import { Ticket, QrCode, Calendar, MapPin, Download, ShieldCheck, Clock, AlertCircle, Filter, Search, ArrowRight, Printer } from 'lucide-react';
 
 interface Props {
   registrations: Registration[];
@@ -13,16 +13,52 @@ interface Props {
 const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }) => {
   const [filter, setFilter] = useState<'active' | 'past'>('active');
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeTicketId, setActiveTicketId] = useState<string | null>(null);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const [selectedReg, setSelectedReg] = useState<Registration | null>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  // Download ticket as a printable PDF/image via a dedicated print window
+  const handleDownload = (reg: Registration) => {
+    setSelectedReg(reg);
+    
+    // Increased timeout for DOM sync
+    setTimeout(() => {
+        const printAnchor = document.getElementById('print-ticket-area');
+        if (!printAnchor) {
+            alert("Digital node synchronizing. Re-engaging...");
+            return;
+        }
+
+        const styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
+            .map(s => s.outerHTML)
+            .join('\n');
+
+        const html = `
+            <html>
+                <head>
+                    <title>MITS Institutional Pass - ${reg.ticketId || reg.id}</title>
+                    ${styles}
+                    <style>
+                        body { background: white !important; margin: 0; padding: 40px; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: system-ui, sans-serif; }
+                        @page { size: portrait; margin: 0; }
+                    </style>
+                </head>
+                <body onload="setTimeout(() => { window.print(); window.close(); }, 1200);">
+                    <div style="width: 800px; transform: scale(1.0); transform-origin: top center;">
+                        ${printAnchor.innerHTML}
+                    </div>
+                </body>
+            </html>
+        `;
+
+        const win = window.open('', '_blank', 'width=1000,height=900');
+        if (win) { win.document.write(html); win.document.close(); }
+    }, 250);
+  };
 
   const handlePrint = (ticketId: string) => {
-    setActiveTicketId(ticketId);
-    setTimeout(() => {
-        window.print();
-        setActiveTicketId(null);
-    }, 300);
+    const reg = registrations.find(r => (r.ticketId || r.id) === ticketId);
+    if (reg) handleDownload(reg);
   };
 
   const handlePreview = (reg: Registration) => {
@@ -205,7 +241,7 @@ const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }
                                         </p>
                                     </div>
                                     <button 
-                                        onClick={() => handlePrint(reg.ticketId || reg.id)}
+                                        onClick={(e) => { e.stopPropagation(); handleDownload(reg); }}
                                         className="w-full py-3 bg-primary text-white rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-primary/20 hover:bg-primary-hover transition-all flex items-center justify-center gap-2"
                                     >
                                         <Download size={14} /> Download Pass
@@ -225,13 +261,18 @@ const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }
                 </div>
               </div>
             );
+        })}
         </div>
       )}
 
       {/* Ticket Preview Modal (Visual Pass) */}
       {isPreviewModalOpen && selectedReg && (
-          <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-8 bg-black/95 backdrop-blur-3xl animate-in fade-in duration-300">
-              <div className="relative w-full max-w-[1000px] flex flex-col items-center gap-8 max-h-screen overflow-y-auto py-10 no-scrollbar">
+          <div className="fixed inset-0 z-[2000] bg-black/95 backdrop-blur-3xl flex items-center justify-center p-4 md:p-8 overflow-y-auto">
+              <div className="relative w-full max-w-4xl flex flex-col items-center my-auto animate-in zoom-in-95 duration-500 py-10">
+                  <div className="w-full bg-white text-black p-6 md:p-12 rounded-[2rem] md:rounded-[3.5rem] border-4 border-black relative overflow-hidden flex flex-col gap-8 md:gap-12 shadow-4xl">
+                     <div className="absolute top-0 left-0 w-full h-8 bg-black flex items-center justify-center">
+                        <p className="text-[8px] font-black uppercase text-white tracking-[0.6em]">Core Compliance Node</p>
+                     </div>
                   <button 
                     onClick={() => setIsPreviewModalOpen(false)}
                     className="absolute top-4 right-4 md:top-8 md:right-8 p-4 bg-white/10 hover:bg-rose-500/20 hover:text-rose-500 text-white rounded-2xl border border-white/10 transition-all z-[1100]"
@@ -248,7 +289,7 @@ const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }
                   </div>
 
                   {/* The Actual Pass Design */}
-                  <div className="w-full shadow-[0_0_150px_rgba(37,99,235,0.25)] rounded-[3rem] overflow-hidden bg-white text-black p-12 flex flex-col gap-10 transition-all transform scale-[1.0] md:scale-[1.05] mt-4 select-none">
+                  <div id="event-pass-print-area" className="w-full shadow-[0_0_150px_rgba(37,99,235,0.25)] rounded-[3rem] overflow-hidden bg-white text-black p-12 flex flex-col gap-10 transition-all transform scale-[1.0] md:scale-[1.05] mt-4 select-none">
                       {(() => {
                            const event = events.find(e => e.id === selectedReg.eventId);
                            const club = clubs.find(c => c.id === event?.clubId);
@@ -256,9 +297,9 @@ const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }
                            
                            return (
                                <>
-                                  <div className="flex justify-between items-start">
-                                      <div className="space-y-4">
-                                          <div className="flex items-center gap-4">
+                                  <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-8 mt-4">
+                                      <div className="space-y-4 text-center md:text-left">
+                                          <div className="flex flex-col md:flex-row items-center gap-4">
                                               <div className="w-16 h-16 bg-black text-white flex items-center justify-center text-3xl font-black rounded-2xl">
                                                   {club?.name[0]}
                                               </div>
@@ -267,25 +308,25 @@ const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }
                                                   <h2 className="text-2xl font-black uppercase italic tracking-tighter">{club?.name}</h2>
                                               </div>
                                           </div>
-                                          <h1 className="text-7xl font-[1000] tracking-tighter leading-[0.85] uppercase italic mt-6">PASS</h1>
+                                          <h1 className="text-5xl md:text-7xl font-[1000] tracking-tighter leading-[0.85] uppercase italic">PASS</h1>
                                       </div>
                                       <div className="p-4 border-4 border-black rounded-[2.5rem] inline-block bg-white shadow-2xl">
-                                          <img src={qrUrl} alt="QR" className="w-44 h-44" />
+                                          <img src={qrUrl} alt="QR" className="w-32 h-32 md:w-44 md:h-44" />
                                       </div>
                                   </div>
 
-                                  <div className="grid grid-cols-2 gap-12 pt-8 border-t-4 border-black border-dashed">
-                                      <div className="space-y-2">
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 pt-6 md:pt-8 border-t-4 border-black border-dashed">
+                                      <div className="space-y-2 text-center md:text-left">
                                           <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Event Title</p>
-                                          <h3 className="text-4xl font-black tracking-tight">{event?.title}</h3>
-                                          <p className="text-xs font-black uppercase tracking-widest bg-black text-white px-3 py-1 rounded-lg mt-2 inline-block">
+                                          <h3 className="text-2xl md:text-4xl font-black tracking-tight">{event?.title}</h3>
+                                          <p className="text-[9px] font-black uppercase tracking-widest bg-black text-white px-3 py-1 rounded-lg mt-2 inline-block">
                                               {event?.status === 'Approved' ? (selectedReg.status === 'Approved' ? 'Access Verified' : 'Pending Approver') : 'Event Unverified'}
                                           </p>
                                       </div>
-                                      <div className="text-right space-y-2">
+                                      <div className="text-center md:text-right space-y-2">
                                           <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Attendee Credentials</p>
-                                          <h3 className="text-2xl font-black tracking-tight">{selectedReg.studentName}</h3>
-                                          <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">{selectedReg.studentRoll}</p>
+                                          <h3 className="text-xl md:text-2xl font-black tracking-tight">{selectedReg.studentName}</h3>
+                                          <p className="text-xs md:text-sm font-bold text-slate-500 uppercase tracking-widest">{selectedReg.studentRoll}</p>
                                       </div>
                                   </div>
 
@@ -304,142 +345,72 @@ const MyTickets: React.FC<Props> = ({ registrations, events, clubs, isDarkMode }
                            );
                       })()}
                   </div>
+                  </div>
 
-                  <div className="flex flex-col md:flex-row gap-6 mt-12 w-full max-w-2xl px-6">
+                  <div className="flex flex-col md:flex-row gap-4 md:gap-6 mt-10 md:mt-12 w-full max-w-2xl px-4 md:px-6">
                      <button 
                         onClick={() => handlePrint(selectedReg.ticketId || selectedReg.id)}
-                        className="flex-1 px-12 py-6 bg-primary text-white rounded-[2rem] font-black text-sm uppercase tracking-[0.3em] shadow-3xl shadow-primary/30 hover:scale-[1.05] active:scale-95 transition-all flex items-center justify-center gap-4"
+                        className="h-16 md:h-20 flex-1 px-8 md:px-12 bg-primary text-white rounded-[1.5rem] md:rounded-[2rem] font-black text-xs md:text-sm uppercase tracking-[0.3em] shadow-3xl shadow-primary/30 hover:scale-[1.05] active:scale-95 transition-all flex items-center justify-center gap-4"
                      >
-                        <Download size={22} /> Execute Download
+                        <Download size={20} /> Execute Download
                      </button>
                      <button 
                         onClick={() => setIsPreviewModalOpen(false)}
-                        className="px-12 py-6 bg-white/5 text-white rounded-[2rem] font-black text-sm uppercase tracking-[0.3em] border border-white/10 hover:bg-white/10 transition-all flex items-center justify-center gap-4"
+                        className="h-16 md:h-20 px-8 md:px-12 bg-white/5 text-white rounded-[1.5rem] md:rounded-[2rem] font-black text-xs md:text-sm uppercase tracking-[0.3em] border border-white/10 hover:bg-white/10 transition-all flex items-center justify-center gap-4"
                      >
                         Secure Exit
                      </button>
                   </div>
               </div>
           </div>
-      )}
-
-      {/* ─── HIDDEN PRINT AREA ─── */}
-      {activeTicketId && (
-          <div className="fixed inset-0 z-[-1] opacity-0 pointer-events-none" id="ticket-print-root">
-              {registrations.filter(r => (r.ticketId || r.id) === activeTicketId).map(reg => {
-                  const event = events.find(e => e.id === reg.eventId);
-                  const club = clubs.find(c => c.id === event?.clubId);
-                  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${activeTicketId}`;
-                  
-                  return (
-                      <div key={reg.id} className="w-[100vw] h-[100vh] bg-white flex flex-col items-center justify-center p-20 font-sans text-black">
-                          <div className="w-full max-w-4xl border-4 border-black p-12 rounded-[3.5rem] relative overflow-hidden flex flex-col gap-12 bg-white">
-                              {/* Decorative elements for print */}
-                              <div className="absolute top-0 left-0 w-full h-10 bg-black flex items-center justify-center">
-                                 <p className="text-[10px] font-black uppercase text-white tracking-[1em]">Institutional Access Protocol</p>
-                              </div>
-                              
-                              <div className="flex justify-between items-start mt-8">
-                                  <div className="space-y-4">
-                                      <div className="flex items-center gap-5">
-                                          <div className="w-20 h-20 bg-black text-white flex items-center justify-center text-4xl font-black rounded-3xl">
-                                              {club?.name?.[0] || 'A'}
-                                          </div>
-                                          <div>
-                                              <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Command Center</p>
-                                              <h2 className="text-3xl font-black uppercase italic tracking-tighter">{club?.name || 'MITS CLUB'}</h2>
-                                          </div>
-                                      </div>
-                                      <h1 className="text-7xl font-[1000] tracking-tighter leading-[0.8] uppercase italic mt-10">
-                                          ENTRY <br/><span className="text-stroke-black text-transparent">PASS</span>
-                                      </h1>
-                                  </div>
-                                  <div className="text-right space-y-4">
-                                      <div className="p-4 border-4 border-black rounded-[2.5rem] inline-block bg-white shadow-2xl">
-                                          <img src={qrUrl} alt="QR" className="w-52 h-52 object-contain" />
-                                      </div>
-                                      <div className="space-y-1">
-                                         <p className="text-[10px] font-black uppercase tracking-[0.5em] opacity-30">Registry Serial</p>
-                                         <p className="text-sm font-mono font-black border-2 border-black inline-block px-4 py-1 rounded-xl">{activeTicketId}</p>
-                                      </div>
-                                  </div>
-                              </div>
-
-                              <div className="grid grid-cols-2 gap-16 pt-12 border-t-4 border-black border-dashed">
-                                  <div className="space-y-3">
-                                      <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Mission / Event</p>
-                                      <h3 className="text-5xl font-black tracking-tighter leading-tight">{event?.title || 'Untitled Operation'}</h3>
-                                      <p className="text-sm font-black uppercase tracking-widest bg-black text-white self-start px-4 py-1.5 rounded-lg mt-4 inline-block">{event?.type || 'STANDARD'} ACCESS • {reg.studentName}</p>
-                                  </div>
-                                  <div className="grid grid-cols-1 gap-8">
-                                      <div className="flex items-center gap-6">
-                                          <div className="w-14 h-14 bg-black/5 rounded-2xl flex items-center justify-center"><Calendar size={24}/></div>
-                                          <div>
-                                             <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-1">Deployment Date</p>
-                                             <p className="text-2xl font-black uppercase tracking-tight">{event?.date || 'SCHEDULED'}</p>
-                                          </div>
-                                      </div>
-                                      <div className="flex items-center gap-6">
-                                          <div className="w-14 h-14 bg-black/5 rounded-2xl flex items-center justify-center"><MapPin size={24}/></div>
-                                          <div>
-                                             <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-1">Node Venue</p>
-                                             <p className="text-2xl font-black uppercase tracking-tight">MITS CAMPUS MAIN</p>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-
-                              <div className="mt-8 flex justify-between items-end border-t-4 border-black pt-10">
-                                  <div className="space-y-2">
-                                      <p className="text-[9px] font-black uppercase tracking-widest opacity-40">Student Credentials</p>
-                                      <div className="flex items-center gap-10">
-                                         <div>
-                                            <p className="text-xs font-bold opacity-40 uppercase">Identity</p>
-                                            <p className="text-xl font-black uppercase">{reg.studentName}</p>
-                                         </div>
-                                         <div>
-                                            <p className="text-xs font-bold opacity-40 uppercase">Enrollment</p>
-                                            <p className="text-xl font-black uppercase">{reg.studentRoll}</p>
-                                         </div>
-                                      </div>
-                                  </div>
-                                  <div className="text-right max-w-[280px]">
-                                      <p className="text-[8px] font-black uppercase tracking-widest opacity-30 leading-relaxed italic border-l-2 border-black pl-4">
-                                          This is a non-transferable institutional pass generated by CMMS. Presentation of student ID is required. Tampering with the QR code invalidates admission rights.
-                                      </p>
-                                  </div>
-                              </div>
-                          </div>
-                          
-                          <style>{`
-                              @media print {
-                                  body * { visibility: hidden !important; }
-                                  #ticket-print-root, #ticket-print-root * { visibility: visible !important; }
-                                  #ticket-print-root {
-                                      position: absolute !important;
-                                      left: 0 !important;
-                                      top: 0 !important;
-                                      width: 100vw !important;
-                                      height: 100vh !important;
-                                      background: white !important;
-                                      margin: 0 !important;
-                                      padding: 0 !important;
-                                      z-index: 100000 !important;
-                                      display: flex !important;
-                                      align-items: center !important;
-                                      justify-content: center !important;
-                                  }
-                                  @page { size: landscape; margin: 0; }
-                              }
-                              .text-stroke-black {
-                                  -webkit-text-stroke: 1px black;
-                              }
-                          `}</style>
-                      </div>
-                  );
-              })}
-          </div>
-      )}
+          )}
+      {/* HIDDEN PERSISTENT PRINT ANCHOR */}
+      <div id="print-ticket-area" className="fixed inset-0 z-[-1] opacity-0 pointer-events-none overflow-hidden">
+          {selectedReg && (
+              <div className="w-[1000px] bg-white text-black p-12 flex flex-col gap-10">
+                  {(() => {
+                        const event = events.find(e => e.id === selectedReg?.eventId);
+                        const club = clubs.find(c => c.id === event?.clubId);
+                        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${selectedReg?.ticketId || selectedReg?.id}`;
+                        return (
+                            <div className="border-[12px] border-black p-12 rounded-[4rem] relative overflow-hidden bg-white min-h-[600px] flex flex-col justify-between">
+                                <div className="absolute top-0 left-0 w-full h-10 bg-black flex items-center justify-center">
+                                    <p className="text-[10px] font-black uppercase text-white tracking-[1em]">MITS Institutional Entry Protocol</p>
+                                </div>
+                                <div className="flex justify-between items-start mt-10">
+                                    <div className="space-y-6">
+                                        <div className="flex items-center gap-6">
+                                            <div className="w-20 h-20 bg-black text-white flex items-center justify-center text-5xl font-black rounded-3xl">
+                                                {club?.name?.[0] || 'M'}
+                                            </div>
+                                            <div>
+                                                <p className="text-[12px] font-black uppercase tracking-widest opacity-40">Command Node</p>
+                                                <h2 className="text-3xl font-black uppercase italic tracking-tighter">{club?.name || 'MITS Organization'}</h2>
+                                            </div>
+                                        </div>
+                                        <h1 className="text-8xl font-[1000] tracking-tighter leading-[0.8] uppercase italic mt-12">ENTRY <br/><span className="text-transparent" style={{ WebkitTextStroke: '2px black' }}>PASS</span></h1>
+                                    </div>
+                                    <div className="p-6 border-4 border-black rounded-[2.5rem] bg-white shadow-2xl">
+                                        <img src={qrUrl} alt="QR" className="w-56 h-56" />
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-16 pt-12 mt-12 border-t-4 border-black border-dashed">
+                                    <div>
+                                        <p className="text-[12px] font-black uppercase tracking-widest opacity-40">Mission Identifier</p>
+                                        <h3 className="text-4xl font-black tracking-tighter leading-tight">{event?.title}</h3>
+                                    </div>
+                                    <div className="space-y-4 text-right">
+                                        <p className="text-[12px] font-black uppercase tracking-widest opacity-40">Agent Identity</p>
+                                        <h3 className="text-3xl font-black tracking-tight">{selectedReg?.studentName}</h3>
+                                        <p className="font-mono text-sm font-black opacity-40">{selectedReg?.ticketId || selectedReg?.id}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                  })()}
+              </div>
+          )}
+      </div>
     </div>
   );
 };

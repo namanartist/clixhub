@@ -118,7 +118,7 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
              { label: 'Events in Queue', value: projects.length, icon: Layers, color: 'text-accent-purple' },
              { label: 'Achievements', value: '8', icon: Trophy, color: 'text-amber-400' },
            ].map((stat, i) => (
-             <div key={i} className="bento-card p-8 flex items-center justify-between group cursor-default">
+             <div key={i} className="bento-card p-6 md:p-8 flex items-center justify-between group cursor-default">
                 <div>
                    <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[var(--text-secondary)] mb-2">{stat.label}</p>
                    <p className="text-3xl font-black tracking-tighter">{stat.value}</p>
@@ -136,7 +136,7 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
           {/* ─ LEFT COLUMN: CORE PROJECTS ─ */}
           <div className="lg:col-span-8 space-y-8">
             
-            <div className="bento-card p-10 space-y-10 group overflow-hidden relative">
+            <div className="bento-card p-6 md:p-10 space-y-8 md:space-y-10 group overflow-hidden relative">
               <div className="absolute top-[-10%] right-[-10%] opacity-5 group-hover:opacity-10 transition-opacity">
                  <Zap size={300} />
               </div>
@@ -155,7 +155,7 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
                 {projects.map((project) => (
-                  <div key={project.id} className="p-8 rounded-[2.5rem] glass border border-white/5 hover:border-primary/20 transition-all hover:translate-y-[-5px] group/card">
+                  <div key={project.id} className="p-6 md:p-8 rounded-[2.5rem] glass border border-white/5 hover:border-primary/20 transition-all hover:translate-y-[-5px] group/card">
                     <div className="flex items-start justify-between mb-8">
                        <div className="space-y-4">
                           <div className={`w-14 h-14 rounded-2xl ${project.color} flex items-center justify-center text-white shadow-2xl`}>
@@ -202,7 +202,7 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
             </div>
 
             {/* ─ SECONDARY: TASK TRACKER ─ */}
-            <div className="bento-card p-10 space-y-8">
+            <div className="bento-card p-6 md:p-10 space-y-6 md:space-y-8">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-4">
                    <div className="w-12 h-12 rounded-2xl bg-accent-cyan/10 flex items-center justify-center text-accent-cyan border border-accent-cyan/20">
@@ -249,7 +249,7 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
           <div className="lg:col-span-4 space-y-8">
             
             {/* DATE CHRONOS */}
-            <div className="bento-card p-10 space-y-8 bg-gradient-to-br from-[#0d121d] to-black">
+            <div className="bento-card p-6 md:p-10 space-y-6 md:space-y-8 bg-gradient-to-br from-[#0d121d] to-black">
               <div>
                 <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary mb-4 flex items-center gap-3">
                    <Clock size={14} className="animate-spin-slow" /> Real-time Clock
@@ -290,7 +290,7 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
             </div>
 
             {/* SCHEDULE PIPELINE */}
-            <div className="bento-card p-10 space-y-8">
+            <div className="bento-card p-6 md:p-10 space-y-6 md:space-y-8">
               <div className="flex justify-between items-center">
                  <h3 className="text-xl font-black tracking-tight uppercase italic italic underline decoration-accent-cyan decoration-2 underline-offset-4">Event Flow</h3>
                  <Calendar className="text-accent-cyan" size={20} />
@@ -334,7 +334,7 @@ const ClubHome: React.FC<Props> = ({ club, registrations }) => {
       {isNotifyOpen && (
         <div className="fixed inset-0 z-[1000] flex items-center justify-center px-6">
           <div className="absolute inset-0 bg-black/90 backdrop-blur-2xl animate-in fade-in duration-500" onClick={() => setIsNotifyOpen(false)} />
-          <div className="relative w-full max-w-xl bento-card p-12 space-y-10 animate-in zoom-in-95 duration-500 shadow-4xl border border-white/10">
+          <div className="relative w-full max-w-xl bento-card p-8 md:p-12 space-y-8 md:space-y-10 animate-in zoom-in-95 duration-500 shadow-4xl border border-white/10">
             <div className="space-y-2">
                <h2 className="text-5xl font-black tracking-tighter uppercase italic italic underline decoration-primary decoration-4 underline-offset-8">New Nexus Item</h2>
                <p className="text-[var(--text-secondary)] font-medium text-lg">Define a new project core or operational objective.</p>

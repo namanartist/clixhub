@@ -213,7 +213,16 @@ const CertificateVerification: React.FC = () => {
 
                             <div className="mt-8 flex justify-center">
                                 <button 
-                                    onClick={() => window.print()}
+                                    onClick={() => {
+                                        const printAnchor = document.getElementById('certificate-print-area');
+                                        if (!printAnchor) return;
+                                        const styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
+                                            .map(s => s.outerHTML)
+                                            .join('\n');
+                                        const html = `<html><head><title>MITS Verified Record</title>${styles}<style>body{margin:0;padding:40px;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#fff;color:#000;font-family:system-ui, sans-serif;}</style></head><body onload="setTimeout(() => { window.print(); window.close(); }, 1200);"><div style="width:1000px">${printAnchor.innerHTML}</div></body></html>`;
+                                        const win = window.open('', '_blank', 'width=1100,height=850');
+                                        if (win) { win.document.write(html); win.document.close(); }
+                                    }}
                                     className="flex items-center gap-2 px-8 py-4 bg-white/5 hover:bg-white/10 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all border border-white/10 shadow-xl"
                                 >
                                     <Download size={18} /> Download Record
@@ -221,61 +230,6 @@ const CertificateVerification: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Metadata & Proof */}
-                        <div className="space-y-8">
-                            <div>
-                                <h2 className="text-4xl font-black tracking-tight mb-2">Verified Record</h2>
-                                <p className="text-emerald-400 font-black uppercase tracking-widest text-xs flex items-center gap-2">
-                                    <CheckCircle2 size={16} /> Digitally Authenticated by MITS Authority
-                                </p>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                                {[
-                                    { label: 'Serial Number', value: result.cert.serialNumber },
-                                    { label: 'Issue Date', value: new Date(result.cert.date).toLocaleDateString() },
-                                    { label: 'Recipient Name', value: result.cert.studentName },
-                                    { label: 'Enrollment No.', value: result.cert.enrollmentNumber },
-                                ]
-                                .map((item, i) => (
-                                    <div key={i} className="p-6 rounded-[2rem] bg-white/5 border border-white/5">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">{item.label}</p>
-                                        <p className="text-lg font-bold">{item.value}</p>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="p-8 rounded-[3rem] bg-white/5 border border-white/5 space-y-6">
-                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 flex items-center gap-2">
-                                    <History size={14} /> Approval Chain Proof
-                                </p>
-                                <div className="space-y-4">
-                                    {result.batch.approvalChain.map((step, idx) => (
-                                        <div key={idx} className="flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center">
-                                                <CheckCircle2 size={20} />
-                                            </div>
-                                            <div>
-                                                <div className="flex items-center gap-2">
-                                                    <span className="font-bold text-sm">{step.approverName}</span>
-                                                    <span className="px-2 py-0.5 rounded-md bg-white/10 text-[8px] font-black uppercase text-slate-400">Approved</span>
-                                                </div>
-                                                <p className="text-[10px] text-slate-500 font-medium uppercase tracking-widest">
-                                                    {step.role} • {step.approvedAt ? new Date(step.approvedAt).toLocaleString() : 'N/A'}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="p-6 rounded-[2rem] bg-blue-500/5 border border-blue-500/10">
-                                <p className="text-[10px] font-black uppercase tracking-widest text-blue-400 mb-2">Cryptographic Hash (SHA-256)</p>
-                                <code className="text-[10px] font-mono text-slate-400 break-all bg-black/30 p-4 block rounded-xl">
-                                    {result.cert.hash}
-                                </code>
-                            </div>
-                        </div>
                     </div>
                 )}
             </div>

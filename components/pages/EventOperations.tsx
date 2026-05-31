@@ -350,12 +350,12 @@ const EventOperations: React.FC<Props> = ({
                           <div className="flex justify-center">
                              <div className="w-24 h-24 rounded-[2.5rem] bg-gradient-to-br from-blue-500 to-indigo-600 p-1 shadow-2xl rotate-3 group-hover:rotate-0 transition-transform duration-700">
                                 <div className="w-full h-full rounded-[2.2rem] bg-[#0B1437] flex items-center justify-center text-white font-black text-4xl font-display">
-                                   {selectedEvent.title[0]}
+                                   {selectedEvent?.title?.[0] || 'E'}
                                 </div>
                              </div>
                           </div>
                           <div className="space-y-3">
-                             <h2 className="text-3xl font-black tracking-tighter leading-none text-white font-display uppercase">{selectedEvent.title}</h2>
+                             <h2 className="text-3xl font-black tracking-tighter leading-none text-white font-display uppercase">{selectedEvent?.title}</h2>
                              <div className="flex items-center justify-center gap-3">
                                 <Activity size={14} className="text-blue-500" />
                                 <p className="text-[10px] font-black text-blue-500 uppercase tracking-[0.4em]">Official Entry Pass</p>
@@ -365,7 +365,7 @@ const EventOperations: React.FC<Props> = ({
                           <div className="relative group/qr p-2">
                              <div className="absolute inset-0 bg-blue-600/20 rounded-3xl blur-2xl opacity-0 group-hover/qr:opacity-100 transition-opacity" />
                              <div className="bg-white p-6 rounded-[2.5rem] shadow-2xl relative z-10 scale-95 group-hover:scale-100 transition-transform duration-700">
-                                <img src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${ticketData.ticketId || ticketData.id}`} alt="Tactical QR Code" className="w-40 h-40 object-contain grayscale hover:grayscale-0 transition-all" />
+                                <img src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${ticketData?.ticketId || ticketData?.id}`} alt="Tactical QR Code" className="w-40 h-40 object-contain grayscale hover:grayscale-0 transition-all" />
                              </div>
                           </div>
 
@@ -377,21 +377,32 @@ const EventOperations: React.FC<Props> = ({
 
                           <div className="pt-10 border-t border-dashed border-white/10 flex flex-col items-center gap-2">
                              <p className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-700">Clearance Node ID</p>
-                             <p className="font-mono text-[10px] font-black text-blue-500 bg-blue-500/10 px-6 py-2 rounded-xl border border-blue-500/20 uppercase tracking-[0.2em]">{ticketData.ticketId}</p>
+                             <p className="font-mono text-[10px] font-black text-blue-500 bg-blue-500/10 px-6 py-2 rounded-xl border border-blue-500/20 uppercase tracking-[0.2em]">{ticketData?.ticketId || ticketData?.id}</p>
                           </div>
                        </div>
                     </div>
                  </div>
 
-                 {/* Action Buttons */}
-                 <div className="mt-8 flex gap-6">
-                    <button onClick={() => window.print()} className="flex-[2] py-5 bg-white text-slate-950 rounded-[2rem] font-black text-[10px] uppercase tracking-[0.3em] shadow-2xl hover:bg-white/90 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-4">
-                       <Printer size={18} /> Print Dossier
-                    </button>
-                    <button onClick={() => setIsTicketModalOpen(false)} className="flex-1 py-5 glass-elevated border border-white/10 text-white rounded-[2rem] font-black text-[10px] uppercase tracking-[0.3em] hover:bg-rose-500 hover:border-rose-500 transition-all active:scale-95 shadow-xl">
-                       CLOSE
-                    </button>
-                 </div>
+                  <div className="mt-8 flex gap-6">
+                     <button 
+                        onClick={() => {
+                           const printAnchor = document.getElementById('print-ticket-area');
+                           if (!printAnchor) return;
+                           const styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
+                               .map(s => s.outerHTML)
+                               .join('\n');
+                           const html = `<html><head><title>MITS Institutional Pass</title>${styles}<style>body{margin:0;padding:40px;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#fff;color:#000;font-family:system-ui, sans-serif;}</style></head><body onload="setTimeout(() => { window.print(); window.close(); }, 1200);"><div style="width:1000px">${printAnchor.innerHTML}</div></body></html>`;
+                           const win = window.open('', '_blank', 'width=1100,height=850');
+                           if (win) { win.document.write(html); win.document.close(); }
+                        }} 
+                        className="flex-[2] py-5 bg-white text-slate-950 rounded-[2rem] font-black text-[10px] uppercase tracking-[0.3em] shadow-2xl hover:bg-white/90 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-4"
+                     >
+                        <Printer size={18} /> Print Dossier
+                     </button>
+                     <button onClick={() => setIsTicketModalOpen(false)} className="flex-1 py-5 glass-elevated border border-white/10 text-white rounded-[2rem] font-black text-[10px] uppercase tracking-[0.3em] hover:bg-rose-500 hover:border-rose-500 transition-all active:scale-95 shadow-xl">
+                        CLOSE
+                     </button>
+                  </div>
               </div>
            </div>
         )}

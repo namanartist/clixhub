@@ -11,7 +11,8 @@ import {
   Lock, 
   Layout, 
   Server,
-  Code
+  Code,
+  Layers
 } from 'lucide-react';
 
 const PlatformFeatures: React.FC<{ onBack: () => void }> = ({ onBack }) => {

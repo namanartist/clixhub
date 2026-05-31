@@ -34,11 +34,45 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
   }, [batches, currentUser]);
 
   const handlePrint = (serial: string) => {
-      setActivePrintId(serial);
-      setTimeout(() => {
-          window.print();
-          setTimeout(() => setActivePrintId(null), 1000);
-      }, 400);
+      // 1. Identify the hidden print container or clone the current preview
+      // We'll use a temporary strategy to ensure the exact design is used.
+      const printAnchor = document.getElementById(`cert-preview-${serial}`);
+      if (!printAnchor) {
+          // If not in DOM, we might need to render it.
+          // But usually, it's available in the list.
+          alert("Certificate node not ready for mission deployment. Please try again.");
+          return;
+      }
+
+      const styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
+          .map(s => s.outerHTML)
+          .join('\n');
+
+      const html = `
+        <html>
+          <head>
+            <title>MITS Certificate - ${serial}</title>
+            ${styles}
+            <style>
+              body { background: white !important; margin: 0; padding: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: system-ui, sans-serif; }
+              @page { size: landscape; margin: 0; }
+              /* Force dark mode styles to show up if needed, or ensuring light mode for print */
+              .dark { color-scheme: light !important; }
+            </style>
+          </head>
+          <body onload="setTimeout(() => { window.print(); window.close(); }, 1200);">
+            <div style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center;">
+               ${printAnchor.innerHTML}
+            </div>
+          </body>
+        </html>
+      `;
+
+      const win = window.open('', '_blank', 'width=1100,height=850');
+      if (win) {
+          win.document.write(html);
+          win.document.close();
+      }
   };
 
   const handlePreview = (cert: IssuedCertificate, batch: CertificateBatch) => {
@@ -88,8 +122,10 @@ const MyCertificates: React.FC<Props> = ({ currentUser, batches }) => {
           {userCertificates.map(({ cert, batch }) => (
             <div key={cert.serialNumber} className="group flex flex-col bg-white dark:bg-[#111C44] rounded-[3.5rem] border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:scale-[1.01]">
                 
-                <div className="p-8 pb-0 flex flex-col items-center bg-slate-50 dark:bg-black/20 group-hover:bg-transparent transition-colors cursor-zoom-in" 
-                     onClick={() => handlePreview(cert, batch)}>
+                <div 
+                   id={`cert-preview-${cert.serialNumber}`}
+                   className="p-8 pb-0 flex flex-col items-center bg-slate-50 dark:bg-black/20 group-hover:bg-transparent transition-colors cursor-zoom-in" 
+                   onClick={() => handlePreview(cert, batch)}>
                     <div className="w-full shadow-2xl rounded-sm overflow-hidden transform scale-95 group-hover:scale-100 transition-transform duration-500">
                       <CertificatePreview 
                           studentName={cert.studentName}

@@ -24,7 +24,9 @@ import {
   Users,
   ExternalLink,
   Github,
-  Hexagon
+  Hexagon,
+  CheckCircle2,
+  Copy
 } from 'lucide-react';
 import { smartLogicService } from '../../logic';
 
@@ -39,7 +41,7 @@ interface Props {
   onUpdateWebsiteContent?: (content: any) => void;
   onUpdateClub?: (club: Club) => void;
   onSwitchToDashboard?: () => void;
-  onRegister?: (eventId: string, proxyStudent?: { name: string, roll: string, branch: string }) => void;
+  onRegister?: (eventId: string, proxyStudent?: { name: string, roll: string, branch: string }) => Promise<any>;
 }
 
 const ClubPublicWebsite: React.FC<Props> = ({ 
@@ -111,6 +113,8 @@ const ClubPublicWebsite: React.FC<Props> = ({
     whyJoin: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submittedTrackingId, setSubmittedTrackingId] = useState<string | null>(null);
+  const [trackingCopied, setTrackingCopied] = useState(false);
 
   useEffect(() => {
     if (currentUser && currentUser.id !== 'guest') {
@@ -122,19 +126,26 @@ const ClubPublicWebsite: React.FC<Props> = ({
     }
   }, [currentUser]);
 
-  const handleRegister = () => {
-    if (isGuest && !isProxyMode) {
+  const handleRegister = async () => {
+    if ((isGuest || !currentUser || currentUser.id === 'guest') && !isProxyMode) {
+        // Redirect to login if guest
         onSwitchToDashboard && onSwitchToDashboard();
         return;
     }
     if (selectedEvent && onRegister) {
         if (isProxyMode) {
             if (!proxyData.name || !proxyData.roll) { alert("Details required"); return; }
-            onRegister(selectedEvent.id, proxyData);
+            const reg = await onRegister(selectedEvent.id, proxyData);
+            if (reg) {
+              setSubmittedTrackingId(reg.ticketId || reg.id);
+            }
             setProxyData({ name: '', roll: '', branch: '' });
             setIsProxyMode(false);
         } else {
-            onRegister(selectedEvent.id);
+            const regBuffer = await onRegister(selectedEvent.id);
+            if (regBuffer) {
+              setSubmittedTrackingId(regBuffer.ticketId || regBuffer.id);
+            }
         }
         setSelectedEvent(null);
     }
@@ -142,19 +153,20 @@ const ClubPublicWebsite: React.FC<Props> = ({
 
   const handleSubmitApplication = async () => {
     if (!recruitFormData.name || !recruitFormData.rollNumber || !recruitFormData.whyJoin) {
-      alert("All fields are required for the recruitment protocol.");
+      alert("Please fill all required fields.");
       return;
     }
-
     setIsSubmitting(true);
     if (onApply) {
-      const success = await (onApply as any)({ ...recruitFormData, clubId: club.id });
-      if (success) {
-        alert("Application submitted successfully. Your candidate profile is now being processed by the club leadership.");
+      const result = await (onApply as any)({ ...recruitFormData, clubId: club.id });
+      if (result && result.trackingId) {
+        setSubmittedTrackingId(result.trackingId);
         setIsRecruitModalOpen(false);
         setRecruitFormData({ ...recruitFormData, whyJoin: '' });
+      } else if (result === true || result?.success) {
+        setIsRecruitModalOpen(false);
       } else {
-        alert("Transmission failed. Please try again later.");
+        alert("Submission failed. Please try again.");
       }
     }
     setIsSubmitting(false);
@@ -297,7 +309,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
             <div className="lg:col-span-8">
                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {(club.customSections || []).slice(0, 2).map((sec, i) => (
-                      <div key={i} className="bento-card p-10 flex flex-col gap-6 group hover:border-primary/50 transition-all">
+                      <div key={i} className="bento-card p-6 md:p-10 flex flex-col gap-6 group hover:border-primary/50 transition-all">
                          <div className="w-14 h-14 bg-primary/10 text-primary rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
                             {theme.icon}
                          </div>
@@ -331,7 +343,7 @@ const ClubPublicWebsite: React.FC<Props> = ({
                             {event.type}
                          </div>
                       </div>
-                      <div className="p-10 flex-1 flex flex-col gap-4">
+                      <div className="p-6 md:p-10 flex-1 flex flex-col gap-4">
                          <div className="flex items-center gap-3 text-primary">
                             <Calendar size={16} />
                             <span className="text-[10px] font-black uppercase tracking-widest">{event.date}</span>
@@ -401,48 +413,48 @@ const ClubPublicWebsite: React.FC<Props> = ({
 
       {/* ─ EVENT MODAL ─ */}
       {selectedEvent && (
-        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6 bg-black/90 backdrop-blur-2xl" onClick={() => setSelectedEvent(null)}>
-            <div className="relative w-full max-w-2xl bento-card p-0 overflow-hidden shadow-4xl animate-in zoom-in-95 duration-300" onClick={e => e.stopPropagation()}>
-                <div className="relative h-64">
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-6 bg-black/90 backdrop-blur-2xl overflow-y-auto" onClick={() => setSelectedEvent(null)}>
+            <div className="relative w-full max-w-2xl bg-[#050505] border border-white/5 rounded-[2.5rem] md:rounded-[3rem] p-0 overflow-hidden shadow-4xl my-auto animate-in zoom-in-95 duration-300" onClick={e => e.stopPropagation()}>
+                <div className="relative h-48 md:h-64">
                     <img src={selectedEvent.bannerUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800"} className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] to-transparent" />
-                    <button onClick={() => setSelectedEvent(null)} className="absolute top-6 right-6 p-3 bg-black/50 rounded-2xl text-white hover:bg-rose-500 transition-colors"><X size={24}/></button>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent" />
+                    <button onClick={() => setSelectedEvent(null)} className="absolute top-4 md:top-6 right-4 md:right-6 p-3 md:p-4 bg-black/50 backdrop-blur-xl rounded-xl md:rounded-2xl text-white hover:bg-rose-500 transition-colors"><X size={20}/></button>
                 </div>
 
-                <div className="p-12 space-y-10">
-                    <div className="space-y-4">
+                <div className="p-6 md:p-12 space-y-6 md:space-y-10">
+                    <div className="space-y-2 md:space-y-4">
                         <div className="flex items-center gap-4">
-                            <span className="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-primary/20 text-primary border border-primary/20">{selectedEvent.type} Protocol</span>
+                            <span className="px-3 md:px-4 py-1.5 rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest bg-primary/20 text-primary border border-primary/20">{selectedEvent.type} Protocol</span>
                         </div>
-                        <h2 className="text-5xl font-black leading-tight tracking-tighter italic">{selectedEvent.title}</h2>
+                        <h2 className="text-3xl md:text-5xl font-black leading-tight tracking-tighter italic text-white line-clamp-2">{selectedEvent.title}</h2>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-8">
-                        <div className="p-6 bg-white/5 rounded-3xl border border-white/5 flex items-center gap-5">
-                            <Calendar className="text-primary" size={24} />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+                        <div className="p-4 md:p-6 bg-white/5 rounded-2xl md:rounded-3xl border border-white/5 flex items-center gap-4 md:gap-5">
+                            <Calendar className="text-primary" size={20} />
                             <div>
-                                <p className="text-[9px] uppercase tracking-widest font-black opacity-30">Timestamp</p>
-                                <p className="text-md font-black">{selectedEvent.date}</p>
+                                <p className="text-[8px] md:text-[9px] uppercase tracking-widest font-black opacity-30">Timestamp</p>
+                                <p className="text-sm md:text-md font-black">{selectedEvent.date}</p>
                             </div>
                         </div>
-                        <div className="p-6 bg-white/5 rounded-3xl border border-white/5 flex items-center gap-5">
-                            <MapPin className="text-primary" size={24} />
+                        <div className="p-4 md:p-6 bg-white/5 rounded-2xl md:rounded-3xl border border-white/5 flex items-center gap-4 md:gap-5">
+                            <MapPin className="text-primary" size={20} />
                             <div>
-                                <p className="text-[9px] uppercase tracking-widest font-black opacity-30">Node Location</p>
-                                <p className="text-md font-black italic">MITS_CORE</p>
+                                <p className="text-[8px] md:text-[9px] uppercase tracking-widest font-black opacity-30">Node Location</p>
+                                <p className="text-sm md:text-md font-black italic">MITS_CORE</p>
                             </div>
                         </div>
                     </div>
 
-                    <div className="space-y-3">
-                        <h5 className="text-[10px] font-black uppercase tracking-widest opacity-30">Briefing</h5>
-                        <p className="text-md font-medium opacity-60 leading-relaxed italic">"{selectedEvent.description}"</p>
+                    <div className="space-y-2 md:space-y-3">
+                        <h5 className="text-[9px] md:text-[10px] font-black uppercase tracking-widest opacity-30">Briefing</h5>
+                        <p className="text-sm md:text-md font-medium opacity-60 leading-relaxed italic">"{selectedEvent.description}"</p>
                     </div>
 
-                    <div className="pt-6">
+                    <div className="pt-4 md:pt-6">
                         <button onClick={handleRegister}
-                                className="w-full h-18 bg-white text-black rounded-2xl font-black text-[12px] uppercase tracking-[0.4em] hover:scale-[1.02] transition-all flex items-center justify-center gap-4 shadow-3xl">
-                            Commit Registration <Ticket size={24} />
+                                className="w-full h-16 md:h-18 bg-white text-black rounded-2xl font-black text-[10px] md:text-[12px] uppercase tracking-[0.4em] hover:scale-[1.02] transition-all flex items-center justify-center gap-4 shadow-3xl">
+                            {isGuest ? 'Login to Register' : 'Commit Registration'} <Ticket size={24} />
                         </button>
                     </div>
                 </div>
@@ -452,23 +464,23 @@ const ClubPublicWebsite: React.FC<Props> = ({
 
       {/* ─ RECRUITMENT FORM MODAL ─ */}
       {isRecruitModalOpen && (
-        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6 bg-black/95 backdrop-blur-3xl overflow-y-auto" onClick={() => setIsRecruitModalOpen(false)}>
-          <div className="relative w-full max-w-3xl my-auto bento-card p-12 lg:p-16 space-y-12 animate-in zoom-in-95 duration-500 shadow-[0_0_100px_rgba(var(--primary-rgb),0.2)]" onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-6 bg-black/95 backdrop-blur-3xl overflow-y-auto" onClick={() => setIsRecruitModalOpen(false)}>
+          <div className="relative w-full max-w-3xl bg-[#050505] border border-white/10 rounded-[2.5rem] md:rounded-[3rem] p-8 md:p-16 space-y-8 md:space-y-12 my-auto animate-in zoom-in-95 duration-500 shadow-[0_0_100px_rgba(var(--primary-rgb),0.2)]" onClick={e => e.stopPropagation()}>
             <button 
               onClick={() => setIsRecruitModalOpen(false)}
-              className="absolute top-10 right-10 p-4 bg-white/5 hover:bg-rose-500/20 hover:text-rose-500 rounded-2xl transition-all border border-white/10"
+              className="absolute top-6 md:top-10 right-6 md:right-10 p-3 md:p-4 bg-white/5 hover:bg-rose-500/20 hover:text-rose-500 rounded-xl md:rounded-2xl transition-all border border-white/10"
             >
-              <X size={24} />
+              <X size={20} />
             </button>
 
-            <div className="space-y-4">
+            <div className="space-y-3 md:space-y-4">
               <div className="flex h-1.5 w-24 bg-primary/20 rounded-full overflow-hidden">
                 <div className="h-full w-2/3 bg-primary animate-pulse" />
               </div>
-              <h2 className="text-5xl lg:text-7xl font-black italic tracking-tighter uppercase">
+              <h2 className="text-4xl md:text-7xl font-black italic tracking-tighter uppercase text-white">
                 Recruitment <span className="text-gradient">Request</span>
               </h2>
-              <p className="text-lg opacity-40 font-medium tracking-wide uppercase">Core Access Application • Session {new Date().getFullYear()}</p>
+              <p className="text-sm md:text-lg opacity-40 font-medium tracking-wide uppercase">Core Access Application • Session {new Date().getFullYear()}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -550,6 +562,56 @@ const ClubPublicWebsite: React.FC<Props> = ({
             Institutional Asset • Powered by CLIX HUB v2.8
          </p>
       </footer>
+
+      {/* ─── APPLICATION SUCCESS OVERLAY ─── */}
+      {submittedTrackingId && (
+        <div className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-3xl flex items-center justify-center p-4 md:p-8 animate-in fade-in duration-500 overflow-y-auto">
+          <div className="relative w-full max-w-md bg-[#050505] border border-emerald-500/20 rounded-[2.5rem] md:rounded-[3rem] overflow-hidden shadow-[0_0_100px_rgba(16,185,129,0.15)] my-auto animate-in zoom-in-95 duration-500">
+            <div className="h-1 w-full bg-gradient-to-r from-emerald-500 to-teal-500" />
+            <div className="p-8 md:p-10 space-y-6 md:space-y-8 text-center">
+              {/* Success icon */}
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-[1.5rem] md:rounded-[2rem] bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto">
+                <CheckCircle2 size={32} className="text-emerald-400" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-2xl md:text-3xl font-black uppercase italic tracking-tighter text-white">Execution Successful!</h3>
+                <p className="text-slate-500 text-xs md:text-sm">Sequence logged for <strong className="text-white">{club.name}</strong>. Access recorded via institutional tracking ID.</p>
+              </div>
+              {/* Tracking ID box */}
+              <div className="p-4 md:p-5 rounded-2xl bg-white/5 border border-white/10 space-y-3">
+                <p className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.4em] text-emerald-400">Tracking Reference</p>
+                <div className="flex items-center justify-center gap-3">
+                  <code className="text-md md:text-lg font-mono font-black text-white">{submittedTrackingId}</code>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(submittedTrackingId);
+                      setTrackingCopied(true);
+                      setTimeout(() => setTrackingCopied(false), 2000);
+                    }}
+                    className={`p-2 rounded-lg transition-all ${trackingCopied ? 'bg-emerald-500 text-white' : 'bg-white/10 text-slate-400 hover:text-white'}`}
+                  >
+                    {trackingCopied ? <CheckCircle2 size={14}/> : <Copy size={14}/>}
+                  </button>
+                </div>
+              </div>
+              <div className="flex flex-col gap-3 md:gap-4">
+                <button
+                  onClick={() => { setSubmittedTrackingId(null); onSwitchToDashboard?.(); }}
+                  className="w-full h-14 bg-primary text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-primary/20"
+                >
+                  Enter Mainframe Tracker →
+                </button>
+                <button
+                  onClick={() => setSubmittedTrackingId(null)}
+                  className="w-full h-12 bg-white/5 border border-white/10 text-slate-500 rounded-2xl font-black text-[9px] uppercase tracking-widest hover:bg-white/10 transition-all"
+                >
+                  Resume Observation
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

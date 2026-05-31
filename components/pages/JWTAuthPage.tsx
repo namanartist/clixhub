@@ -167,7 +167,7 @@ const JWTAuthPage: React.FC<Props> = ({ isDarkMode }) => {
                 </div>
 
                 {/* ─ AUTH SIDE ─ */}
-                <div className="flex-1 flex flex-col justify-center items-center p-8 md:p-16 relative overflow-y-auto">
+                <div className="flex-1 flex flex-col justify-center items-center p-5 md:p-8 lg:p-16 relative overflow-y-auto">
                     <div className="w-full max-w-lg space-y-8 reveal">
 
                         {/* Mode Selector */}
@@ -184,7 +184,7 @@ const JWTAuthPage: React.FC<Props> = ({ isDarkMode }) => {
 
                         {/* ── JWT AUTH PANEL ── */}
                         {authMode === 'jwt' ? (
-                            <div className="bento-card p-10 space-y-7">
+                            <div className="bento-card p-6 md:p-10 space-y-6 md:space-y-7">
                                 <div className="space-y-1">
                                     <h3 className="text-3xl font-black tracking-tighter">
                                         {formType === 'login' ? 'System Login' : 'Create Node'}
@@ -310,7 +310,7 @@ const JWTAuthPage: React.FC<Props> = ({ isDarkMode }) => {
 
                         ) : (
                             /* ── DEMO UPLINK PANEL ── */
-                            <div className="bento-card p-10 space-y-8">
+                            <div className="bento-card p-6 md:p-10 space-y-6 md:space-y-8">
                                 <div className="space-y-2">
                                     <h3 className="text-4xl font-black tracking-tighter">Demo Uplink</h3>
                                     <p className="text-sm font-medium text-[var(--text-secondary)]">Click any identity to instantly access the dashboard</p>

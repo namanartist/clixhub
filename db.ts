@@ -1,8 +1,8 @@
-import { Club, Applicant, Registration, Event, AuditLog, User, Role, ClubRole, Inquiry, SavedEvent, Message, Notification, SessionArchive, TeamMember, Mentor, DevConfig, PollOption, CertificateBatch, IssuedCertificate, Activity } from './types';
+import { Club, Applicant, Registration, Event, AuditLog, User, Role, ClubRole, Inquiry, SavedEvent, Message, Notification, SessionArchive, TeamMember, Mentor, DevConfig, PollOption, CertificateBatch, IssuedCertificate, Activity, Proposal } from './types';
 import { storage } from './lib/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-const API_BASE = 'http://127.0.0.1:4000/api';
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://127.0.0.1:4000/api';
 
 class InstitutionalAPI {
     private hasInitialized = false;
@@ -20,6 +20,18 @@ class InstitutionalAPI {
             console.error('Failed to connect to backend API:', e);
         }
         this.hasInitialized = true;
+    }
+
+    // ─── PROPOSALS ─────────────────────────────────────────────────────────
+    async getProposals(): Promise<Proposal[]> {
+        try { return await this.request('/proposals'); } catch (e) { return []; }
+    }
+
+    async saveProposal(proposal: Proposal): Promise<Proposal> {
+        return await this.request(`/proposals/${proposal.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(proposal)
+        });
     }
 
     // --- Auth Helpers (kept for compatibility) ---

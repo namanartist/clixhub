@@ -14,6 +14,7 @@ interface Props {
   allUsers: User[];
   onUpdateUser: (user: User) => void;
   applicants: Applicant[];
+  onAddMember?: () => void;
 }
 
 const ClubMembers: React.FC<Props> = ({ 

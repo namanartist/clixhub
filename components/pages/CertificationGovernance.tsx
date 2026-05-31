@@ -94,15 +94,74 @@ const CertificationGovernance: React.FC<Props> = ({
   // --- ACTIONS ---
 
   const handlePrint = (serial?: string) => {
+    const styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
+        .map(s => s.outerHTML)
+        .join('\n');
+
     if (serial) {
-        setActivePrintId(serial);
-        setTimeout(() => {
-            window.print();
-            setActivePrintId(null);
-        }, 100);
+        const printAnchor = document.getElementById(`cert-preview-${serial}`);
+        if (!printAnchor) {
+            alert("Digital ledger node not detected. Please verify scroll position.");
+            return;
+        }
+
+        const html = `
+            <html>
+                <head>
+                    <title>MITS Certificate - ${serial}</title>
+                    ${styles}
+                    <style>
+                        body { background: white !important; margin: 0; padding: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+                        @page { size: landscape; margin: 0; }
+                    </style>
+                </head>
+                <body onload="setTimeout(() => { window.print(); window.close(); }, 1200);">
+                    <div style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; font-family: system-ui, sans-serif;">
+                        ${printAnchor.innerHTML}
+                    </div>
+                </body>
+            </html>
+        `;
+
+        const win = window.open('', '_blank', 'width=1100,height=850');
+        if (win) { win.document.write(html); win.document.close(); }
     } else {
-        // Bulk print logic
-        window.print();
+        const approvedBatches = clubBatches.filter(b => b.status === 'Approved');
+        const allCerts = approvedBatches.flatMap(b => b.certificates || []);
+        
+        let certsHtml = '';
+        allCerts.forEach(cert => {
+            const node = document.getElementById(`cert-preview-${cert.serialNumber}`);
+            if (node) {
+                certsHtml += `<div style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; page-break-after: always;">${node.innerHTML}</div>`;
+            }
+        });
+
+        if (!certsHtml) {
+            alert("No certificate nodes found in current DOM matrix. Please ensure ledge items are rendered.");
+            return;
+        }
+
+        const html = `
+            <html>
+                <head>
+                    <title>MITS Institutional Bulk Export</title>
+                    ${styles}
+                    <style>
+                        body { background: white !important; margin: 0; padding: 0; }
+                        @page { size: landscape; margin: 0; }
+                    </style>
+                </head>
+                <body onload="setTimeout(() => { window.print(); window.close(); }, 2000);">
+                    <div style="font-family: system-ui, sans-serif;">
+                        ${certsHtml}
+                    </div>
+                </body>
+            </html>
+        `;
+
+        const win = window.open('', '_blank', 'width=1100,height=850');
+        if (win) { win.document.write(html); win.document.close(); }
     }
   };
 
@@ -595,8 +654,8 @@ const CertificationGovernance: React.FC<Props> = ({
                         <Download size={20}/>
                       </button>
                       
-                      {activePrintId === cert.serialNumber && (
-                        <div className="fixed inset-0 z-[-1] opacity-0 pointer-events-none">
+                      <div className="hidden">
+                        <div id={`cert-preview-${cert.serialNumber}`}>
                              <CertificatePreview 
                                 studentName={cert.studentName}
                                 enrollmentNumber={cert.enrollmentNumber}
@@ -606,9 +665,13 @@ const CertificationGovernance: React.FC<Props> = ({
                                 date={cert.date}
                                 template={designConfig.templateId}
                                 isPrintReady={true}
+                                facultySignature={faculty?.signatureUrl}
+                                facultyName={faculty?.name}
+                                presidentSignature={president?.signatureUrl}
+                                presidentName={president?.name}
                             />
                         </div>
-                      )}
+                      </div>
                     </td>
                   </tr>
                 ))}

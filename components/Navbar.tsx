@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { User, Club, Notification } from '../types';
-import { Bell, Menu, Search, ChevronDown, Command, LogOut, User as UserIcon, Settings, Zap, Sun, Moon, Sparkles, Fingerprint, Code, ArrowLeft, Hexagon } from 'lucide-react';
+import { Bell, Menu, Search, ChevronDown, Command, LogOut, User as UserIcon, Sparkles, Fingerprint, Code, ArrowLeft, Hexagon } from 'lucide-react';
 import { db } from '../db';
 
 interface NavbarProps {
@@ -9,7 +9,6 @@ interface NavbarProps {
   activeContext: string;
   onLogout: () => void;
   isDarkMode: boolean;
-  onToggleTheme: () => void;
   onToggleMobileMenu: () => void;
   onGoHome?: () => void;
   onOpenProfile?: () => void;
@@ -17,7 +16,7 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({
-  user, clubs, activeContext, onLogout, isDarkMode, onToggleTheme, onToggleMobileMenu, onGoHome, onOpenProfile, onOpenDeveloper
+  user, clubs, activeContext, onLogout, isDarkMode, onToggleMobileMenu, onGoHome, onOpenProfile, onOpenDeveloper
 }) => {
   const currentClub = clubs.find(c => c.id === activeContext);
   const contextName = activeContext === 'Global' ? 'Dashboard' : (currentClub?.name || 'Club');
@@ -52,7 +51,7 @@ const Navbar: React.FC<NavbarProps> = ({
   return (
     <nav className={`h-16 md:h-24 px-4 md:px-12 flex items-center sticky top-0 z-50 backdrop-blur-3xl border-b transition-all duration-500 ${isDarkMode
       ? 'bg-black/40 border-white/5'
-      : 'bg-white/40 border-slate-200'
+      : 'bg-white/40 backdrop-blur-2xl border-white/50 shadow-sm'
       }`}>
       <div className="w-full h-full flex items-center justify-between">
 
@@ -115,7 +114,7 @@ const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => setIsNotifOpen(!isNotifOpen)}
                 className={`p-3 md:p-4 rounded-xl md:rounded-2xl transition-all border relative ${isDarkMode
                   ? 'bg-white/5 border-white/5 text-slate-400 hover:text-white hover:border-white/20'
-                  : 'bg-slate-100 border-slate-200 text-slate-500 hover:text-primary'
+                  : 'bg-white/60 border-white/50 shadow-sm text-[#1B2559] hover:bg-white hover:text-primary'
                   }`}
               >
                 <Bell size={18} className="md:size-[20px]" />
@@ -130,7 +129,7 @@ const Navbar: React.FC<NavbarProps> = ({
             <button
               className={`flex items-center gap-3 md:gap-4 pl-3 md:pl-4 pr-3 md:pr-6 py-1.5 md:py-2 rounded-2xl md:rounded-3xl border transition-all duration-500 ${isDarkMode
                 ? 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-primary/50'
-                : 'bg-white border-slate-200 hover:border-primary/50 shadow-xl'
+                : 'bg-white/60 border-white/50 backdrop-blur-md shadow-lg hover:bg-white/80 hover:border-primary/50'
                 }`}
               onClick={() => setIsProfileOpen(!isProfileOpen)}
             >
@@ -147,7 +146,7 @@ const Navbar: React.FC<NavbarProps> = ({
             {isProfileOpen && (
               <div className={`absolute right-0 top-full mt-4 w-64 md:w-72 rounded-[1.5rem] md:rounded-[2.5rem] shadow-4xl p-2 z-[100] animate-in zoom-in-95 duration-500 border backdrop-blur-4xl ${isDarkMode
                 ? 'bg-black/90 border-white/10'
-                : 'bg-white/95 border-slate-200'
+                : 'bg-white/80 border-white/60'
                 }`}>
                 <div className={`p-6 md:p-8 border-b ${isDarkMode ? 'border-white/5' : 'border-slate-100'} space-y-2`}>
                   <div className="flex items-center gap-3">

@@ -29,7 +29,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ activeTab, setActiveTab, onToggle
       <div className={`relative px-1.5 py-1.5 rounded-[2.8rem] border backdrop-blur-4xl shadow-4xl flex items-center justify-between transition-all duration-700 ${
         isDarkMode 
           ? 'bg-black/40 border-white/10' 
-          : 'bg-white/60 border-slate-200'
+          : 'bg-white/40 border-white/60'
       }`}>
         
         {/* Morphing Sliding Indicator */}

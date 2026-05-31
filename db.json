@@ -948,6 +948,110 @@
       "status": "Approved",
       "date": "2024-06-20",
       "bannerUrl": "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800"
+    },
+    {
+      "id": "evt-f01",
+      "title": "HackMITS 2026 – National Hackathon",
+      "type": "Hackathon",
+      "date": "2026-05-15",
+      "description": "36-hour national hackathon with ₹2,00,000 prize pool. Build solutions for real-world problems.",
+      "venue": "MITS Main Auditorium",
+      "registrationFee": 200,
+      "capacity": 300,
+      "status": "Approved",
+      "clubId": "club-csit",
+      "imageUrl": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800"
+    },
+    {
+      "id": "evt-f02",
+      "title": "RoboWars 2026 – Combat Robotics",
+      "type": "Competition",
+      "date": "2026-05-28",
+      "description": "Pit your robot against others in MITS's premier combat robotics tournament.",
+      "venue": "MITS Sports Ground",
+      "registrationFee": 150,
+      "capacity": 120,
+      "status": "Approved",
+      "clubId": "club-robo",
+      "imageUrl": "https://images.unsplash.com/photo-1561144257-e32e8efc6c4f?w=800"
+    },
+    {
+      "id": "evt-f03",
+      "title": "Rangmanch 2026 – Annual Cultural Fest",
+      "type": "Cultural",
+      "date": "2026-06-10",
+      "description": "MITS's biggest cultural extravaganza — music, dance, drama, art and fashion.",
+      "venue": "Open Air Theatre, MITS",
+      "registrationFee": 50,
+      "capacity": 1000,
+      "status": "Approved",
+      "clubId": "club-cultural",
+      "imageUrl": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800"
+    },
+    {
+      "id": "evt-f04",
+      "title": "Deep Learning Bootcamp",
+      "type": "Workshop",
+      "date": "2026-05-20",
+      "description": "5-day intensive bootcamp on Neural Networks, CNNs, Transformers and LLMs.",
+      "venue": "CS Lab Block B",
+      "registrationFee": 300,
+      "capacity": 60,
+      "status": "Approved",
+      "clubId": "club-csit",
+      "imageUrl": "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800"
+    },
+    {
+      "id": "evt-f05",
+      "title": "MITS Premier Cricket League 2026",
+      "type": "Sports",
+      "date": "2026-06-05",
+      "description": "Inter-branch cricket league. 8 teams, 3 weeks of action.",
+      "venue": "MITS Cricket Ground",
+      "registrationFee": 100,
+      "capacity": 200,
+      "status": "Approved",
+      "clubId": "club-sports",
+      "imageUrl": "https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=800"
+    },
+    {
+      "id": "evt-f06",
+      "title": "IoT Smart City Hackathon",
+      "type": "Hackathon",
+      "date": "2026-07-01",
+      "description": "Build IoT solutions for smart cities. Sponsored by ISRO & DRDO.",
+      "venue": "Robotics Lab, MITS",
+      "registrationFee": 0,
+      "capacity": 80,
+      "status": "Approved",
+      "clubId": "club-robo",
+      "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800"
+    },
+    {
+      "id": "evt-f07",
+      "title": "Open Mic Night – Poetry & Music",
+      "type": "Cultural",
+      "date": "2026-05-25",
+      "description": "An evening of raw talent — spoken word, indie music, stand-up.",
+      "venue": "Campus Amphitheatre",
+      "registrationFee": 0,
+      "capacity": 400,
+      "status": "Approved",
+      "clubId": "club-cultural",
+      "imageUrl": "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800"
+    },
+    {
+      "id": "evt-f08",
+      "title": "Cybersecurity CTF 2026",
+      "type": "Competition",
+      "date": "2026-06-20",
+      "description": "Capture The Flag competition. Prove your hacking skills ethically.",
+      "venue": "CS Lab A & B",
+      "registrationFee": 100,
+      "capacity": 150,
+      "status": "Approved",
+      "clubId": "club-csit",
+      "imageUrl": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800"
     }
   ],
   "registrations": [
@@ -960,7 +1064,8 @@
       "status": "Approved",
       "paymentType": "Free",
       "attendanceMarked": true,
-      "certificateId": "cert-001"
+      "certificateId": "cert-001",
+      "ticketId": "TKT-EVENT001-ARS"
     },
     {
       "id": "reg-002",
@@ -970,7 +1075,8 @@
       "studentRoll": "0901IT211045",
       "status": "Approved",
       "paymentType": "Free",
-      "attendanceMarked": true
+      "attendanceMarked": true,
+      "ticketId": "TKT-EVENT001-002"
     },
     {
       "id": "reg-003",
@@ -1017,7 +1123,8 @@
       "studentBranch": "Computer Science & IT",
       "status": "Pending",
       "paymentType": "UPI",
-      "attendanceMarked": false
+      "attendanceMarked": false,
+      "ticketId": "TKT-EVT002-006"
     },
     {
       "id": "reg-007",
@@ -1249,6 +1356,126 @@
       "status": "Approved",
       "paymentType": "Free",
       "ticketId": "TKT-EVT009-DEMO-STU",
+      "attendanceMarked": false
+    },
+    {
+      "id": "reg-f01",
+      "eventId": "evt-f01",
+      "studentId": "demo-student-001",
+      "studentName": "Aryan Sharma",
+      "studentRoll": "0901CS211001",
+      "status": "Approved",
+      "ticketId": "TKT-HACK2026-ARS001",
+      "paymentType": "Online",
+      "registrationDate": "2026-04-18T09:00:00Z",
+      "attendanceMarked": false
+    },
+    {
+      "id": "reg-f02",
+      "eventId": "evt-f02",
+      "studentId": "demo-student-001",
+      "studentName": "Aryan Sharma",
+      "studentRoll": "0901CS211001",
+      "status": "Approved",
+      "ticketId": "TKT-ROBO2026-ARS001",
+      "paymentType": "Online",
+      "registrationDate": "2026-04-19T10:00:00Z",
+      "attendanceMarked": false
+    },
+    {
+      "id": "reg-f03",
+      "eventId": "evt-f03",
+      "studentId": "demo-student-001",
+      "studentName": "Aryan Sharma",
+      "studentRoll": "0901CS211001",
+      "status": "Approved",
+      "ticketId": "TKT-RANG2026-ARS001",
+      "paymentType": "Free",
+      "registrationDate": "2026-04-20T08:00:00Z",
+      "attendanceMarked": false
+    },
+    {
+      "id": "reg-f04",
+      "eventId": "evt-f04",
+      "studentId": "demo-student-001",
+      "studentName": "Aryan Sharma",
+      "studentRoll": "0901CS211001",
+      "status": "Approved",
+      "ticketId": "TKT-DLBT2026-ARS001",
+      "paymentType": "Online",
+      "registrationDate": "2026-04-17T14:00:00Z",
+      "attendanceMarked": false
+    },
+    {
+      "id": "reg-f05",
+      "eventId": "evt-f08",
+      "studentId": "demo-student-001",
+      "studentName": "Aryan Sharma",
+      "studentRoll": "0901CS211001",
+      "status": "Pending",
+      "ticketId": "TKT-CTF2026-ARS001",
+      "paymentType": "Online",
+      "registrationDate": "2026-04-20T11:00:00Z",
+      "attendanceMarked": false
+    },
+    {
+      "id": "reg-f06",
+      "eventId": "evt-f08",
+      "studentId": "demo-student-001",
+      "studentName": "Aryan Sharma",
+      "studentRoll": "0901CS211001",
+      "status": "Pending",
+      "ticketId": "TKT-CTF2026-ARS001",
+      "paymentType": "Online",
+      "registrationDate": "2026-04-20T11:00:00Z",
+      "attendanceMarked": false
+    },
+    {
+      "id": "reg-f07",
+      "eventId": "evt-f01",
+      "studentId": "stu-002",
+      "studentName": "Sneha Jain",
+      "studentRoll": "0901CS211002",
+      "status": "Approved",
+      "ticketId": "TKT-HACK2026-SNJ001",
+      "paymentType": "Online",
+      "registrationDate": "2026-04-18T10:00:00Z",
+      "attendanceMarked": false
+    },
+    {
+      "id": "reg-f08",
+      "eventId": "evt-f03",
+      "studentId": "stu-004",
+      "studentName": "Anjali Gupta",
+      "studentRoll": "0901CE211004",
+      "status": "Approved",
+      "ticketId": "TKT-RANG2026-ANG001",
+      "paymentType": "Free",
+      "registrationDate": "2026-04-19T11:00:00Z",
+      "attendanceMarked": false
+    },
+    {
+      "id": "reg-f09",
+      "eventId": "evt-f05",
+      "studentId": "stu-005",
+      "studentName": "Vikram Tiwari",
+      "studentRoll": "0901ME211005",
+      "status": "Approved",
+      "ticketId": "TKT-CRIC2026-VKT001",
+      "paymentType": "Online",
+      "registrationDate": "2026-04-19T09:00:00Z",
+      "attendanceMarked": false
+    },
+    {
+      "id": "reg-f10",
+      "eventId": "evt-f02",
+      "studentId": "stu-003",
+      "studentName": "Rahul Mishra",
+      "studentRoll": "0901EC211003",
+      "status": "Approved",
+      "ticketId": "TKT-ROBO2026-RHM001",
+      "paymentType": "Online",
+      "registrationDate": "2026-04-20T08:30:00Z",
       "attendanceMarked": false
     }
   ],
@@ -1483,353 +1710,301 @@
       "recruitmentCycle": "2024-Spring",
       "clubId": "club-sports",
       "email": "aditya.sports@example.com"
+    },
+    {
+      "id": "app-f01",
+      "name": "Tanmay Sharma",
+      "rollNumber": "0901CS231041",
+      "email": "tanmay@mitsgwl.ac.in",
+      "branch": "CSIT",
+      "whyJoin": "Passionate about web dev and hackathons",
+      "stage": "Applied",
+      "domain": "Technical",
+      "clubId": "club-csit"
+    },
+    {
+      "id": "app-f02",
+      "name": "Richa Agarwal",
+      "rollNumber": "0901EC231042",
+      "email": "richa@mitsgwl.ac.in",
+      "branch": "EC",
+      "whyJoin": "Love robotics and want to contribute to projects",
+      "stage": "Interview",
+      "domain": "Technical",
+      "clubId": "club-robo"
+    },
+    {
+      "id": "app-f03",
+      "name": "Karan Patel",
+      "rollNumber": "0901ME231043",
+      "email": "karan@mitsgwl.ac.in",
+      "branch": "ME",
+      "whyJoin": "Want to organize cultural events and perform",
+      "stage": "Applied",
+      "domain": "Cultural",
+      "clubId": "club-cultural"
+    },
+    {
+      "id": "app-f04",
+      "name": "Sanjana Mishra",
+      "rollNumber": "0901CS231044",
+      "email": "sanjana@mitsgwl.ac.in",
+      "branch": "CSIT",
+      "whyJoin": "Interested in AI/ML and data science projects",
+      "stage": "Selected",
+      "domain": "Technical",
+      "clubId": "club-csit"
+    },
+    {
+      "id": "app-f05",
+      "name": "Devendra Yadav",
+      "rollNumber": "0901CE231045",
+      "email": "devendra@mitsgwl.ac.in",
+      "branch": "CE",
+      "whyJoin": "Sports is my passion, want to represent MITS",
+      "stage": "Applied",
+      "domain": "Sports",
+      "clubId": "club-sports"
+    },
+    {
+      "id": "app-f06",
+      "name": "Ishika Jain",
+      "rollNumber": "0901IT231046",
+      "email": "ishika@mitsgwl.ac.in",
+      "branch": "IT",
+      "whyJoin": "Full-stack developer, want to build SaaS tools",
+      "stage": "Interview",
+      "domain": "Technical",
+      "clubId": "club-csit"
+    },
+    {
+      "id": "app-f07",
+      "name": "Aryan Sharma",
+      "rollNumber": "0901CS211001",
+      "email": "aryan@mitsgwl.ac.in",
+      "branch": "CSIT",
+      "whyJoin": "I want to lead the technical wing and organize national hackathons.",
+      "stage": "Screening",
+      "domain": "Technical",
+      "clubId": "club-csit",
+      "recruitmentCycle": "2026"
+    },
+    {
+      "id": "app-f08",
+      "name": "Aryan Sharma",
+      "rollNumber": "0901CS211001",
+      "email": "aryan@mitsgwl.ac.in",
+      "branch": "CSIT",
+      "whyJoin": "I have experience in robotics and want to contribute to the next RoboWars.",
+      "stage": "Interview",
+      "domain": "Technical",
+      "clubId": "club-robo",
+      "recruitmentCycle": "2026"
     }
   ],
   "logs": [
     {
       "id": "log-001",
-      "timestamp": "2024-03-15 09:12:44",
-      "user": "Admin (Demo)",
-      "action": "System initialized. CCMS demo mode activated."
+      "user": "Aryan Sharma",
+      "action": "Registered for HackMITS 2026",
+      "timestamp": "31/5/2026, 2:40:11 pm",
+      "clubId": "club-csit"
     },
     {
       "id": "log-002",
-      "timestamp": "2024-03-15 09:14:02",
-      "user": "Admin (Demo)",
-      "action": "Club \"CSIT Club\" created and configured.",
+      "user": "Aryan Sharma",
+      "action": "Downloaded ticket TKT-HACK2026-ARS001",
+      "timestamp": "31/5/2026, 3:40:11 pm",
       "clubId": "club-csit"
     },
     {
       "id": "log-003",
-      "timestamp": "2024-03-15 09:15:30",
-      "user": "Admin (Demo)",
-      "action": "Club \"Robotics Club\" created and configured.",
-      "clubId": "club-robo"
+      "user": "Dr. Priya Verma",
+      "action": "Approved certificate batch batch-004",
+      "timestamp": "31/5/2026, 6:40:11 pm",
+      "clubId": "club-csit"
     },
     {
       "id": "log-004",
-      "timestamp": "2024-03-15 09:16:10",
       "user": "Admin (Demo)",
-      "action": "Aryan Sharma appointed as President of CSIT Club.",
+      "action": "Created event: Deep Learning Bootcamp",
+      "timestamp": "31/5/2026, 5:40:11 pm",
       "clubId": "club-csit"
     },
     {
       "id": "log-005",
-      "timestamp": "2024-03-16 10:00:00",
-      "user": "Aryan Sharma",
-      "action": "Registered for HackMITS 2024 — Ticket Issued.",
+      "user": "Sneha Jain",
+      "action": "Registered for HackMITS 2026",
+      "timestamp": "31/5/2026, 7:40:11 pm",
       "clubId": "club-csit"
     },
     {
       "id": "log-006",
-      "timestamp": "2024-03-16 10:05:11",
-      "user": "Aryan Sharma",
-      "action": "Registered for Web Dev Bootcamp — Pending Payment.",
-      "clubId": "club-csit"
+      "user": "Rahul Mishra",
+      "action": "Updated RoboWars 2026 registration",
+      "timestamp": "31/5/2026, 4:40:11 pm",
+      "clubId": "club-robo"
     },
     {
       "id": "log-007",
-      "timestamp": "2024-03-16 11:20:05",
-      "user": "Dr. Priya Verma",
-      "action": "Event \"Rangmanch – Annual Cultural Fest\" approved.",
-      "clubId": "club-cultural"
+      "user": "Aryan Sharma",
+      "action": "Moved applicant to Interview stage",
+      "timestamp": "31/5/2026, 8:25:11 pm",
+      "clubId": "club-csit"
     },
     {
       "id": "log-008",
-      "timestamp": "2024-03-16 12:00:00",
-      "user": "Admin (Demo)",
-      "action": "20+ institutional identities seeded into the ledger."
+      "user": "Vikram Tiwari",
+      "action": "Registered for MITS Cricket League 2026",
+      "timestamp": "31/5/2026, 6:40:11 pm",
+      "clubId": "club-sports"
     },
     {
       "id": "log-009",
-      "timestamp": "2024-03-17 09:00:00",
-      "user": "Prof. Suresh Kumar",
-      "action": "Event \"AI/ML Workshop\" approved.",
+      "user": "System",
+      "action": "Auto-generated certificate batch for Open Source Day",
+      "timestamp": "31/5/2026, 12:40:11 pm",
       "clubId": "club-csit"
     },
     {
       "id": "log-010",
-      "timestamp": "2024-03-17 10:30:00",
-      "user": "Rahul Mishra",
-      "action": "Recruitment cycle 2024-Spring opened for Robotics Club.",
-      "clubId": "club-robo"
-    },
-    {
-      "id": "log-011",
-      "timestamp": "2024-03-18 14:00:00",
       "user": "Dr. Manish Dixit",
-      "action": "Certificate batch for CodeQuest 2024 approved by Dean.",
-      "clubId": "club-csit"
-    },
-    {
-      "id": "log-012",
-      "timestamp": "2024-03-19 11:00:00",
-      "user": "Kavya Sharma",
-      "action": "Poetry Slam event created and submitted for approval.",
+      "action": "Signed and approved batch batch-007",
+      "timestamp": "30/5/2026, 8:40:11 pm",
       "clubId": "club-cultural"
     },
     {
+      "id": "log-011",
+      "user": "Anjali Gupta",
+      "action": "Registered for Open Mic Night 2026",
+      "timestamp": "31/5/2026, 7:55:11 pm",
+      "clubId": "club-cultural"
+    },
+    {
+      "id": "log-012",
+      "user": "Admin (Demo)",
+      "action": "Added new student to Student Registry",
+      "timestamp": "29/5/2026, 8:40:11 pm",
+      "clubId": null
+    },
+    {
       "id": "log-013",
-      "timestamp": "2024-03-20 09:15:00",
-      "user": "Vikram Tiwari",
-      "action": "Inter-College Cricket Tournament registrations opened.",
-      "clubId": "club-sports"
+      "user": "Aryan Sharma",
+      "action": "Registered for Deep Learning Bootcamp",
+      "timestamp": "28/5/2026, 8:40:11 pm",
+      "clubId": "club-csit"
     },
     {
       "id": "log-014",
-      "timestamp": "2024-03-20 15:30:00",
-      "user": "Sneha Jain",
-      "action": "Registered for Cybersecurity Workshop — Ticket Issued.",
+      "user": "System",
+      "action": "Attendance finalized for AI/ML Workshop – 45 students",
+      "timestamp": "26/5/2026, 8:40:11 pm",
       "clubId": "club-csit"
     },
     {
       "id": "log-015",
-      "timestamp": "2024-03-21 10:00:00",
-      "user": "Admin (Demo)",
-      "action": "Club \"Cultural Club\" recruitment cycle closed.",
-      "clubId": "club-cultural"
+      "user": "Aryan Sharma",
+      "action": "Marked 12 member attendances in CSIT Club",
+      "timestamp": "25/5/2026, 8:40:11 pm",
+      "clubId": "club-csit"
     }
   ],
   "activities": [
     {
       "id": "act-001",
-      "clubId": "club-csit",
-      "title": "Git & GitHub Workshop",
-      "description": "Introductory session on version control, branching strategies, and collaborative development using GitHub.",
-      "category": "Workshop",
-      "date": "2024-03-10",
-      "location": "CS Lab 2",
-      "outcome": "45 students attended, 30 made their first PR",
-      "participantsCount": 45,
-      "isPublic": true
+      "type": "registration",
+      "userId": "demo-student-001",
+      "message": "Aryan Sharma registered for HackMITS 2026",
+      "timestamp": "2026-05-31T09:10:11.112Z",
+      "clubId": "club-csit"
     },
     {
       "id": "act-002",
-      "clubId": "club-csit",
-      "title": "Competitive Programming Contest",
-      "description": "Monthly CP contest on Codeforces-style problems. Prizes for top 3 performers.",
-      "category": "Competition",
-      "date": "2024-03-15",
-      "location": "Online (HackerRank)",
-      "outcome": "60 participants, 3 winners awarded certificates",
-      "participantsCount": 60,
-      "isPublic": true
+      "type": "registration",
+      "userId": "demo-student-001",
+      "message": "Aryan Sharma registered for RoboWars 2026",
+      "timestamp": "2026-05-31T10:10:11.112Z",
+      "clubId": "club-robo"
     },
     {
       "id": "act-003",
-      "clubId": "club-robo",
-      "title": "Arduino Basics Session",
-      "description": "Hands-on introduction to Arduino Uno, sensors, and basic circuit design.",
-      "category": "Workshop",
-      "date": "2024-03-08",
-      "location": "Robotics Lab",
-      "outcome": "All 25 participants built their first LED circuit",
-      "participantsCount": 25,
-      "isPublic": true
+      "type": "certificate",
+      "userId": "demo-student-001",
+      "message": "Certificate issued: MITS-CSI-2024-00001",
+      "timestamp": "2026-05-29T15:10:11.112Z",
+      "clubId": "club-csit"
     },
     {
       "id": "act-004",
-      "clubId": "club-robo",
-      "title": "Drone Assembly Workshop",
-      "description": "Two-day intensive workshop on building and flying quadcopter drones.",
-      "category": "Workshop",
-      "date": "2024-03-20",
-      "location": "Open Ground & Lab",
-      "outcome": "3 drones assembled and test-flown successfully",
-      "participantsCount": 15,
-      "isPublic": true
+      "type": "approval",
+      "userId": "demo-faculty-001",
+      "message": "Dr. Priya Verma approved certificate batch batch-004",
+      "timestamp": "2026-05-31T13:10:11.112Z",
+      "clubId": "club-csit"
     },
     {
       "id": "act-005",
-      "clubId": "club-cultural",
-      "title": "Open Mic Night Vol. 3",
-      "description": "Monthly open mic featuring poetry, standup comedy, and musical performances.",
-      "category": "Meetup",
-      "date": "2024-03-12",
-      "location": "Main Auditorium",
-      "outcome": "12 performers, 150+ audience",
-      "participantsCount": 162,
-      "isPublic": true
+      "type": "event",
+      "userId": "demo-admin-001",
+      "message": "New event created: Deep Learning Bootcamp",
+      "timestamp": "2026-05-31T12:10:11.112Z",
+      "clubId": "club-csit"
     },
     {
       "id": "act-006",
-      "clubId": "club-cultural",
-      "title": "Classical Dance Workshop",
-      "description": "Workshop on Kathak fundamentals by guest artist from Gwalior Gharana.",
-      "category": "Workshop",
-      "date": "2024-03-22",
-      "location": "Dance Room",
-      "outcome": "30 students learned basic Kathak movements",
-      "participantsCount": 30,
-      "isPublic": true
+      "type": "registration",
+      "userId": "stu-002",
+      "message": "Sneha Jain registered for HackMITS 2026",
+      "timestamp": "2026-05-31T14:10:11.112Z",
+      "clubId": "club-csit"
     },
     {
       "id": "act-007",
-      "clubId": "club-sports",
-      "title": "Intra-Branch Football League – Round 1",
-      "description": "First round matches of inter-branch football tournament.",
-      "category": "Competition",
-      "date": "2024-03-14",
-      "location": "Football Ground",
-      "outcome": "CS, ME, EC, CE qualified for next round",
-      "participantsCount": 120,
-      "isPublic": true
+      "type": "registration",
+      "userId": "stu-004",
+      "message": "Anjali Gupta registered for Rangmanch 2026",
+      "timestamp": "2026-05-31T14:25:11.112Z",
+      "clubId": "club-cultural"
     },
     {
       "id": "act-008",
-      "clubId": "club-sports",
-      "title": "Morning Fitness Challenge",
-      "description": "30-day morning fitness challenge with daily exercises and tracking.",
-      "category": "Project",
-      "date": "2024-03-01",
-      "location": "Gymnasium",
-      "outcome": "50 students completed the full 30-day challenge",
-      "participantsCount": 80,
-      "isPublic": true
+      "type": "attendance",
+      "userId": "demo-student-001",
+      "message": "Attendance marked for AI/ML Workshop",
+      "timestamp": "2026-05-27T15:10:11.112Z",
+      "clubId": "club-csit"
     },
     {
       "id": "act-009",
-      "clubId": "club-csit",
-      "title": "DSA Study Group – Week 4",
-      "description": "Weekly DSA study group covering Trees and Graphs. Practice problems included.",
-      "category": "Seminar",
-      "date": "2024-03-25",
-      "location": "CS Lab 1",
-      "outcome": "35 students solved 10 problems on LeetCode",
-      "participantsCount": 35,
-      "isPublic": true
+      "type": "login",
+      "userId": "demo-faculty-001",
+      "message": "Faculty Dr. Priya Verma logged in",
+      "timestamp": "2026-05-31T14:40:11.112Z",
+      "clubId": null
     },
     {
       "id": "act-010",
-      "clubId": "club-csit",
-      "title": "Cloud Computing Webinar",
-      "description": "Guest webinar by AWS Solution Architect on cloud fundamentals and career paths.",
-      "category": "Webinar",
-      "date": "2024-04-01",
-      "location": "Online (Google Meet)",
-      "outcome": "85 students attended, 10 signed up for AWS Academy",
-      "participantsCount": 85,
-      "isPublic": true
+      "type": "registration",
+      "userId": "stu-005",
+      "message": "Vikram Tiwari registered for Cricket League 2026",
+      "timestamp": "2026-05-31T13:10:11.112Z",
+      "clubId": "club-sports"
     },
     {
       "id": "act-011",
-      "clubId": "club-csit",
-      "title": "React Advanced Concepts",
-      "description": "Deep dive into React Hooks, Context API, and performance optimization. Intermediate level workshop.",
-      "category": "Workshop",
-      "date": "2024-04-05",
-      "location": "CS Lab 2",
-      "outcome": "40 students completed all exercises. 8 student-led projects initiated.",
-      "participantsCount": 40,
-      "isPublic": true
+      "type": "application",
+      "userId": "stu-003",
+      "message": "Rahul Mishra moved to Interview stage",
+      "timestamp": "2026-05-31T14:50:11.112Z",
+      "clubId": "club-robo"
     },
     {
       "id": "act-012",
-      "clubId": "club-csit",
-      "title": "LeetCode Contest #5",
-      "description": "Monthly competitive programming contest on LeetCode. Hard level problems. Top 3 get Amazon vouchers.",
-      "category": "Competition",
-      "date": "2024-04-12",
-      "location": "Online (LeetCode)",
-      "outcome": "95 participants, 3 perfect scores, $150 in prizes distributed",
-      "participantsCount": 95,
-      "isPublic": true
-    },
-    {
-      "id": "act-013",
-      "clubId": "club-robo",
-      "title": "PCB Design Workshop",
-      "description": "Two-day intensive on circuit design, PCB layout & manufacturing. Hands-on with Altium Designer.",
-      "category": "Workshop",
-      "date": "2024-04-08",
-      "location": "Robotics Lab",
-      "outcome": "3 PCBs designed and ordered for manufacturing",
-      "participantsCount": 12,
-      "isPublic": true
-    },
-    {
-      "id": "act-014",
-      "clubId": "club-robo",
-      "title": "Drone Racing Championship",
-      "description": "First inter-college drone racing event. 5 teams competing. Prize pool ₹20K.",
-      "category": "Competition",
-      "date": "2024-05-15",
-      "location": "Open Ground",
-      "outcome": "MITS Robotics won 1st place. 300+ spectators attended.",
-      "participantsCount": 50,
-      "isPublic": true
-    },
-    {
-      "id": "act-015",
-      "clubId": "club-cultural",
-      "title": "Music Production Workshop",
-      "description": "Introduction to music production using FL Studio and Ableton Live. Recording & mixing basics.",
-      "category": "Workshop",
-      "date": "2024-04-18",
-      "location": "Audio Room",
-      "outcome": "22 students completed. 2 students produced original tracks.",
-      "participantsCount": 22,
-      "isPublic": true
-    },
-    {
-      "id": "act-016",
-      "clubId": "club-cultural",
-      "title": "Stand-up Comedy Night",
-      "description": "Monthly stand-up comedy event. Featuring student comedians and some external performers.",
-      "category": "Meetup",
-      "date": "2024-04-22",
-      "location": "Main Auditorium",
-      "outcome": "250+ audience, 8 performers. Highly appreciated event.",
-      "participantsCount": 258,
-      "isPublic": true
-    },
-    {
-      "id": "act-017",
-      "clubId": "club-sports",
-      "title": "Badminton League – Group Stage",
-      "description": "Inter-branch singles and doubles tournament. Best-of-3 matches.",
-      "category": "Competition",
-      "date": "2024-04-10",
-      "location": "Badminton Courts",
-      "outcome": "CS, ME, CE qualified for semifinals. 80 students participated.",
-      "participantsCount": 80,
-      "isPublic": true
-    },
-    {
-      "id": "act-018",
-      "clubId": "club-sports",
-      "title": "Nutrition & Fitness Seminar",
-      "description": "Ft. Sports Nutritionist and Olympic trainer. Panel discussion on health & fitness.",
-      "category": "Seminar",
-      "date": "2024-05-05",
-      "location": "Main Auditorium",
-      "outcome": "400+ students attended. 50+ nutrition consultations done.",
-      "participantsCount": 450,
-      "isPublic": true
-    },
-    {
-      "id": "act-019",
-      "clubId": "club-csit",
-      "title": "Database Design Deep Dive",
-      "description": "SQL optimization, query performance, indexing strategies. Companies hiring track.",
-      "category": "Workshop",
-      "date": "2024-05-20",
-      "location": "CS Lab 1",
-      "outcome": "35 students. 5 participants got internship offers from TechCorp.",
-      "participantsCount": 35,
-      "isPublic": true
-    },
-    {
-      "id": "act-020",
-      "clubId": "club-robo",
-      "title": "Green Robotics Hackathon",
-      "description": "Build eco-friendly robots. Theme: Sustainability. 6-hour challenge.",
-      "category": "Competition",
-      "date": "2024-05-25",
-      "location": "Robotics Lab & Ground",
-      "outcome": "10 teams, 3 prizes. Winning bot: Solar-powered sweeper.",
-      "participantsCount": 40,
-      "isPublic": true
+      "type": "certificate",
+      "userId": "stu-008",
+      "message": "Certificate issued: MITS-CUL-2024-0001",
+      "timestamp": "2026-05-28T15:10:11.112Z",
+      "clubId": "club-cultural"
     }
   ],
   "batches": [
@@ -2172,89 +2347,119 @@
         }
       ],
       "templateId": "classic"
+    },
+    {
+      "id": "batch-f01",
+      "clubId": "club-csit",
+      "eventId": "evt-f04",
+      "templateId": "modern",
+      "status": "Approved",
+      "createdBy": "Aryan Sharma",
+      "createdAt": "2026-04-15T10:00:00Z",
+      "certificates": [
+        {
+          "serialNumber": "MITS-CSI-2026-00010",
+          "studentId": "demo-student-001",
+          "studentName": "Aryan Sharma",
+          "enrollmentNumber": "0901CS211001",
+          "eventName": "Deep Learning Bootcamp",
+          "clubId": "club-csit",
+          "clubName": "CSIT Club",
+          "date": "2026-04-15",
+          "hash": "a1b2c3d4e5f6789012345678",
+          "batchId": "batch-f01"
+        },
+        {
+          "serialNumber": "MITS-CSI-2026-00011",
+          "studentId": "stu-006",
+          "studentName": "Pooja Choudhary",
+          "enrollmentNumber": "0901CS211006",
+          "eventName": "Deep Learning Bootcamp",
+          "clubId": "club-csit",
+          "clubName": "CSIT Club",
+          "date": "2026-04-15",
+          "hash": "e5d4c3b2a1f6789012345679",
+          "batchId": "batch-f01"
+        },
+        {
+          "serialNumber": "MITS-CSI-2026-00012",
+          "studentId": "stu-015",
+          "studentName": "Shreya Pandey",
+          "enrollmentNumber": "0901CS221015",
+          "eventName": "Deep Learning Bootcamp",
+          "clubId": "club-csit",
+          "clubName": "CSIT Club",
+          "date": "2026-04-15",
+          "hash": "f1e2d3c4b5a6789012345680",
+          "batchId": "batch-f01"
+        }
+      ],
+      "approvalChain": [
+        {
+          "role": "Faculty",
+          "approverName": "Prof. Suresh Kumar",
+          "status": "Approved",
+          "approvedAt": "2026-04-16T09:00:00Z"
+        },
+        {
+          "role": "Dean",
+          "approverName": "Dr. Manish Dixit",
+          "status": "Approved",
+          "approvedAt": "2026-04-17T14:00:00Z"
+        }
+      ]
     }
   ],
   "messages": [
     {
-      "id": "msg-seed-001",
+      "id": "m1",
       "senderId": "demo-student-001",
       "senderName": "Aryan Sharma",
-      "clubId": "club-csit",
-      "content": "Hey everyone! HackMITS registrations are now open. Spread the word! 🚀",
-      "timestamp": "2024-03-15T10:00:00.000Z",
-      "read": false
+      "content": "Hey everyone! Is the HackMITS registration open?",
+      "timestamp": "2026-05-31T03:10:11.112Z",
+      "type": "text",
+      "status": "read",
+      "clubId": "club-csit"
     },
     {
-      "id": "msg-seed-002",
+      "id": "m2",
       "senderId": "stu-002",
       "senderName": "Sneha Jain",
-      "clubId": "club-csit",
-      "content": "Amazing! I will share it with all the juniors. Can we also post it on the notice board?",
-      "timestamp": "2024-03-15T10:05:00.000Z",
-      "read": false
+      "content": "Yes Aryan! Just registered. The dashboard UI looks amazing.",
+      "timestamp": "2026-05-31T03:40:11.112Z",
+      "type": "text",
+      "status": "read",
+      "clubId": "club-csit"
     },
     {
-      "id": "msg-seed-003",
-      "senderId": "stu-006",
-      "senderName": "Pooja Choudhary",
-      "clubId": "club-csit",
-      "content": "The ML workshop prep is going great. I have the slides ready for review.",
-      "timestamp": "2024-03-15T11:00:00.000Z",
-      "read": false
-    },
-    {
-      "id": "msg-seed-004",
-      "senderId": "stu-003",
-      "senderName": "Rahul Mishra",
-      "clubId": "club-robo",
-      "content": "RoboWars arena setup is complete! Testing starts tomorrow. 🤖",
-      "timestamp": "2024-03-20T14:00:00.000Z",
-      "read": false
-    },
-    {
-      "id": "msg-seed-005",
-      "senderId": "stu-007",
-      "senderName": "Amit Dubey",
-      "clubId": "club-robo",
-      "content": "The new ESP32 modules have arrived. IoT bootcamp prep looking good!",
-      "timestamp": "2024-03-20T14:30:00.000Z",
-      "read": false
-    },
-    {
-      "id": "msg-seed-006",
-      "senderId": "stu-008",
-      "senderName": "Kavya Sharma",
-      "clubId": "club-cultural",
-      "content": "Rangmanch rehearsals start next week. All wing leads please confirm your schedules.",
-      "timestamp": "2024-03-18T09:00:00.000Z",
-      "read": false
-    },
-    {
-      "id": "msg-seed-007",
-      "senderId": "stu-004",
-      "senderName": "Anjali Gupta",
-      "clubId": "club-cultural",
-      "content": "Dance wing is ready! We have 15 performers confirmed for the opening act. 💃",
-      "timestamp": "2024-03-18T09:15:00.000Z",
-      "read": false
-    },
-    {
-      "id": "msg-seed-demo-001",
+      "id": "m3",
       "senderId": "demo-student-001",
       "senderName": "Aryan Sharma",
-      "clubId": "club-csit",
-      "content": "Great work on the workshop Pooja! The participation was amazing.",
-      "timestamp": "2024-06-02T10:00:00.000Z",
-      "read": false
+      "content": "Awesome! See you there.",
+      "timestamp": "2026-05-31T04:10:11.112Z",
+      "type": "text",
+      "status": "read",
+      "clubId": "club-csit"
     },
     {
-      "id": "msg-seed-demo-002",
-      "senderId": "demo-faculty-example",
-      "senderName": "Demo Faculty",
-      "clubId": "club-csit",
-      "content": "Excellent execution of the bootcamp this year. Keep up the momentum!",
-      "timestamp": "2024-05-18T14:30:00.000Z",
-      "read": false
+      "id": "m4",
+      "senderId": "demo-faculty-001",
+      "senderName": "Dr. Priya Verma",
+      "content": "Good to see the enthusiasm. Please ensure all technical requirements are met.",
+      "timestamp": "2026-05-31T05:10:11.112Z",
+      "type": "text",
+      "status": "read",
+      "clubId": "club-csit"
+    },
+    {
+      "id": "m5",
+      "senderId": "stu-003",
+      "senderName": "Rahul Mishra",
+      "content": "Aryan, did you get your RoboWars interview slot?",
+      "timestamp": "2026-05-31T13:10:11.112Z",
+      "type": "text",
+      "status": "sent",
+      "recipientId": "demo-student-001"
     }
   ],
   "payments": [

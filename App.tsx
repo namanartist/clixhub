@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
-import { User, Club, Applicant, Event, Role, ClubRole, AuditLog, Registration, Quotation, Achievement, CertificateBatch, IssuedCertificate } from './types';
+import { User, Club, Applicant, Event, Role, ClubRole, AuditLog, Registration, Quotation, Achievement, CertificateBatch, IssuedCertificate, Proposal } from './types';
 import { useAuth } from './lib/AuthContext';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
@@ -55,7 +55,7 @@ const App: React.FC = () => {
   const { user: authUser, isAuthenticated, loading: authLoading, logout } = useAuth();
 
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   // Note: For activeContext & activeTab we parse the current URL
   // Default values
@@ -75,6 +75,7 @@ const App: React.FC = () => {
     applicants: Applicant[];
     logs: AuditLog[];
     batches: CertificateBatch[];
+    proposals?: Proposal[];
   }>({
     users: [],
     clubs: [],
@@ -82,7 +83,8 @@ const App: React.FC = () => {
     registrations: [],
     applicants: [],
     logs: [],
-    batches: []
+    batches: [],
+    proposals: []
   });
 
   useEffect(() => {
@@ -148,23 +150,21 @@ const App: React.FC = () => {
     }
   }, [location.pathname]);
 
-  useEffect(() => {
-    // App is permanently dark — always apply the dark class
-    document.documentElement.classList.add('dark');
-  }, []);
+
 
   const refreshData = async () => {
     try {
       const dbUsers = await db.getUsers();
-      const [clubs, events, registrations, applicants, logs, batches] = await Promise.all([
+      const [clubs, events, registrations, applicants, logs, batches, proposals] = await Promise.all([
         db.getClubs(),
         db.getEvents(),
         db.getRegistrations(),
         db.getApplicants(),
         db.getLogs(),
-        db.getBatches()
+        db.getBatches(),
+        (db as any).getProposals ? (db as any).getProposals() : Promise.resolve([])
       ]);
-      setData(prev => ({ ...prev, users: dbUsers, clubs, events, registrations, applicants, logs, batches }));
+      setData(prev => ({ ...prev, users: dbUsers, clubs, events, registrations, applicants, logs, batches, proposals: proposals || [] }));
     } catch (err) {
       console.warn("Failed to fetch all data, offline fallback active.");
     }
@@ -384,6 +384,24 @@ const App: React.FC = () => {
       }));
       // API Call
       await db.saveApplicant(updatedApplicant);
+
+      // If Selected, automatically add to Club Memberships
+      if (stage === 'Selected') {
+          const user = data.users.find(u => u.name === applicant.name || u.rollNumber === applicant.rollNumber || u.email === applicant.email);
+          if (user) {
+              const updatedUser = { ...user };
+              if (!updatedUser.clubMemberships.some(m => m.clubId === applicant.clubId)) {
+                  updatedUser.clubMemberships.push({
+                      clubId: applicant.clubId,
+                      role: ClubRole.MEMBER,
+                      joinedAt: new Date().toISOString()
+                  });
+                  await db.saveUser(updatedUser);
+              }
+          }
+      }
+
+      refreshData();
     }
   };
   const handleApplicantDomainUpdate = async (id: string, domain: string) => {
@@ -499,10 +517,51 @@ const App: React.FC = () => {
   const handleIssueCertificateBatch = async (batch: any) => { /* ... */ };
   const handleUpdateClubQuotation = async (id: string, q: Quotation[]) => { /* ... */ };
   const handleUpdateClubQr = async (id: string, url: string) => { /* ... */ };
+  const handleProposeUnit = async (proposalData: Partial<Proposal>) => {
+    try {
+      const id = `prop-${Date.now()}`;
+      const newProposal: Proposal = {
+        id,
+        type: proposalData.type || 'Club',
+        title: proposalData.title || '',
+        category: proposalData.category || 'General',
+        proposerName: proposalData.proposerName || '',
+        proposerRoll: proposalData.proposerRoll || '',
+        proposerEmail: proposalData.proposerEmail || '',
+        missionStatement: proposalData.missionStatement || '',
+        estimatedMembers: proposalData.estimatedMembers || 0,
+        status: 'Pending',
+        timestamp: new Date().toISOString()
+      };
+      
+      if ((db as any).saveProposal) {
+        await (db as any).saveProposal(newProposal);
+      }
+
+      await db.addLog({
+        id: `log-${Date.now()}`,
+        timestamp: new Date().toLocaleString(),
+        user: newProposal.proposerName,
+        action: `Submitted Genesis Proposal for ${newProposal.type}: ${newProposal.title}`,
+        clubId: 'institutional'
+      });
+
+      await refreshData();
+      return { success: true, id };
+    } catch (err) {
+      console.error(err);
+      return { success: false, id: '' };
+    }
+  };
+
   const handleNewApplication = async (applicationData: { name: string, rollNumber: string, domain: string, whyJoin: string, clubId: string }) => {
     try {
+      const appId = `app-${Date.now()}`;
+      const trackingPrefix = applicationData.clubId.replace('club-', '').toUpperCase().slice(0, 4);
+      const trackingId = `MITS-${trackingPrefix}-${appId.slice(-6).toUpperCase()}`;
+
       const applicant: Applicant = {
-        id: `app-${Date.now()}`,
+        id: appId,
         ...applicationData,
         stage: 'Applied',
         email: currentUser?.email || '',
@@ -516,18 +575,60 @@ const App: React.FC = () => {
         id: `log-${Date.now()}`,
         timestamp: new Date().toLocaleString(),
         user: applicationData.name,
-        action: `Submitted recruitment application for ${data.clubs.find(c => c.id === applicationData.clubId)?.name}`,
+        action: `Submitted recruitment application for ${data.clubs.find(c => c.id === applicationData.clubId)?.name} [${trackingId}]`,
         clubId: applicationData.clubId
       });
 
       await refreshData();
-      return true;
+      // Navigate user to their applications tracker
+      handleTabChange('recruitment');
+      return { success: true, trackingId };
     } catch (err) {
       console.error("Application Submission Failed:", err);
-      return false;
+      return { success: false, trackingId: null };
     }
   };
 
+
+  const handleApproveProposal = async (id: string) => {
+    try {
+      const proposal = data.proposals?.find(p => p.id === id);
+      if (!proposal) return;
+
+      // Update proposal status
+      const updatedProposal: Proposal = { ...proposal, status: 'Approved' };
+      if ((db as any).saveProposal) {
+        await (db as any).saveProposal(updatedProposal);
+      }
+
+      // Create the Unit (Club or Team)
+      const newClub: Club = {
+        id: `club-${Date.now()}`,
+        name: proposal.title,
+        category: proposal.category as Club['category'],
+        themeColor: proposal.type === 'Club' ? '#2563eb' : '#f59e0b',
+        subdomain: `${proposal.title.toLowerCase().replace(/\s+/g, '')}.mitsgwl.ac.in`,
+        leadership: {},
+        facultyCoordinatorId: '',
+        tagline: proposal.missionStatement.slice(0, 50) + '...',
+        recruitmentActive: false
+      };
+      await db.addClub(newClub);
+
+      await db.addLog({
+        id: `log-${Date.now()}`,
+        timestamp: new Date().toLocaleString(),
+        user: currentUser?.name || 'Dean',
+        action: `Authorized Genesis Proposal: ${proposal.title} [Unit ID: ${newClub.id}]`,
+        clubId: 'institutional'
+      });
+
+      await refreshData();
+      alert(`Genesis Authorized: ${proposal.title} dashboard generated.`);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const closePublicPage = () => {
     setPublicPage(null);
@@ -549,11 +650,11 @@ const App: React.FC = () => {
         case 'dashboard':
         case '':
           return currentUser.globalRole === Role.SUPER_ADMIN ?
-            <SuperAdminHub clubs={data.clubs} allUsers={data.users} onFreeze={handleFreezeClub} onEnterClub={handleContextChange} onAddClub={handleAddClub} onAppointPresident={handleAppointPresident} onAssignFaculty={handleAssignFaculty} onAddUser={handleAddUser} isDarkMode={isDarkMode} />
+            <SuperAdminHub clubs={data.clubs} allUsers={data.users} onFreeze={handleFreezeClub} onEnterClub={handleContextChange} onAddClub={handleAddClub} onAppointPresident={handleAppointPresident} onAssignFaculty={handleAssignFaculty} onAddUser={handleAddUser} isDarkMode={isDarkMode} proposals={data.proposals} onApproveProposal={handleApproveProposal} />
             : currentUser.globalRole === Role.FACULTY ?
               <FacultyFeed user={currentUser} clubs={data.clubs} onManageClub={handleContextChange} />
               : <GlobalStudentDashboard user={currentUser} events={data.events} clubs={data.clubs} certCount={data.registrations.filter(r => r.studentId === currentUser.id && r.certificateId).length} onRegister={handleRegisterEvent} isDarkMode={isDarkMode} logs={data.logs} registrations={data.registrations} applicants={data.applicants} />;
-        case 'admin-dashboard': return <SuperAdminHub clubs={data.clubs} allUsers={data.users} onFreeze={handleFreezeClub} onEnterClub={handleContextChange} onAddClub={handleAddClub} onAppointPresident={handleAppointPresident} onAssignFaculty={handleAssignFaculty} onAddUser={handleAddUser} isDarkMode={isDarkMode} />;
+        case 'admin-dashboard': return <SuperAdminHub clubs={data.clubs} allUsers={data.users} onFreeze={handleFreezeClub} onEnterClub={handleContextChange} onAddClub={handleAddClub} onAppointPresident={handleAppointPresident} onAssignFaculty={handleAssignFaculty} onAddUser={handleAddUser} isDarkMode={isDarkMode} proposals={data.proposals} onApproveProposal={handleApproveProposal} />;
         case 'chat': return <ChatSystem user={currentUser} clubs={data.clubs} allUsers={data.users} activeContext={activeContext} isDarkMode={isDarkMode} />;
         case 'student-registry': return <StudentRegistry allUsers={data.users} onAddUser={handleAddUser} onUpdateUser={handleUpdateUser} onRemoveUser={handleRemoveUser} isDarkMode={isDarkMode} />;
         case 'faculty-registry': return <FacultyRegistry allUsers={data.users} onAddUser={handleAddUser} onUpdateUser={handleUpdateUser} onRemoveUser={handleRemoveUser} isDarkMode={isDarkMode} />;
@@ -574,7 +675,7 @@ const App: React.FC = () => {
         );
         case 'reports': return <InstitutionalKPIs clubs={data.clubs} events={data.events} registrations={data.registrations} applicants={data.applicants} />;
         case 'profile': return <StudentProfile user={currentUser} onSave={handleUpdateUser} isDarkMode={isDarkMode} registrations={data.registrations} applicants={data.applicants} events={data.events} />;
-        case 'recruitment': return <MyApplications applicants={data.applicants} clubs={data.clubs} userName={currentUser.name} isDarkMode={isDarkMode} />;
+        case 'recruitment': return <MyApplications applicants={data.applicants} clubs={data.clubs} userName={currentUser.name} isDarkMode={isDarkMode} onUpdateStatus={handleApplicantMove} />;
         case 'events': return <CampusEvents events={data.events} clubs={data.clubs} registrations={data.registrations} onRegister={handleRegisterEvent} isDarkMode={isDarkMode} user={currentUser} />;
         case 'my-certificates': return <MyCertificates currentUser={currentUser!} batches={data.batches} />;
         case 'tickets': return <MyTickets registrations={data.registrations.filter(r => r.studentId === currentUser.id)} events={data.events} clubs={data.clubs} isDarkMode={isDarkMode} />;
@@ -643,29 +744,29 @@ const App: React.FC = () => {
   return (
     <div className={`min-h-screen font-sans selection:bg-[var(--primary)] selection:text-white bg-[var(--bg-main)] text-[var(--text-main)] transition-colors duration-500`}>
 
-      {/* Global Animated Mesh Background - Simplified for stability */}
-      {isDarkMode && (
-        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-30">
-          <div className="absolute top-[-10%] left-[-5%] w-1/2 h-1/2 bg-blue-600/10 rounded-full blur-[100px]" />
-          <div className="absolute bottom-[-10%] right-[-5%] w-1/2 h-1/2 bg-indigo-600/10 rounded-full blur-[100px]" />
-        </div>
-      )}
+      {/* Global Animated Mesh Background for Premium Light Mode Glassmorphism */}
+      <div className={`fixed inset-0 pointer-events-none z-0 overflow-hidden transition-opacity duration-700 ${isDarkMode ? 'opacity-30' : 'opacity-80'}`}>
+        <div className={`absolute top-[-10%] left-[-5%] w-1/2 h-1/2 rounded-full blur-[100px] ${isDarkMode ? 'bg-blue-600/10' : 'bg-cyan-300/40 animate-pulse-slow'}`} />
+        <div className={`absolute bottom-[-10%] right-[-5%] w-1/2 h-1/2 rounded-full blur-[100px] ${isDarkMode ? 'bg-indigo-600/10' : 'bg-fuchsia-300/30 animate-pulse-slow'}`} style={{ animationDelay: '2s' }} />
+        <div className={`absolute top-[40%] left-[60%] w-1/3 h-1/3 rounded-full blur-[120px] ${isDarkMode ? 'bg-purple-600/10' : 'bg-blue-300/30 animate-pulse-slow'}`} style={{ animationDelay: '4s' }} />
+      </div>
 
       <div className="relative z-10 w-full h-full">
         <Routes>
             {/* Public Routes */}
             <Route path="/" element={
               currentUser ? <Navigate to="/dashboard" replace /> :
-                <LandingPage
-                  events={data.events}
-                  clubs={data.clubs}
-                  onLogin={() => navigate('/auth')}
-                  onRegister={() => navigate('/auth')}
-                  isDarkMode={isDarkMode}
-                  onOpenDeveloper={() => navigate('/developers')}
-                  onOpenProfile={() => navigate('/developer-profile')}
-                  onNavigate={(p) => navigate(`/${p}`)}
-                />
+              <LandingPage 
+                events={data.events} 
+                clubs={data.clubs} 
+                onLogin={() => navigate('/auth')} 
+                onRegister={() => navigate('/auth')} 
+                isDarkMode={isDarkMode} 
+                onOpenDeveloper={() => navigate('/dashboard/developers')} 
+                onOpenProfile={() => navigate('/dashboard/profile')}
+                onNavigate={(p) => navigate(`/dashboard/${p}`)}
+                onProposeUnit={handleProposeUnit}
+              />
             } />
 
             <Route path="/auth" element={
